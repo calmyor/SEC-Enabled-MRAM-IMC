@@ -15,6 +15,7 @@
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="assets/vendor/katex/katex.min.css" />
     <script type="application/ld+json">{"@context":"https://schema.org","@type":"ScholarlyArticle","name":"Compute SNDR-Boosted 22-nm MRAM-Based In-Memory Computing Macro Using Statistical Error Compensation","author":[{"@type":"Person","name":"Saion K. Roy"},{"@type":"Person","name":"Han-Mo Ou"},{"@type":"Person","name":"Mostafa G. Ahmed"},{"@type":"Person","name":"Peter Deaville"},{"@type":"Person","name":"Bonan Zhang"},{"@type":"Person","name":"Naveen Verma"},{"@type":"Person","name":"Pavan K. Hanumolu"},{"@type":"Person","name":"Naresh R. Shanbhag"}],"isPartOf":{"@type":"Periodical","name":"IEEE Journal of Solid-State Circuits"},"identifier":"https://doi.org/10.1109/JSSC.2024.3442013","url":"https://calmyor.github.io/SEC-Enabled-MRAM-IMC/tapeout.html"}</script>
     <script src="app.js" defer></script>
     <title>Tapeout engineering · SEC–MRAM IMC</title>
@@ -83,14 +84,14 @@
         </div>
         <div class="two-col">
           <article class="card">
-            <span class="number">ROW CORRECTION γ</span>
+            <span class="number">ROW CORRECTION <span class="math-inline gamma" data-math-rendered="inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi></mrow><annotation encoding="application/x-tex">\gamma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0556em;">γ</span></span></span></span></span></span>
             <h3>From convergence study to observable state</h3>
             <ul class="checklist">
               <li>Behavioral sweeps establish one shared factor per physical row.</li>
               <li>Precision studies freeze the 7-bit inference factor and 14-bit update state.</li>
               <li>RTL defines saturation, rounding, reset, update ordering, and shift-based learning rate.</li>
               <li>Scan and control modes expose initialization, training, inference, and stored correction state.</li>
-              <li>Bench records bind γ state to raw codes and the SEC-on measurement configuration.</li>
+              <li>Bench records bind <span class="math-inline gamma" data-math-rendered="inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi></mrow><annotation encoding="application/x-tex">\gamma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0556em;">γ</span></span></span></span></span> state to raw codes and the SEC-on measurement configuration.</li>
             </ul>
           </article>
           <article class="card">
@@ -114,7 +115,7 @@
           <p>The highest-risk decisions sit at interfaces. Four reviews trace the same signal from modeled row current to the raw ADC code recorded at the bench.</p>
         </div>
         <div class="four-col">
-          <article class="card"><span class="number">MODEL ↔ CIRCUIT</span><h3>Is α still representative?</h3><p class="muted">Extracted parasitics, sensor headroom, and input ordering must stay inside the modeled correction range.</p></article>
+          <article class="card"><span class="number">MODEL ↔ CIRCUIT</span><h3>Is <span class="math-inline alpha" data-math-rendered="inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span></span> still representative?</h3><p class="muted">Extracted parasitics, sensor headroom, and input ordering must stay inside the modeled correction range.</p></article>
           <article class="card"><span class="number">CIRCUIT ↔ DIGITAL</span><h3>Is conversion deterministic?</h3><p class="muted">Auto-zero, evaluation, SAR control, capture, and SEC update phases need unambiguous cycle and reset semantics.</p></article>
           <article class="card"><span class="number">DIE ↔ PACKAGE</span><h3>Can the pins carry it?</h3><p class="muted">Pad type, bond map, simultaneous switching, references, supplies, and safe unused states must agree.</p></article>
           <article class="card"><span class="number">PACKAGE ↔ BENCH</span><h3>Can the result be observed?</h3><p class="muted">The board and FPGA must reach every mode, control timing, limit current, and preserve raw ADC data with metadata.</p></article>

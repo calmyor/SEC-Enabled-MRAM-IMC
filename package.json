@@ -3,9 +3,13 @@
   "version": "1.0.0",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@11.16.0",
   "scripts": {
     "build": "node scripts/build-site.mjs",
     "validate": "node scripts/validate-site.mjs",
     "test": "PYTHONPATH=src python3 -m unittest discover -s tests -v"
+  },
+  "dependencies": {
+    "katex": "0.18.1"
   }
 }

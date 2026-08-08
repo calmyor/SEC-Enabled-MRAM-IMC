@@ -32,6 +32,9 @@ h1 { font-size: clamp(3.5rem, 7vw, 7.6rem); }
 h2 { font-size: clamp(2.4rem, 4vw, 4.5rem); }
 h3 { font-size: clamp(1.25rem, 1.7vw, 1.65rem); letter-spacing: -.018em; }
 code, .mono { font-family: var(--mono); }
+.math-inline { display: inline-block; white-space: nowrap; }
+.math-inline .katex { font-size: 1em; }
+.table-math { display: inline-block; max-width: 100%; overflow-x: auto; padding: 2px 0; vertical-align: middle; }
 
 :focus-visible { outline: 3px solid var(--gold); outline-offset: 4px; }
 .skip-link { position: fixed; z-index: 1000; top: 12px; left: 12px; padding: 10px 16px; transform: translateY(-160%); background: var(--gold); color: var(--ink); font-weight: 800; }
@@ -133,7 +136,9 @@ code, .mono { font-family: var(--mono); }
 .callout p:last-child { margin-bottom: 0; }
 .section-dark .callout { background: rgba(255,255,255,.07); border-color: var(--gold); }
 
-.equation { margin: 28px 0; padding: 24px; overflow-x: auto; border: 1px solid var(--line); background: var(--ink); color: #fff; font: clamp(1.1rem, 2vw, 1.6rem)/1.45 var(--mono); text-align: center; }
+.equation { margin: 28px 0; padding: 24px; overflow-x: auto; border: 1px solid var(--line); background: var(--ink); color: #fff; font-size: clamp(1.05rem, 2vw, 1.55rem); line-height: 1.45; text-align: center; }
+.equation .katex { font-size: 1em; }
+.equation .katex-display { margin: 0; }
 .equation .alpha { color: #cbbbef; }
 .equation .gamma { color: var(--gold); }
 .equation .theta { color: #74ddd1; }
@@ -178,7 +183,8 @@ code, .mono { font-family: var(--mono); }
 .calculator-output { margin-top: 28px; padding-top: 24px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; border-top: 1px solid rgba(255,255,255,.17); }
 .calculator-output strong { display: block; color: var(--gold); font-size: clamp(1.7rem, 3vw, 3rem); line-height: 1; }
 .calculator-output span { display: block; margin-top: 8px; color: #bfd0d2; font-size: 13px; }
-.calculator-expression { margin: 24px 0 0; padding: 13px 16px; border: 1px solid rgba(232,187,99,.28); background: rgba(232,187,99,.08); color: #f3dfb5; font: 750 13px/1.5 var(--mono); text-align: center; }
+.calculator-expression { margin: 24px 0 0; padding: 13px 16px; overflow-x: auto; border: 1px solid rgba(232,187,99,.28); background: rgba(232,187,99,.08); color: #f3dfb5; font-size: 14px; line-height: 1.5; text-align: center; }
+.calculator-expression .katex-display { margin: 0; }
 
 .result-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
 .result-grid article { padding: 32px 26px; background: var(--white); }
@@ -273,18 +279,20 @@ code, .mono { font-family: var(--mono); }
 .equation-step::after { content: "→"; position: absolute; z-index: 3; top: 50%; right: -19px; width: 26px; height: 26px; display: grid; place-items: center; transform: translateY(-50%); border: 1px solid var(--line); background: var(--paper); color: var(--copper-dark); font-weight: 900; }
 .equation-step:last-child::after { display: none; }
 .equation-step > span:first-child { color: var(--copper-dark); font: 800 11px var(--mono); letter-spacing: .07em; text-transform: uppercase; }
-.equation-step > strong, .equation-step > code { display: block; margin: 34px 0 18px; color: var(--ink); font: 800 clamp(1.15rem, 2vw, 1.65rem)/1.35 var(--mono); overflow-wrap: anywhere; }
+.equation-step > strong, .equation-step > .math-step { display: block; margin: 34px 0 18px; color: var(--ink); font-size: clamp(1.05rem, 1.7vw, 1.45rem); line-height: 1.35; overflow-x: auto; }
+.math-step .katex { font-size: 1em; }
+.math-step .katex-display { margin: 0; text-align: left; }
 .equation-step > p { margin: auto 0 0; color: var(--muted); font-size: 14px; }
 .equation-step .equation { margin: 28px 0 20px; padding: 16px 12px; font-size: clamp(.95rem, 1.5vw, 1.2rem); }
 .section-dark .equation-step, .section-teal .equation-step { border-color: rgba(255,255,255,.18); background: rgba(255,255,255,.055); }
 .section-dark .equation-step::after, .section-teal .equation-step::after { border-color: rgba(255,255,255,.2); background: var(--ink); color: var(--gold); }
 .section-dark .equation-step > span:first-child, .section-teal .equation-step > span:first-child { color: var(--gold); }
-.section-dark .equation-step > strong, .section-dark .equation-step > code, .section-teal .equation-step > strong, .section-teal .equation-step > code { color: #fff; }
+.section-dark .equation-step > strong, .section-dark .equation-step > .math-step, .section-teal .equation-step > strong, .section-teal .equation-step > .math-step { color: #fff; }
 .section-dark .equation-step > p, .section-teal .equation-step > p { color: #bed0d1; }
 .section-dark .equation-step.alpha-step > span:first-child, .section-teal .equation-step.alpha-step > span:first-child { color: #cbbbef; }
 .section-dark .equation-step.corrected-step > span:first-child, .section-teal .equation-step.corrected-step > span:first-child { color: #74ddd1; }
-.section-dark .equation-step.alpha-step > code, .section-teal .equation-step.alpha-step > code { color: #cbbbef; }
-.section-dark .equation-step.corrected-step > code, .section-teal .equation-step.corrected-step > code { color: var(--gold); }
+.section-dark .equation-step.alpha-step > .math-step, .section-teal .equation-step.alpha-step > .math-step { color: #cbbbef; }
+.section-dark .equation-step.corrected-step > .math-step, .section-teal .equation-step.corrected-step > .math-step { color: var(--gold); }
 .section-dark .equation-step .alpha, .section-teal .equation-step .alpha { color: #cbbbef; }
 .section-dark .equation-step .gamma, .section-teal .equation-step .gamma { color: var(--gold); }
 .section-dark .equation-step .theta, .section-teal .equation-step .theta { color: #74ddd1; }
@@ -299,7 +307,7 @@ code, .mono { font-family: var(--mono); }
 .signal-lane { padding: 26px; border: 1px solid rgba(255,255,255,.18); background: rgba(255,255,255,.055); }
 .signal-lane > span { color: var(--gold); font: 800 11px var(--mono); letter-spacing: .07em; text-transform: uppercase; }
 .signal-route { margin: 24px 0 18px; display: flex; align-items: center; gap: 8px; overflow-x: auto; }
-.signal-route i { flex: 0 0 auto; min-width: 72px; padding: 10px 12px; border: 1px solid rgba(255,255,255,.26); color: #fff; font: normal 750 13px var(--mono); text-align: center; }
+.signal-route .signal-math { flex: 0 0 auto; min-width: 72px; padding: 10px 12px; border: 1px solid rgba(255,255,255,.26); color: #fff; font-size: 14px; text-align: center; }
 .signal-route b { color: var(--gold); font-size: 18px; }
 .signal-lane p { margin: 0; color: #bed0d1; font-size: 14px; }
 .signal-lane.sec-on { border-color: rgba(232,187,99,.65); background: rgba(232,187,99,.08); }
@@ -307,6 +315,12 @@ code, .mono { font-family: var(--mono); }
 .evidence-note { padding: 22px 24px; display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: start; border: 1px solid var(--line); background: var(--white); }
 .evidence-type { display: inline-block; padding: 6px 8px; background: var(--ink); color: var(--gold); font: 800 10px var(--mono); letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
 .evidence-note p { margin: 0; color: var(--muted); font-size: 15px; }
+.evidence-equation { margin-top: 18px; overflow-x: auto; color: var(--ink); font-size: clamp(.85rem, 1.35vw, 1.05rem); }
+.evidence-equation .katex-display { margin: 0; text-align: left; }
+
+.state-equations { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 24px; }
+.state-equations > div { padding: 20px; overflow-x: auto; border: 1px solid rgba(255,255,255,.2); background: rgba(255,255,255,.055); color: #fff; font-size: clamp(.82rem, 1.25vw, 1rem); }
+.state-equations .katex-display { margin: 0; }
 
 .state-method { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 18px; align-items: center; margin-bottom: 34px; }
 .state-stage { min-height: 190px; padding: 26px; display: flex; flex-direction: column; justify-content: space-between; border: 1px solid rgba(255,255,255,.2); background: rgba(255,255,255,.055); }
@@ -417,6 +431,7 @@ code, .mono { font-family: var(--mono); }
   .equation-step { min-height: 210px; }
   .equation-step::after { content: "↓"; top: auto; right: 50%; bottom: -20px; transform: translateX(50%); }
   .state-method { grid-template-columns: 1fr; }
+  .state-equations { grid-template-columns: 1fr; }
   .state-arrow { transform: rotate(90deg); text-align: center; }
   .fingerprint-grid { grid-template-columns: repeat(2, 1fr); }
   .takeaway { grid-template-columns: 1fr; gap: 10px; }

@@ -16,6 +16,13 @@ The publisher DOI metadata identifies the version of record as CC BY 4.0. Preser
 
 `og.png` is an original generated social-preview illustration for this repository. It is illustrative and must not be interpreted as a circuit schematic, die photograph, or measured result.
 
+## Third-party website component
+
+Mathematical notation is rendered with KaTeX 0.18.1, distributed under the MIT
+License. The build copies the required stylesheet, browser runtime, fonts, and
+license into `docs/assets/vendor/katex/`. KaTeX copyright and license terms are
+preserved in `docs/assets/vendor/katex/LICENSE`.
+
 ## Excluded material
 
 The public repository intentionally excludes foundry/PDK configuration, validator packages, GDS/OASIS, netlists, raw signoff output, waivers, export-control paperwork, invoices, shipping documents, supplier records, personal paths and identifiers, instrument serial identifiers, unreviewed raw measurements, and third-party code without confirmed redistribution permission.

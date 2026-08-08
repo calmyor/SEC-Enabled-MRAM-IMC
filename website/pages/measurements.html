@@ -2,36 +2,37 @@
       <header class="page-hero">
         <p class="breadcrumb">Overview / Measurements</p>
         <p class="eyebrow">Calibration · state sampling · SNDR · application outcome</p>
-        <h1>Compute SNDR separates temporal noise from spatial distortion.</h1>
-        <p>Compute SNDR combines temporal noise and state-dependent distortion. The protocol groups the 2²ᴺ weight/input configurations by ideal code, samples row patterns within each code, and repeats each pattern to estimate both effects.</p>
+        <h1>Compute SNDR captures temporal noise and spatial distortion.</h1>
+        <p>Compute SNDR combines temporal noise and state-dependent distortion. The full binary <span class="math-inline" data-math="inline">(\mathbf{w},\mathbf{x})</span> space contains <span class="math-inline" data-math="inline">2^{2N}</span> pairs; the protocol fixes <span class="math-inline" data-math="inline">\mathbf{w}=\mathbf{1}</span>, groups the remaining activation patterns by ideal code, and repeats sampled patterns to estimate both effects.</p>
       </header>
       <div class="thesis-strip" aria-label="Measurement page summary">
         <article><span>Raw signal</span><strong>Each ADC column returns codes shaped by gain, offset, noise, and row-dependent distortion.</strong></article>
         <article><span>Protocol</span><strong>Calibrate per column, sample 30 states per ideal code, and repeat every state 10 times.</strong></article>
-        <article><span>Metric</span><strong>Weight code-conditioned residual error by P(c) and compare it with ideal-output variance.</strong></article>
+        <article><span>Metric</span><strong>Weight code-conditioned residual error by <span class="math-inline" data-math="inline">P_{\mathcal Y}(c)</span> and compare it with ideal-output variance.</strong></article>
       </div>
 
       <section class="section section-white">
         <div class="section-head">
           <p class="kicker">01 · Per-column calibration</p>
           <h2>Calibrate gain and offset before attributing residual error.</h2>
-          <p>Raw 6-bit ADC output ŷ is mapped to the ideal dot product y₀ with an affine MMSE fit computed off-chip for each physical ADC column. SEC-on evaluation additionally applies the learned output normalization θ.</p>
+          <p>Raw 6-bit ADC output <span class="math-inline" data-math="inline">\widehat y_j</span> is mapped to the ideal dot product <span class="math-inline" data-math="inline">y_{\mathrm{o}}</span> with an affine MMSE fit computed off-chip for each physical ADC column <span class="math-inline" data-math="inline">j</span>. SEC-on evaluation additionally applies the learned output normalization <span class="math-inline theta" data-math="inline">\theta_j</span>.</p>
         </div>
         <div class="two-col">
           <div>
-            <div class="equation">ỹ = <span class="theta">θ</span>(aŷ + b)</div>
+            <div class="equation" data-math="display">\widetilde y_j=\theta_j(a_j\widehat y_j+b_j)</div>
             <table class="spec-table" aria-label="Affine calibration equations">
               <tbody>
-                <tr><th>Gain</th><td><span class="mono">a = Cov(y₀, ŷ) / Var(ŷ)</span></td></tr>
-                <tr><th>Offset</th><td><span class="mono">b = E[y₀] − aE[ŷ]</span></td></tr>
-                <tr><th>SEC off</th><td>θ = 1</td></tr>
-                <tr><th>SEC on</th><td>θ includes the SEC output normalization defined for the measured configuration.</td></tr>
+                <tr><th>MMSE fit</th><td><span class="table-math" data-math="inline">(a_j,b_j)=\arg\min_{a,b}\sum_{r\in\mathcal D_{\mathrm{cal}}}\left[y_{\mathrm{o},r}-(a\widehat y_{j,r}+b)\right]^2</span></td></tr>
+                <tr><th>Gain</th><td><span class="table-math" data-math="inline">a_j=\frac{\operatorname{Cov}(y_{\mathrm{o}},\widehat y_j)}{\operatorname{Var}(\widehat y_j)}</span></td></tr>
+                <tr><th>Offset</th><td><span class="table-math" data-math="inline">b_j=\mathbb{E}[y_{\mathrm{o}}]-a_j\mathbb{E}[\widehat y_j]</span></td></tr>
+                <tr><th>SEC off</th><td><span class="table-math" data-math="inline">\theta_j=1</span></td></tr>
+                <tr><th>SEC on</th><td><span class="math-inline theta" data-math="inline">\theta_j</span> is the SEC output normalization declared for the measured configuration.</td></tr>
               </tbody>
             </table>
           </div>
           <div class="callout">
             <strong>Calibration split</strong>
-            <p>Fit a and b on designated calibration records, freeze the coefficients, and compute SNDR on evaluation records. The result retains the fit population, column ID, configuration digest, coefficients, units, and analysis commit.</p>
+            <p>Fit <span class="math-inline" data-math="inline">a_j</span> and <span class="math-inline" data-math="inline">b_j</span> with <span class="math-inline" data-math="inline">\theta_j=1</span> on designated calibration records, freeze the coefficients, then apply the declared SEC-on <span class="math-inline theta" data-math="inline">\theta_j</span> and score evaluation records. The result retains the fit population, column ID, configuration digest, coefficients, units, and analysis commit.</p>
           </div>
         </div>
       </section>
@@ -40,22 +41,26 @@
         <div class="section-head">
           <p class="kicker">02 · State-space reduction</p>
           <h2>Sample configurations within every ideal output code.</h2>
-          <p>A binary N-dimensional dot product has 2²ᴺ weight/input configurations. The method groups configurations that yield the same ideal output code c, fixes the weight vector to all ones, randomly selects 30 activation states per code, and repeats every state K = 10 times.</p>
+          <p>A binary <span class="math-inline" data-math="inline">N</span>-dimensional dot product has <span class="math-inline" data-math="inline">2^{2N}</span> joint weight/input configurations. Fixing <span class="math-inline" data-math="inline">\mathbf{w}=\mathbf{1}</span> leaves <span class="math-inline" data-math="inline">2^N</span> activation patterns over <span class="math-inline" data-math="inline">N+1</span> reachable ideal codes. The protocol samples up to <span class="math-inline" data-math="inline">M=30</span> activation states per code and repeats every state <span class="math-inline" data-math="inline">K=10</span> times.</p>
+        </div>
+        <div class="state-equations" aria-label="State space and reachable ideal codes">
+          <div data-math="display">\left|\{-1,+1\}^{N}\times\{-1,+1\}^{N}\right|=2^{2N},\qquad \mathbf{w}=\mathbf{1}\Rightarrow 2^N\ \text{activation patterns}</div>
+          <div data-math="display">\mathcal Y_N=\{-N,-N+2,\ldots,N\},\qquad |\mathcal Y_N|=N+1</div>
         </div>
         <div class="evidence-note" style="margin-bottom:34px">
           <span class="evidence-type">Why states matter</span>
-          <p>For a symbolic four-row example, <span class="mono">[+ + − −]</span> and <span class="mono">[+ − + −]</span> both sum to the ideal code <span class="mono">c = 0</span>. They activate different physical row patterns, so their α-weighted array currents—and therefore raw ADC codes—can differ. Sampling 30 states inside one code measures that spatial distortion.</p>
+          <p>For a symbolic four-row example, <span class="math-inline" data-math="inline">\mathbf{x}^{(1)}=[+1,+1,-1,-1]</span> and <span class="math-inline" data-math="inline">\mathbf{x}^{(2)}=[+1,-1,+1,-1]</span> both produce the ideal code <span class="math-inline" data-math="inline">c=0</span>. They activate different physical row patterns, so their <span class="math-inline alpha" data-math="inline">\alpha</span>-weighted array currents—and therefore raw ADC codes—can differ. Sampling states inside one code measures that spatial distortion.</p>
         </div>
         <div class="state-method" aria-label="Code-conditioned measurement protocol">
-          <article class="state-stage"><span>Ideal code c</span><strong>Group equal arithmetic outputs</strong><p>Many physical row patterns map to the same ideal dot-product code.</p><div class="pattern-row" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></article>
+          <article class="state-stage"><span>Ideal code <span class="math-inline" data-math="inline">c</span></span><strong>Group equal arithmetic outputs</strong><p>Many physical row patterns map to the same ideal dot-product code.</p><div class="pattern-row" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></article>
           <div class="state-arrow" aria-hidden="true">→</div>
-          <article class="state-stage"><span>30 states / code</span><strong>Sample spatial distortion</strong><p>Different active-row locations expose the α-dependent variation inside one code.</p><div class="pattern-row" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></article>
+          <article class="state-stage"><span>30 states per code</span><strong>Sample spatial distortion</strong><p>Different active-row locations expose the <span class="math-inline alpha" data-math="inline">\alpha</span>-dependent variation inside one code.</p><div class="pattern-row" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></article>
           <div class="state-arrow" aria-hidden="true">→</div>
-          <article class="state-stage"><span>10 repeats / state</span><strong>Sample temporal noise</strong><p>Repeated evaluation separates within-state noise from pattern-to-pattern distortion.</p><div class="repeat-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></article>
+          <article class="state-stage"><span>10 repeats per state</span><strong>Sample temporal noise</strong><p>Repeated evaluation separates within-state noise from pattern-to-pattern distortion.</p><div class="repeat-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></article>
         </div>
         <div class="protocol-calculator" data-protocol-calculator>
           <h3>Protocol scale calculator</h3>
-          <p class="muted">Defaults reproduce the N = 64 protocol over 65 reachable ±1 dot-product codes and eight measured ADC columns.</p>
+          <p class="muted">Defaults show the nominal <span class="math-inline" data-math="inline">N=64</span> protocol scale over <span class="math-inline" data-math="inline">|\mathcal Y_{64}|=65</span> reachable signed dot-product codes and eight measured ADC columns.</p>
           <div class="calculator-grid">
             <label>States per code<input name="states" type="number" min="1" value="30" /></label>
             <label>Repeats per state<input name="repeats" type="number" min="1" value="10" /></label>
@@ -63,11 +68,11 @@
             <label>ADC columns<input name="columns" type="number" min="1" value="8" /></label>
           </div>
           <div class="calculator-output" aria-live="polite">
-            <div><strong data-per-code>300</strong><span>measurements / code / column</span></div>
-            <div><strong data-per-column>19,500</strong><span>measurements / column</span></div>
+            <div><strong data-per-code>300</strong><span>measurements per code per column</span></div>
+            <div><strong data-per-column>19,500</strong><span>measurements per column</span></div>
             <div><strong data-total>156,000</strong><span>total captures</span></div>
           </div>
-          <p class="calculator-expression" data-expression>30 states × 10 repeats × 65 codes × 8 columns = 156,000 captures</p>
+          <div class="calculator-expression" data-expression data-math-dynamic data-math="display">\mathcal N_{\mathrm{captures}}=M K|\mathcal C|N_C=30\cdot10\cdot65\cdot8=156{,}000</div>
         </div>
         <div class="three-col" style="margin-top:36px">
           <article class="card"><span class="number">WITHIN STATE</span><h3>Repeated noise</h3><p class="muted">Ten captures of the same state expose temporal variation without conflating it with spatial pattern dependence.</p></article>
@@ -80,25 +85,31 @@
         <div class="section-head">
           <p class="kicker">03 · Compute SNDR</p>
           <h2>Compute one error distribution per ideal code, then weight across codes.</h2>
-          <p>For each ideal code c, squared residuals of calibrated output ỹ are averaged over states and repeats. Column SNDR compares ideal-output variance with the P(c)-weighted sum of those code-conditioned errors.</p>
+          <p>For each ideal code <span class="math-inline" data-math="inline">c</span>, squared residuals of calibrated output <span class="math-inline" data-math="inline">\widetilde y_j</span> are averaged over states and repeats. Column SNDR uses the same normalized <span class="math-inline" data-math="inline">P_{\mathcal Y}(c)</span> in the ideal-output variance and the weighted sum of code-conditioned errors.</p>
         </div>
         <div class="two-col">
           <div>
-            <div class="equation">MSE<sub>code</sub>(c) = mean[(ỹ − c)²]</div>
-            <div class="equation">SNDR<sub>col</sub> = 10 log₁₀ { Var(y₀) / Σ<sub>c</sub> MSE<sub>code</sub>(c)P(c) }</div>
+            <div class="equation" data-math="display">P_{\mathcal Y}(c)=2^{-N}\binom{N}{(N+c)/2},\qquad c\in\mathcal Y_N</div>
+            <div class="equation" data-math="display">\operatorname{MSE}_{\mathrm{code},j}(c)=\frac{1}{M_cK}\sum_{s=1}^{M_c}\sum_{k=1}^{K}\left(\widetilde y_{j,c,s,k}-c\right)^2</div>
+            <div class="equation" data-math="display">\operatorname{SNDR}_{\mathrm{col},j}^{(\mathrm{lin})}=\frac{\operatorname{Var}_{P_{\mathcal Y}}(Y_{\mathrm{o}})}{\sum_{c\in\mathcal Y_N}P_{\mathcal Y}(c)\operatorname{MSE}_{\mathrm{code},j}(c)}</div>
+            <div class="equation" data-math="display">\operatorname{SNDR}_{\mathrm{col},j}^{(\mathrm{dB})}=10\log_{10}\!\left(\operatorname{SNDR}_{\mathrm{col},j}^{(\mathrm{lin})}\right)</div>
           </div>
           <div>
             <h3>Result record must include</h3>
             <ul class="checklist">
-              <li>Dot-product dimension N and reachable code set.</li>
-              <li>Weight policy, state-selection seed, states/code, and repeats/state.</li>
+              <li>Dot-product dimension <span class="math-inline" data-math="inline">N</span> and reachable code set <span class="math-inline" data-math="inline">\mathcal Y_N</span>.</li>
+              <li>Weight policy, state-selection seed, states per code, and repeats per state.</li>
               <li>ADC precision, column IDs, voltage, clock, and operating mode.</li>
               <li>Calibration split and per-column gain/offset/normalization.</li>
-              <li>Ideal-code probability model P(c).</li>
+              <li>Ideal-code probability model <span class="math-inline" data-math="inline">P_{\mathcal Y}(c)</span>.</li>
               <li>SEC state/version and whether learning or inference was active.</li>
               <li>Raw-data and analysis-code checksums.</li>
             </ul>
           </div>
+        </div>
+        <div class="evidence-note" style="margin-top:32px">
+          <span class="evidence-type">Noise + distortion</span>
+          <div><p>The repeated-state protocol makes the two contributions explicit inside each ideal code.</p><div class="evidence-equation" data-math="display">\mathbb E_{s,k}\!\left[(\widetilde y-c)^2\right]=\underbrace{\mathbb E_s\!\left[\operatorname{Var}_k(\widetilde y\mid s)\right]}_{\text{temporal noise}}+\underbrace{\mathbb E_s\!\left[\left(\mathbb E_k[\widetilde y\mid s]-c\right)^2\right]}_{\text{state-dependent distortion}}</div></div>
         </div>
         <figure class="figure-frame figure-wide">
           <img src="assets/figures/code-error.png" alt="Measured MRAM ADC outputs with one-sigma error bars across ideal dot-product codes for dimensions 64 and 128" loading="lazy" />
@@ -110,34 +121,34 @@
         <div class="section-head">
           <p class="kicker">Measured silicon</p>
           <h2>SEC improves the quality–energy operating frontier.</h2>
-          <p>The measured points expose three relationships: increasing N lowers baseline SNDR, SEC raises SNDR across operating conditions, and that gain shifts the iso-SNDR energy point.</p>
+          <p>The measured points expose three relationships: increasing <span class="math-inline" data-math="inline">N</span> lowers baseline SNDR, SEC raises SNDR across operating conditions, and that gain shifts the iso-SNDR energy point.</p>
         </div>
         <div class="result-story-grid">
-          <article class="result-panel"><span class="claim-badge">Silicon · SEC off</span><h3>Scaling penalty</h3><div class="pair-value"><strong>5.15 <small>dB</small></strong><b>→</b><strong>0.77 <small>dB</small></strong></div><p>N = 64 → N = 128. Longer active paths increase wire loss and noise.</p></article>
-          <article class="result-panel"><span class="claim-badge">Silicon · N=64 · 8 columns</span><h3>SEC correction</h3><div class="pair-value"><strong>4 <small>dB</small></strong><b>→</b><strong>9.15 <small>dB</small></strong></div><p>Average across eight ADC columns; +2.7–6 dB across evaluated operating points.</p></article>
-          <article class="result-panel"><span class="claim-badge">Silicon · iso-SNDR</span><h3>Energy frontier</h3><div class="pair-value"><strong>5×</strong><b class="text-arrow">lower</b><strong>E/1b-OP</strong></div><p>SEC energy overhead is 0.8% at N = 64 and 1.8% at N = 128.</p></article>
-          <article class="result-panel"><span class="claim-badge">Fabricated / projection</span><h3>Area implementation</h3><div class="pair-value"><strong>12.2%</strong><b>→</b><strong>3.7%</strong></div><p>Fabricated register-based SEC overhead and projected SRAM-backed storage overhead.</p></article>
+          <article class="result-panel"><span class="claim-badge">Silicon · SEC off</span><h3>Scaling penalty</h3><div class="pair-value"><strong><span class="math-inline" data-math="inline">5.15\,\mathrm{dB}</span></strong><b>→</b><strong><span class="math-inline" data-math="inline">0.77\,\mathrm{dB}</span></strong></div><p><span class="math-inline" data-math="inline">N=64\rightarrow N=128</span>. Longer active paths increase wire loss and noise.</p></article>
+          <article class="result-panel"><span class="claim-badge">Silicon · <span class="math-inline" data-math="inline">N=64</span> · 8 columns</span><h3>SEC correction</h3><div class="pair-value"><strong><span class="math-inline" data-math="inline">4\,\mathrm{dB}</span></strong><b>→</b><strong><span class="math-inline" data-math="inline">9.15\,\mathrm{dB}</span></strong></div><p>Average across eight ADC columns; <span class="math-inline" data-math="inline">+2.7\text{–}6\,\mathrm{dB}</span> across evaluated operating points.</p></article>
+          <article class="result-panel"><span class="claim-badge">Silicon · iso-SNDR</span><h3>Energy frontier</h3><div class="pair-value"><strong><span class="math-inline" data-math="inline">5\times</span></strong><b class="text-arrow">to</b><strong>one fifth</strong></div><p><span class="math-inline" data-math="inline">E_{\mathrm{1bOP,new}}=E_{\mathrm{1bOP,base}}/5</span> at iso-SNDR. SEC energy overhead is <span class="math-inline" data-math="inline">0.8\%</span> at <span class="math-inline" data-math="inline">N=64</span> and <span class="math-inline" data-math="inline">1.8\%</span> at <span class="math-inline" data-math="inline">N=128</span>.</p></article>
+          <article class="result-panel"><span class="claim-badge">Fabricated / projection</span><h3>Area implementation</h3><div class="pair-value"><strong><span class="math-inline" data-math="inline">12.2\%</span></strong><b>→</b><strong><span class="math-inline" data-math="inline">3.7\%</span></strong></div><p>Fabricated register-based SEC overhead and projected SRAM-backed storage overhead.</p></article>
         </div>
         <figure class="figure-frame figure-wide">
           <img src="assets/figures/sndr-columns.png" alt="Measured SNDR across eight ADC columns before and after statistical error compensation" loading="lazy" />
-          <figcaption><strong>Across-column result.</strong> At N = 64, the journal reports average SNDR increasing from 4 dB to 9.15 dB across eight measured columns.</figcaption>
+          <figcaption><strong>Across-column result.</strong> At <span class="math-inline" data-math="inline">N=64</span>, the journal reports average SNDR increasing from <span class="math-inline" data-math="inline">4\,\mathrm{dB}</span> to <span class="math-inline" data-math="inline">9.15\,\mathrm{dB}</span> across eight measured columns.</figcaption>
         </figure>
       </section>
 
       <section class="section section-teal">
         <div class="section-head">
           <p class="kicker">Application experiment</p>
-          <h2>SEC recovers 7.2 accuracy points in the measured ResNet-20 output layer.</h2>
-          <p>Software evaluates the convolutional backbone; the macro computes the 4-bit final fully connected layer for 1,000 CIFAR-10 inputs quantized to 7 bits. The same mapping is measured with SEC off and on, with application weights fixed; hardware results report ±5 percentage points at 90% confidence.</p>
+          <h2>SEC recovers <span class="math-inline" data-math="inline">7.2</span> accuracy points in the measured ResNet-20 output layer.</h2>
+          <p>Software evaluates the convolutional backbone; the macro computes the 4-bit final fully connected layer for 1,000 CIFAR-10 inputs quantized to 7 bits. The same mapping is measured with SEC off and on, with application weights fixed; hardware results report <span class="math-inline" data-math="inline">\pm5</span> percentage points at <span class="math-inline" data-math="inline">90\%</span> confidence.</p>
         </div>
         <div class="accuracy-chart" aria-label="CIFAR-10 top-1 accuracy comparison">
-          <article><span>Digital reference</span><div><i style="--accuracy:91.1%"></i></div><strong>91.1%</strong></article>
-          <article><span>Silicon · SEC off</span><div><i style="--accuracy:74.8%"></i></div><strong>74.8% ±5%</strong></article>
-          <article><span>Silicon · SEC on</span><div><i style="--accuracy:82%"></i></div><strong>82.0% ±5%</strong></article>
+          <article><span>Digital reference</span><div><i style="--accuracy:91.1%"></i></div><strong><span class="math-inline" data-math="inline">91.1\%</span></strong></article>
+          <article><span>Silicon · SEC off</span><div><i style="--accuracy:74.8%"></i></div><strong><span class="math-inline" data-math="inline">(74.8\pm5.0)\%</span></strong></article>
+          <article><span>Silicon · SEC on</span><div><i style="--accuracy:82%"></i></div><strong><span class="math-inline" data-math="inline">(82.0\pm5.0)\%</span></strong></article>
         </div>
         <div class="evidence-note" style="margin-top:38px">
           <span class="evidence-type">Observed effect</span>
-          <p>SEC raises top-1 accuracy from 74.8% to 82.0%, recovering 7.2 percentage points toward the 91.1% fixed-point digital reference.</p>
+          <p>SEC raises top-1 accuracy from 74.8% to 82.0%, so <span class="math-inline" data-math="inline">\Delta A=82.0-74.8=7.2</span> percentage points are recovered toward the 91.1% fixed-point digital reference.</p>
         </div>
       </section>
 

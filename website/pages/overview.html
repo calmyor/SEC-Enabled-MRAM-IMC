@@ -13,15 +13,15 @@
           </div>
           <figure class="hero-visual">
             <img src="assets/figures/die-summary.png" alt="Annotated die micrograph and measured summary of the 22 nanometer MRAM in-memory-computing prototype" />
-            <figcaption class="visual-caption"><span>512 × 512 MRAM array · 128 ADC columns</span><span>Commercial 22 nm FD-SOI</span></figcaption>
+            <figcaption class="visual-caption"><span><span class="math-inline" data-math="inline">512\times512</span> MRAM array · 128 ADC columns</span><span>Commercial 22 nm FD-SOI</span></figcaption>
           </figure>
         </div>
         <div class="metric-rail" aria-label="Measured prototype highlights">
-          <article><strong>22 <small>nm</small></strong><span>Commercial FD-SOI measured prototype</span></article>
-          <article><strong>512²</strong><span>Physical 1T1R MRAM array</span></article>
+          <article><strong><span class="math-inline" data-math="inline">22\,\mathrm{nm}</span></strong><span>Commercial FD-SOI measured prototype</span></article>
+          <article><strong><span class="math-inline" data-math="inline">512\times512</span></strong><span>Physical 1T1R MRAM array</span></article>
           <article><strong>128</strong><span>Parallel 6-bit ADC columns</span></article>
-          <article><strong>2.7–6 <small>dB</small></strong><span>Measured SEC SNDR improvement</span></article>
-          <article><strong>5×</strong><span>Energy reduction at iso-SNDR</span></article>
+          <article><strong><span class="math-inline" data-math="inline">2.7\text{–}6\,\mathrm{dB}</span></strong><span>Measured SEC SNDR improvement</span></article>
+          <article><strong><span class="math-inline" data-math="inline">5\times</span></strong><span>Energy reduction at iso-SNDR</span></article>
         </div>
       </section>
 
@@ -33,8 +33,8 @@
         </div>
         <div class="research-chain">
           <article><span class="step">01 · Observe</span><h3>Row position changes the signal</h3><p>MTJ variation, BL/SL parasitics, read noise, and ADC conversion reveal where ideal arithmetic diverges from analog behavior.</p></article>
-          <article><span class="step">02 · Model</span><h3>Describe that change with α</h3><p>αᵢⱼ captures the contribution of row i as observed by column j, making the spatial error structure explicit.</p></article>
-          <article><span class="step">03 · Compensate</span><h3>Learn γ and θ</h3><p>γᵢ pre-scales each row and θⱼ normalizes each output column, bringing the combined path toward unity.</p></article>
+          <article><span class="step">02 · Model</span><h3>Describe that change with <span class="math-inline alpha" data-math="inline">\alpha</span></h3><p><span class="math-inline alpha" data-math="inline">\alpha_{ij}</span> captures the contribution of row <span class="math-inline" data-math="inline">i</span> as observed by column <span class="math-inline" data-math="inline">j</span>, making the spatial error structure explicit.</p></article>
+          <article><span class="step">03 · Compensate</span><h3>Learn <span class="math-inline gamma" data-math="inline">\gamma</span> and <span class="math-inline theta" data-math="inline">\theta</span></h3><p><span class="math-inline gamma" data-math="inline">\gamma_i</span> pre-scales each row and <span class="math-inline theta" data-math="inline">\theta_j</span> normalizes each output column so that <span class="math-inline" data-math="inline">\theta_j\gamma_i\alpha_{ij}\approx 1</span> statistically.</p></article>
           <article><span class="step">04 · Realize</span><h3>Quantize and integrate</h3><p>Precision studies select the fixed-point SEC path; OCCS, the MRAM array, ADCs, and local control form one macro.</p></article>
           <article><span class="step">05 · Measure</span><h3>Estimate compute SNDR</h3><p>Python, PYNQ-Z2, a custom PCB, and code-conditioned sampling turn raw ADC captures into calibrated evidence.</p></article>
         </div>
@@ -46,10 +46,10 @@
           <div class="section-head">
             <p class="kicker">Why the problem is hard</p>
             <h2>A useful signal can be a fraction of one percent.</h2>
-            <p>For a 128-row dot product, the paper’s representative conductance step is 80 μS against a nominal 20 mS column conductance: about 0.4%. Bitline and sourceline voltage gradients, current-sensor noise, column mismatch, and supply drop compete directly with that small step.</p>
+            <p>For a 128-row dot product, the paper’s representative conductance step is <span class="math-inline" data-math="inline">\Delta G_{\mathrm S}=80\,\mu\mathrm{S}</span> against a nominal column conductance <span class="math-inline" data-math="inline">G_{\mathrm S}=20\,\mathrm{mS}</span>. Bitline and sourceline voltage gradients, current-sensor noise, column mismatch, and supply drop compete directly with that small step.</p>
           </div>
           <div>
-            <div class="equation" aria-label="Eighty microsiemens divided by twenty millisiemens equals zero point four percent">80 μS ÷ 20 mS = <span class="gamma">0.4%</span></div>
+            <div class="equation" data-math="display">\frac{\Delta G_{\mathrm S}}{G_{\mathrm S}}=\frac{80\,\mu\mathrm{S}}{20\,\mathrm{mS}}=4\times10^{-3}=0.4\%</div>
             <div class="callout">
               <strong>Parallelism compresses the analog margin.</strong>
               <p>A larger dot product activates more rows and accumulates more current, while the step between adjacent ideal outputs remains small. Compute SNDR becomes the link between array scaling and useful arithmetic.</p>
@@ -57,13 +57,13 @@
           </div>
         </div>
         <div class="concept-path" aria-label="End-to-end correction and measurement path" style="margin-top:52px">
-          <article class="concept-node"><span>Input</span><strong>x and w define the ideal dot product</strong><p>The experiment selects an activation and weight state with a known ideal code.</p></article>
-          <article class="concept-node"><span class="gamma">Row scale γ</span><strong>Pre-scale each activated row</strong><p>A learned 7-bit factor adjusts the digital input before array evaluation.</p></article>
-          <article class="concept-node"><span class="alpha">Array response α</span><strong>Position shapes analog contribution</strong><p>MRAM state, BL/SL parasitics, and row location determine the column current.</p></article>
+          <article class="concept-node"><span>Input</span><strong><span class="math-inline" data-math="inline">\mathbf{x}</span> and <span class="math-inline" data-math="inline">\mathbf{w}</span> define the ideal dot product</strong><p>The experiment selects an activation and weight state with a known ideal code.</p></article>
+          <article class="concept-node"><span class="gamma">Row scale <span class="math-inline" data-math="inline">\gamma_i</span></span><strong>Pre-scale each activated row</strong><p>A learned 7-bit factor adjusts the digital input before array evaluation.</p></article>
+          <article class="concept-node"><span class="alpha">Array response <span class="math-inline" data-math="inline">\alpha_{ij}</span></span><strong>Position shapes analog contribution</strong><p>MRAM state, BL/SL parasitics, and row location determine the column current.</p></article>
           <article class="concept-node"><span>OCCS + ADC</span><strong>Sense and digitize the current</strong><p>Offset-compensated sensing feeds a 6-bit SAR conversion for each ADC column.</p></article>
           <article class="concept-node"><span class="theta">Calibrate + score</span><strong>Normalize output and compute SNDR</strong><p>Per-column affine calibration and code-conditioned error turn raw codes into the reported metric.</p></article>
         </div>
-        <div class="takeaway"><span>Signal path</span><strong>The same chain explains both the architecture and the experiment: γ acts before the physical array, OCCS preserves the small analog step, and column calibration makes measured codes comparable to the ideal output.</strong></div>
+        <div class="takeaway"><span>Signal path</span><strong>The same chain explains both the architecture and the experiment: <span class="math-inline gamma" data-math="inline">\gamma_i</span> acts before the physical array, OCCS preserves the small analog step, and column calibration makes measured codes comparable to the ideal output.</strong></div>
       </section>
 
       <section class="section">
@@ -73,7 +73,7 @@
           <p>A physical 1T1R array stores MRAM states, differential 2T2R pairs encode signed weights, OCCS and the SAR ADC convert column current, and SEC scales rows and columns to improve bank-level compute SNDR.</p>
         </div>
         <div class="four-col">
-          <article class="card"><span class="number">DEVICE</span><h3>Physical memory</h3><p>Commercial 22 nm FD-SOI, 512 × 512 physical 1T1R MRAM cells, operated at 0.8 V.</p></article>
+          <article class="card"><span class="number">DEVICE</span><h3>Physical memory</h3><p>Commercial 22 nm FD-SOI, <span class="math-inline" data-math="inline">512\times512</span> physical 1T1R MRAM cells, operated at <span class="math-inline" data-math="inline">0.8\,\mathrm{V}</span>.</p></article>
           <article class="card"><span class="number">LOGIC</span><h3>Signed weight</h3><p>A differential 2T2R logical representation forms signed 4-bit weights across binary-weighted physical columns.</p></article>
           <article class="card"><span class="number">CIRCUIT</span><h3>Column conversion</h3><p>128 ADC columns combine offset-compensated current sensing, a 6-bit SAR ADC, and local control.</p></article>
           <article class="card"><span class="number">ALGORITHM</span><h3>SEC correction</h3><p>Learned row scaling and per-column normalization improve task-agnostic bank-level compute SNDR.</p></article>
@@ -91,7 +91,7 @@
           <p>This repository documents the decision gates that papers usually compress: what was modeled, what was frozen for implementation, what was checked at tapeout, what the board had to make observable, and how the measurement state space was sampled.</p>
         </div>
         <div class="three-col">
-          <article class="card"><span class="number">DESIGN</span><h3>Behavior → architecture</h3><p>Trace α, γ, and θ from the behavioral model into OCCS, fixed-point precision, and dataflow.</p><a href="design.html">Open design principles →</a></article>
+          <article class="card"><span class="number">DESIGN</span><h3>Behavior → architecture</h3><p>Trace <span class="math-inline alpha" data-math="inline">\alpha</span>, <span class="math-inline gamma" data-math="inline">\gamma</span>, and <span class="math-inline theta" data-math="inline">\theta</span> from the behavioral model into OCCS, fixed-point precision, and dataflow.</p><a href="design.html">Open design principles →</a></article>
           <article class="card"><span class="number">IMPLEMENT</span><h3>Netlist → packaged die</h3><p>Follow the mixed-signal design gates from bit-accurate correlation through physical verification, handoff, packaging, and post-silicon readiness.</p><a href="tapeout.html">Open tapeout workflow →</a></article>
           <article class="card"><span class="number">TEST</span><h3>Host → calibrated result</h3><p>Follow the PYNQ, PCB, scan-chain, calibration, sampling, and analysis sequence used to interrogate silicon.</p><a href="test-platform.html">Open test platform →</a></article>
         </div>
@@ -102,7 +102,7 @@
           <div>
             <p class="kicker">The role of SEC</p>
             <h2>The array learns its own correction.</h2>
-            <p>Statistical error compensation calibrates the physical compute bank. The application weights stay fixed while SEC learns row factors γᵢ and column normalizers θⱼ from the measured hardware response.</p>
+            <p>Statistical error compensation calibrates the physical compute bank. The application weights stay fixed while SEC learns row factors <span class="math-inline gamma" data-math="inline">\gamma_i</span> and column normalizers <span class="math-inline theta" data-math="inline">\theta_j</span> from the measured hardware response.</p>
             <p>This raises task-agnostic bank-level compute SNDR. The CIFAR-10 experiment then uses the measured final fully connected layer of ResNet-20 to show how that signal-quality change affects classification.</p>
           </div>
           <div class="callout">

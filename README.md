@@ -62,8 +62,10 @@ PYTHONPATH=src python3 -m unittest discover -s tests -v
 Build and validate the static website:
 
 ```bash
-node scripts/build-site.mjs
-node scripts/validate-site.mjs
+corepack enable
+pnpm install --frozen-lockfile
+pnpm run build
+pnpm run validate
 ```
 
 ## Repository structure

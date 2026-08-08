@@ -8,7 +8,7 @@
       <div class="thesis-strip" aria-label="Design page summary">
         <article><span>Question</span><strong>Why can two row patterns with the same ideal dot product produce different analog outputs?</strong></article>
         <article><span>Mechanism</span><strong>BL/SL voltage gradients make contribution depend on physical row and column position.</strong></article>
-        <article><span>Design response</span><strong>Learn shared row factors γᵢ, normalize each column with θⱼ, and stabilize sensing with OCCS.</strong></article>
+        <article><span>Design response</span><strong>Learn shared row factors <span class="math-inline gamma" data-math="inline">\gamma_i</span>, normalize each column with <span class="math-inline theta" data-math="inline">\theta_j</span>, and stabilize sensing with OCCS.</strong></article>
       </div>
 
       <section class="section section-white" id="behavioral-model">
@@ -37,46 +37,47 @@
         </div>
         <div class="evidence-note" style="margin-top:32px">
           <span class="evidence-type">JxCDC 2024</span>
-          <p><a href="https://doi.org/10.1109/JXCDC.2024.3381888">Energy-Accuracy Trade-Offs for Resistive In-Memory Computing Architectures</a> develops the parallel-bar behavioral/SNDR framework and validates it against the measured 22 nm MRAM prototype: 5.17 dB from the model and 5.15 dB from silicon at N=64, a 6-bit ADC, and a 20 mV reference. JSSC carries the resulting structured attenuation into the α/γ/θ SEC architecture.</p>
+          <div><p><a href="https://doi.org/10.1109/JXCDC.2024.3381888">Energy-Accuracy Trade-Offs for Resistive In-Memory Computing Architectures</a> develops the parallel-bar behavioral/SNDR framework and validates it against the measured 22 nm MRAM prototype. JSSC carries the resulting structured attenuation into the <span class="math-inline" data-math="inline">\alpha/\gamma/\theta</span> SEC architecture.</p>
+          <div class="evidence-equation" data-math="display">N=64,\quad B_{\mathrm{ADC}}=6,\quad V_{\mathrm{ref}}=20\,\mathrm{mV};\qquad \mathrm{SNDR}_{\mathrm{model}}=5.17\,\mathrm{dB},\quad \mathrm{SNDR}_{\mathrm{silicon}}=5.15\,\mathrm{dB}</div></div>
         </div>
       </section>
 
       <section class="section section-dark" id="sec-architecture">
         <div class="equation-ladder" aria-label="Ideal, distorted, and SEC-corrected dot product">
-          <article class="equation-step"><span>Ideal arithmetic</span><code>y₀ⱼ = Σᵢ wᵢⱼxᵢ</code><p>Every logical product contributes with unit gain.</p></article>
-          <article class="equation-step alpha-step"><span>Physical array</span><code>yⱼ = Σᵢ αᵢⱼwᵢⱼxᵢ</code><p>α captures the location-dependent analog attenuation.</p></article>
-          <article class="equation-step corrected-step"><span>SEC target</span><code>ỹⱼ = θⱼΣᵢ αᵢⱼwᵢⱼ(γᵢxᵢ)</code><p>Learning drives θⱼγᵢαᵢⱼ toward one across the bank.</p></article>
+          <article class="equation-step"><span>Ideal arithmetic</span><div class="math-step" data-math="display">y_{\mathrm{o}j}=\sum_{i=1}^{N}w_{ij}x_i</div><p>Every logical product contributes with unit gain.</p></article>
+          <article class="equation-step alpha-step"><span>Physical array</span><div class="math-step" data-math="display">y_j^{(\alpha)}=\sum_{i=1}^{N}\alpha_{ij}w_{ij}x_i</div><p><span class="math-inline alpha" data-math="inline">\alpha_{ij}</span> captures the location-dependent analog attenuation.</p></article>
+          <article class="equation-step corrected-step"><span>SEC target</span><div class="math-step" data-math="display">y_j^{\mathrm{SEC}}=\theta_j\sum_{i=1}^{N}\alpha_{ij}w_{ij}(\gamma_i x_i)\approx y_{\mathrm{o}j}</div><p>Learning makes <span class="math-inline" data-math="inline">\theta_j\gamma_i\alpha_{ij}\approx1</span> over the training distribution.</p></article>
         </div>
         <div class="two-col" style="margin-top:42px">
           <div class="section-head">
             <p class="kicker">02 · Error abstraction</p>
             <h2>Turn parasitics into factors the architecture can act on.</h2>
-            <p>Let αᵢⱼ describe the attenuation for row i as observed by column j. SEC applies one learned γᵢ to row i across the bank, then normalizes each output column with θⱼ.</p>
+            <p>Let <span class="math-inline alpha" data-math="inline">\alpha_{ij}</span> describe the attenuation for row <span class="math-inline" data-math="inline">i</span> as observed by column <span class="math-inline" data-math="inline">j</span>. SEC applies one learned <span class="math-inline gamma" data-math="inline">\gamma_i</span> to row <span class="math-inline" data-math="inline">i</span> across the bank, then normalizes each output column with <span class="math-inline theta" data-math="inline">\theta_j</span>.</p>
           </div>
           <div data-equation-explainer>
-            <div class="equation">yⱼ = Σᵢ <span class="theta">θⱼ</span> · <span class="gamma">γᵢ</span> · <span class="alpha">αᵢⱼ</span> · wᵢⱼ · xᵢ</div>
+            <div class="equation" data-math="display">y_j^{\mathrm{SEC}}=\sum_{i=1}^{N}\theta_j\gamma_i\alpha_{ij}w_{ij}x_i</div>
             <div class="legend-buttons" aria-label="Explain equation terms">
-              <button type="button" data-equation-term="alpha" aria-pressed="true">αᵢⱼ · attenuation</button>
-              <button type="button" data-equation-term="gamma" aria-pressed="false">γᵢ · row correction</button>
-              <button type="button" data-equation-term="theta" aria-pressed="false">θⱼ · column normalization</button>
+              <button type="button" data-equation-term="alpha" aria-pressed="true"><span class="math-inline alpha" data-math="inline">\alpha_{ij}</span> · attenuation</button>
+              <button type="button" data-equation-term="gamma" aria-pressed="false"><span class="math-inline gamma" data-math="inline">\gamma_i</span> · row correction</button>
+              <button type="button" data-equation-term="theta" aria-pressed="false"><span class="math-inline theta" data-math="inline">\theta_j</span> · column normalization</button>
             </div>
-            <p class="equation-readout" data-equation-readout aria-live="polite">αᵢⱼ captures how row position i and column j shape a cell’s analog contribution through BL/SL parasitics.</p>
+            <p class="equation-readout" data-equation-readout aria-live="polite"><span class="math-inline alpha" data-math="inline">\alpha_{ij}</span> captures how row position <span class="math-inline" data-math="inline">i</span> and column <span class="math-inline" data-math="inline">j</span> shape a cell’s analog contribution through BL/SL parasitics.</p>
           </div>
         </div>
         <div class="three-col" style="margin-top:56px">
-          <article class="card"><span class="number">SHARE</span><h3>One γ per row</h3><p class="muted">Sharing the input-side correction across ADC columns avoids storing a full correction matrix.</p></article>
-          <article class="card"><span class="number">LEARN</span><h3>Fit the physical die</h3><p class="muted">On-chip stochastic-gradient updates adapt γ to instance-specific parasitics that are unknown before fabrication.</p></article>
-          <article class="card"><span class="number">NORMALIZE</span><h3>One θ per column</h3><p class="muted">Output normalization absorbs column gain so that θⱼγᵢαᵢⱼ approaches unity statistically.</p></article>
+          <article class="card"><span class="number">SHARE</span><h3>One <span class="math-inline gamma" data-math="inline">\gamma_i</span> per row</h3><p class="muted">Sharing the input-side correction across ADC columns avoids storing a full correction matrix.</p></article>
+          <article class="card"><span class="number">LEARN</span><h3>Fit the physical die</h3><p class="muted">On-chip stochastic-gradient updates adapt <span class="math-inline gamma" data-math="inline">\gamma_i</span> to instance-specific parasitics that are unknown before fabrication.</p></article>
+          <article class="card"><span class="number">NORMALIZE</span><h3>One <span class="math-inline theta" data-math="inline">\theta_j</span> per column</h3><p class="muted">Output normalization absorbs column gain so that <span class="math-inline" data-math="inline">\theta_j\gamma_i\alpha_{ij}\approx1</span> statistically.</p></article>
         </div>
         <div class="compensation-compare" aria-label="Signal path before and after SEC">
           <article class="signal-lane">
             <span>Uncompensated path</span>
-            <div class="signal-route"><i>xᵢ</i><b>→</b><i>αᵢⱼ</i><b>→</b><i>ADCⱼ</i></div>
+            <div class="signal-route"><span class="signal-math" data-math="inline">x_i</span><b>→</b><span class="signal-math alpha" data-math="inline">\alpha_{ij}</span><b>→</b><span class="signal-math" data-math="inline">\mathrm{ADC}_j</span></div>
             <p>Row position directly modulates the contribution delivered to each ADC column.</p>
           </article>
           <article class="signal-lane sec-on">
             <span>SEC-enabled path</span>
-            <div class="signal-route"><i>γᵢ · xᵢ</i><b>→</b><i>αᵢⱼ</i><b>→</b><i>θⱼ</i><b>→</b><i>ỹⱼ</i></div>
+            <div class="signal-route"><span class="signal-math gamma" data-math="inline">\gamma_i x_i</span><b>→</b><span class="signal-math alpha" data-math="inline">\alpha_{ij}</span><b>→</b><span class="signal-math theta" data-math="inline">\theta_j</span><b>→</b><span class="signal-math" data-math="inline">y_j^{\mathrm{SEC}}</span></div>
             <p>Input pre-scaling and output normalization flatten the systematic spatial response.</p>
           </article>
         </div>
@@ -96,11 +97,11 @@
           <div>
             <table class="spec-table" aria-label="SEC fixed point choices">
               <tbody>
-                <tr><th>Inference factor</th><td>7-bit γ path selected from behavioral quantization sweeps.</td></tr>
+                <tr><th>Inference factor</th><td>7-bit <span class="math-inline gamma" data-math="inline">\gamma_i</span> path selected from behavioral quantization sweeps.</td></tr>
                 <tr><th>Update state</th><td>14-bit accumulator retains the smaller training increments.</td></tr>
-                <tr><th>Learning rate</th><td>Power-of-two μ permits a shift in place of a general multiplier.</td></tr>
+                <tr><th>Learning rate</th><td>Power-of-two <span class="math-inline" data-math="inline">\mu</span> permits a shift in place of a general multiplier.</td></tr>
                 <tr><th>Validation</th><td>Fixed- and floating-point learning trajectories remain closely aligned.</td></tr>
-                <tr><th>Learning target</th><td>Hardware correction state γ is calibrated while application-model weights remain fixed.</td></tr>
+                <tr><th>Learning target</th><td>Hardware correction state <span class="math-inline gamma" data-math="inline">\gamma</span> is calibrated while application-model weights remain fixed.</td></tr>
               </tbody>
             </table>
             <figure class="figure-frame" style="margin-top:20px">
@@ -124,7 +125,7 @@
         </div>
         <div class="evidence-note" style="margin-top:38px">
           <span class="evidence-type">Circuit simulation</span>
-          <p>Monte Carlo analysis reports 3.8%–8.4% bitline-voltage variation with roughly 17% OCCS area overhead relative to the prior sensing loop. This quantifies the mismatch–area decision before macro integration.</p>
+          <div><p>Monte Carlo analysis quantifies the bitline-voltage variation and reports roughly 17% OCCS area overhead relative to the prior CGFBS sensing loop.</p><div class="evidence-equation" data-math="display">\frac{\sigma(V_{\mathrm{BL}})}{\mathbb{E}[V_{\mathrm{BL}}]}=3.8\%\text{–}8.4\%</div></div>
         </div>
       </section>
 
@@ -132,11 +133,11 @@
         <div class="section-head">
           <p class="kicker">05 · Integrated macro</p>
           <h2>Preserve the signal definition across memory, conversion, and correction.</h2>
-          <p>Each ADC column combines four binary-weighted physical columns. Differential MRAM storage and wordline selection implement signed 1-bit-input × 4-bit-weight operations; multibit activations are evaluated bit-serially.</p>
+          <p>Each ADC column combines four binary-weighted physical columns. Differential MRAM storage and wordline selection implement signed <span class="math-inline" data-math="inline">1\text{-bit input}\times4\text{-bit weight}</span> operations; multibit activations are evaluated bit-serially.</p>
         </div>
         <figure class="figure-frame">
           <img src="assets/figures/macro-architecture.png" alt="Full MRAM IMC macro with memory array, OCCS, SAR ADC, SEC, and control blocks" loading="lazy" />
-          <figcaption><strong>Macro signal chain.</strong> 512 × 512 physical cells feed 128 ADC columns, each with sensing, 6-bit conversion, SEC-related data handling, and local sequencing.</figcaption>
+          <figcaption><strong>Macro signal chain.</strong> <span class="math-inline" data-math="inline">512\times512</span> physical cells feed 128 ADC columns, each with sensing, 6-bit conversion, SEC-related data handling, and local sequencing.</figcaption>
         </figure>
         <div class="result-grid" style="margin-top:32px">
           <article><span class="claim-badge">Fabricated</span><strong>48.7%</strong><span>Core area occupied by ADC columns.</span></article>
@@ -155,7 +156,7 @@
         <div class="two-col">
           <ul class="checklist">
             <li>Is each modeled nonideality physical, calibrated, and separable from numerical quantization?</li>
-            <li>Does the compensation structure scale with rows and columns more slowly than a full α matrix?</li>
+            <li>Does the compensation structure scale with rows and columns more slowly than a full <span class="math-inline alpha" data-math="inline">\alpha</span> matrix?</li>
             <li>Do fixed-point widths preserve convergence across the expected range and multiple seeds?</li>
             <li>Are saturation, rounding, reset, and update ordering defined at bit accuracy?</li>
           </ul>

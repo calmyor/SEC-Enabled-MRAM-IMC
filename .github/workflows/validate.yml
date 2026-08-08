@@ -18,13 +18,18 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "22"
+      - uses: pnpm/action-setup@v4
+        with:
+          version: "11.16.0"
+      - name: Install website dependencies
+        run: pnpm install --frozen-lockfile
       - name: Unit tests
         run: PYTHONPATH=src python3 -m unittest discover -s tests -v
       - name: Synthetic method demo
         run: PYTHONPATH=src python3 examples/protocol_demo.py
       - name: Rebuild website
-        run: node scripts/build-site.mjs
+        run: pnpm run build
       - name: Validate website
-        run: node scripts/validate-site.mjs
+        run: pnpm run validate
       - name: Verify generated site is committed
         run: git diff --exit-code -- docs

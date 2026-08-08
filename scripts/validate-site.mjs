@@ -30,6 +30,17 @@ for (const page of pages) {
   if (count(html, /aria-current="page"/g) !== 1) failures.push(`${page}: expected one current nav item`);
   if (/<img\b(?![^>]*\balt=)[^>]*>/g.test(html)) failures.push(`${page}: image missing alt text`);
   if (/\/Users\/|usbmodem|GLOBALFOUNDRIES|\.gds\b|\.oas(?:is)?\b/i.test(html)) failures.push(`${page}: contains a private-path or implementation token`);
+  if (/\sdata-math="(?:inline|display)"/.test(html)) failures.push(`${page}: contains unrendered math source`);
+
+  const mathContainers = count(html, /\sdata-math-rendered="(?:inline|display)"/g);
+  const katexContainers = count(html, /class="katex"/g);
+  const accessibleMath = count(html, /<math\b/g);
+  if (mathContainers !== katexContainers || mathContainers !== accessibleMath) {
+    failures.push(`${page}: expected one visual and accessible KaTeX tree per math expression`);
+  }
+  if (mathContainers && !/href="assets\/vendor\/katex\/katex\.min\.css"/.test(html)) {
+    failures.push(`${page}: rendered math is missing the local KaTeX stylesheet`);
+  }
 
   const ids = [...html.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
   const duplicates = ids.filter((id, index) => ids.indexOf(id) !== index);
@@ -54,6 +65,10 @@ for (const page of pages) {
 
 if (pages.length !== 7) failures.push(`expected 7 HTML pages, found ${pages.length}`);
 if (!(await exists(join(docs, "assets", "og.png")))) failures.push("missing social-preview image");
+for (const asset of ["katex.min.css", "katex.min.js", "LICENSE"]) {
+  if (!(await exists(join(docs, "assets", "vendor", "katex", asset)))) failures.push(`missing KaTeX asset ${asset}`);
+}
+if (!(await exists(join(docs, "assets", "vendor", "katex", "fonts", "KaTeX_Main-Regular.woff2")))) failures.push("missing KaTeX web fonts");
 
 if (failures.length) {
   console.error(`Site validation failed (${failures.length}):`);

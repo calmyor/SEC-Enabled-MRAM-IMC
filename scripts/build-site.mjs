@@ -1,10 +1,13 @@
 import { cp, mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import katex from "katex";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const source = join(root, "website");
 const destination = join(root, "docs");
+const katexSource = join(root, "node_modules", "katex");
+const katexDestination = join(destination, "assets", "vendor", "katex");
 
 const pages = [
   { file: "index.html", source: "overview.html", label: "Overview", title: "SEC-enabled 22 nm MRAM IMC", description: "From behavioral modeling to measured silicon: a 22 nm MRAM in-memory-computing macro with statistical error compensation." },
@@ -65,7 +68,33 @@ function handoff(current) {
     </aside>`;
 }
 
+function renderMath(content, sourceName) {
+  const mathPattern = /<(span|div)([^>]*?)\sdata-math="(inline|display)"([^>]*)>([\s\S]*?)<\/\1>/g;
+  const rendered = content.replace(mathPattern, (match, tag, before, mode, after, sourceMath) => {
+    if (/<[^>]+>/.test(sourceMath)) {
+      throw new Error(`${sourceName}: math source cannot contain nested HTML: ${sourceMath.trim()}`);
+    }
+    const tex = sourceMath.trim();
+    const html = katex.renderToString(tex, {
+      displayMode: mode === "display",
+      output: "htmlAndMathml",
+      throwOnError: true,
+      strict: "error",
+      trust: false,
+    });
+    return `<${tag}${before} data-math-rendered="${mode}"${after}>${html}</${tag}>`;
+  });
+  if (/\sdata-math="(?:inline|display)"/.test(rendered)) {
+    throw new Error(`${sourceName}: one or more math expressions were not rendered`);
+  }
+  return rendered;
+}
+
 function documentFor(page, content) {
+  const hasMath = content.includes('data-math-rendered=');
+  const hasClientMath = /data-math-dynamic|data-equation-explainer/.test(content);
+  const mathStyles = hasMath ? '    <link rel="stylesheet" href="assets/vendor/katex/katex.min.css" />\n' : "";
+  const mathRuntime = hasClientMath ? '    <script src="assets/vendor/katex/katex.min.js" defer></script>\n' : "";
   const canonical = `https://calmyor.github.io/SEC-Enabled-MRAM-IMC/${page.file === "index.html" ? "" : page.file}`;
   const jsonLd = JSON.stringify({
     "@context": "https://schema.org",
@@ -94,8 +123,8 @@ function documentFor(page, content) {
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="styles.css" />
-    <script type="application/ld+json">${jsonLd}</script>
-    <script src="app.js" defer></script>
+${mathStyles}    <script type="application/ld+json">${jsonLd}</script>
+${mathRuntime}    <script src="app.js" defer></script>
     <title>${page.title} · SEC–MRAM IMC</title>
   </head>
   <body>
@@ -137,9 +166,14 @@ ${content}
 await mkdir(destination, { recursive: true });
 for (const page of pages) {
   const content = await readFile(join(source, "pages", page.source), "utf8");
-  await writeFile(join(destination, page.file), documentFor(page, content));
+  await writeFile(join(destination, page.file), documentFor(page, renderMath(content, page.source)));
 }
 await cp(join(source, "assets"), join(destination, "assets"), { recursive: true, force: true });
+await mkdir(katexDestination, { recursive: true });
+await cp(join(katexSource, "dist", "fonts"), join(katexDestination, "fonts"), { recursive: true, force: true });
+await cp(join(katexSource, "dist", "katex.min.css"), join(katexDestination, "katex.min.css"), { force: true });
+await cp(join(katexSource, "dist", "katex.min.js"), join(katexDestination, "katex.min.js"), { force: true });
+await cp(join(katexSource, "LICENSE"), join(katexDestination, "LICENSE"), { force: true });
 await cp(join(source, "styles.css"), join(destination, "styles.css"), { force: true });
 await cp(join(source, "app.js"), join(destination, "app.js"), { force: true });
 await writeFile(join(destination, ".nojekyll"), "");

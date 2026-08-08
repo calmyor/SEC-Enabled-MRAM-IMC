@@ -37,10 +37,55 @@ document.querySelectorAll("[data-current-year]").forEach((node) => {
   node.textContent = new Date().getFullYear();
 });
 
+const renderClientMath = (node, tex, { displayMode = false, fallback = tex } = {}) => {
+  node.textContent = fallback;
+  if (!window.katex) return;
+  try {
+    window.katex.render(tex, node, {
+      displayMode,
+      output: "htmlAndMathml",
+      throwOnError: true,
+      strict: "error",
+      trust: false,
+    });
+  } catch {
+    node.textContent = fallback;
+  }
+};
+
 const equationNotes = {
-  alpha: "αᵢⱼ captures how row position i and column j shape a cell’s analog contribution through BL/SL parasitics.",
-  gamma: "γᵢ pre-scales row i before the dot product. Sharing one learned factor across columns makes the correction compact.",
-  theta: "θⱼ normalizes column j after conversion. SEC learns γ and θ so the combined path θⱼγᵢαᵢⱼ approaches unity.",
+  alpha: [
+    { tex: "\\alpha_{ij}", className: "alpha", fallback: "alpha(i,j)" },
+    " captures how row position ", { tex: "i" }, " and column ", { tex: "j" },
+    " shape a cell’s analog contribution through BL/SL parasitics.",
+  ],
+  gamma: [
+    { tex: "\\gamma_i", className: "gamma", fallback: "gamma(i)" },
+    " pre-scales row ", { tex: "i" },
+    " before the dot product. Sharing one learned factor across columns makes the correction compact.",
+  ],
+  theta: [
+    { tex: "\\theta_j", className: "theta", fallback: "theta(j)" },
+    " normalizes column ", { tex: "j" },
+    " after conversion. SEC learns ", { tex: "\\gamma" }, " and ", { tex: "\\theta" },
+    " so ", { tex: "\\theta_j\\gamma_i\\alpha_{ij}\\approx1" },
+    " over the training distribution.",
+  ],
+};
+
+const renderMathSentence = (node, fragments) => {
+  const content = document.createDocumentFragment();
+  fragments.forEach((fragment) => {
+    if (typeof fragment === "string") {
+      content.append(document.createTextNode(fragment));
+      return;
+    }
+    const math = document.createElement("span");
+    math.className = `math-inline${fragment.className ? ` ${fragment.className}` : ""}`;
+    renderClientMath(math, fragment.tex, { fallback: fragment.fallback });
+    content.append(math);
+  });
+  node.replaceChildren(content);
 };
 
 document.querySelectorAll("[data-equation-term]").forEach((button) => {
@@ -48,7 +93,7 @@ document.querySelectorAll("[data-equation-term]").forEach((button) => {
     const group = button.closest("[data-equation-explainer]");
     group.querySelectorAll("[data-equation-term]").forEach((candidate) => candidate.setAttribute("aria-pressed", String(candidate === button)));
     const output = group.querySelector("[data-equation-readout]");
-    output.textContent = equationNotes[button.dataset.equationTerm];
+    renderMathSentence(output, equationNotes[button.dataset.equationTerm]);
   });
 });
 
@@ -65,7 +110,10 @@ if (calculator) {
     calculator.querySelector("[data-total]").textContent = total.toLocaleString();
     const expression = calculator.querySelector("[data-expression]");
     if (expression) {
-      expression.textContent = `${values.states.toLocaleString()} states × ${values.repeats.toLocaleString()} repeats × ${values.codes.toLocaleString()} codes × ${values.columns.toLocaleString()} columns = ${total.toLocaleString()} captures`;
+      const texNumber = (value) => String(value).replace(/\B(?=(\d{3})+(?!\d))/g, "{,}");
+      const tex = `\\mathcal N_{\\mathrm{captures}}=M K|\\mathcal C|N_C=${texNumber(values.states)}\\cdot${texNumber(values.repeats)}\\cdot${texNumber(values.codes)}\\cdot${texNumber(values.columns)}=${texNumber(total)}`;
+      const fallback = `${values.states.toLocaleString()} states × ${values.repeats.toLocaleString()} repeats × ${values.codes.toLocaleString()} codes × ${values.columns.toLocaleString()} columns = ${total.toLocaleString()} captures`;
+      renderClientMath(expression, tex, { displayMode: true, fallback });
     }
   };
   inputs.forEach((input) => input.addEventListener("input", update));

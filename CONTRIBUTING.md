@@ -15,8 +15,10 @@ This repository is a public research artifact. Contributions must preserve techn
 ```bash
 PYTHONPATH=src python3 -m unittest discover -s tests -v
 python3 examples/protocol_demo.py
-node scripts/build-site.mjs
-node scripts/validate-site.mjs
+corepack enable
+pnpm install --frozen-lockfile
+pnpm run build
+pnpm run validate
 ```
 
 ## Evidence language

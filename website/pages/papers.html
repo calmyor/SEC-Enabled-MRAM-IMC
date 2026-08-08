@@ -8,7 +8,7 @@
       <div class="thesis-strip" aria-label="Publication page summary">
         <article><span>Parallel-bar model</span><strong>Device variation, BL/SL parasitics, sensor mismatch, and ADC noise determine the available compute SNDR.</strong></article>
         <article><span>Measured macro</span><strong>OCCS and learned SEC factors recover signal quality inside a fabricated 22 nm MRAM IMC macro.</strong></article>
-        <article><span>Complete account</span><strong>JSSC links structured attenuation, α/γ/θ correction, fixed-point hardware, compute SNDR, and measured outcomes.</strong></article>
+        <article><span>Complete account</span><strong>JSSC links structured attenuation, <span class="math-inline" data-math="inline">\alpha/\gamma/\theta</span> correction, fixed-point hardware, compute SNDR, and measured outcomes.</strong></article>
       </div>
 
       <section class="section section-white">
@@ -32,7 +32,7 @@
           <article class="path-card">
             <span>Synthesis · JSSC 2025</span>
             <h3>Connect the full chain</h3>
-            <p>The journal extension develops the parasitic model, α/γ/θ factorization, OCCS circuit evidence, fixed-point implementation, compute-SNDR protocol, and system evaluation.</p>
+            <p>The journal extension develops the parasitic model, <span class="math-inline" data-math="inline">\alpha/\gamma/\theta</span> factorization, OCCS circuit evidence, fixed-point implementation, compute-SNDR protocol, and system evaluation.</p>
             <a href="https://doi.org/10.1109/JSSC.2024.3442013">Open the JSSC DOI →</a>
           </article>
         </div>
@@ -53,7 +53,7 @@
             <p>The paper develops a behavioral compute-SNDR model for differential resistive parallel-bar IMCs, spanning device variation, BL/SL parasitics, current-mirror mismatch, and ADC noise. It then uses the framework to study dot-product dimension, ADC precision, conductance contrast, device choice, energy, and network accuracy.</p>
             <div class="evidence-note">
               <span class="evidence-type">Model ↔ silicon</span>
-              <p>For N=64, a 6-bit ADC, and a 20 mV reference, the model reports 5.17 dB compute SNDR versus 5.15 dB from the measured 22 nm MRAM prototype.</p>
+              <p>For <span class="math-inline" data-math="inline">N=64</span>, a 6-bit ADC, and a 20 mV reference, the model reports <span class="math-inline" data-math="inline">5.17\,\mathrm{dB}</span> compute SNDR versus <span class="math-inline" data-math="inline">5.15\,\mathrm{dB}</span> from the measured 22 nm MRAM prototype.</p>
             </div>
             <p><a class="button button-dark" href="https://doi.org/10.1109/JXCDC.2024.3381888">Open DOI <span aria-hidden="true">↗</span></a></p>
             <div class="citation-box">
@@ -69,7 +69,7 @@
             <p class="kicker">Conference paper</p>
             <h2>Compute SNR-Boosted 22 nm MRAM-Based In-Memory Computing Macro Using Statistical Error Compensation</h2>
             <p class="paper-meta">Saion K. Roy, Han-Mo Ou, Mostafa G. Ahmed, Peter Deaville, Bonan Zhang, Naveen Verma, Pavan K. Hanumolu, and Naresh R. Shanbhag.</p>
-            <p>The compact conference account establishes the scaling problem, offset-compensating sensing, low-overhead SEC, measured 2.7–6 dB SNR improvement, the 5× iso-SNR energy trade-off, and the final fully connected layer CIFAR-10 result.</p>
+            <p>The compact conference account establishes the scaling problem, offset-compensating sensing, low-overhead SEC, measured <span class="math-inline" data-math="inline">2.7\text{–}6\,\mathrm{dB}</span> SNR improvement, the one-fifth iso-SNR energy point, and the final fully connected layer CIFAR-10 result.</p>
             <div class="evidence-note">
               <span class="evidence-type">Silicon</span>
               <p>Measured macro SNR, energy, implementation overhead, and final-layer inference outcomes form the conference paper’s central result.</p>
@@ -88,7 +88,7 @@
             <p class="kicker">Journal extension</p>
             <h2>Compute SNDR-Boosted 22-nm MRAM-Based In-Memory Computing Macro Using Statistical Error Compensation</h2>
             <p class="paper-meta">Saion K. Roy, Han-Mo Ou, Mostafa G. Ahmed, Peter Deaville, Bonan Zhang, Naveen Verma, Pavan K. Hanumolu, and Naresh R. Shanbhag.</p>
-            <p>The journal article connects the OCCS analysis and Monte Carlo evidence, parasitic behavioral model, α/γ/θ formulation, fixed-point convergence, macro organization, per-column MMSE calibration, code-conditioned SNDR protocol, measured variation, energy trade-off, and final-layer ResNet-20 evaluation.</p>
+            <p>The journal article connects the OCCS analysis and Monte Carlo evidence, parasitic behavioral model, <span class="math-inline" data-math="inline">\alpha/\gamma/\theta</span> formulation, fixed-point convergence, macro organization, per-column MMSE calibration, code-conditioned SNDR protocol, measured variation, energy trade-off, and final-layer ResNet-20 evaluation.</p>
             <div class="evidence-note">
               <span class="evidence-type">Expanded evidence</span>
               <p>Silicon measurements are interpreted alongside circuit simulation, the behavioral model, fixed-point studies, and the SRAM-backed area projection.</p>
@@ -113,10 +113,10 @@
           </thead>
           <tbody>
             <tr><th>Central contribution</th><td>Measured SNR-boosted 22 nm MRAM IMC macro using OCCS and SEC.</td><td>Expanded SNDR account connecting the error mechanism, circuits, fixed-point correction, measurement method, and system result.</td></tr>
-            <tr><th>Behavioral model</th><td>Scaling and parasitic attenuation motivate the correction architecture.</td><td>Location-dependent α factors, behavioral/circuit correlation, and the mathematical basis for shared γ and θ factors.</td></tr>
-            <tr><th>SEC architecture</th><td>Low-overhead statistical error compensation and measured SNR recovery.</td><td>Training and inference paths, α/γ/θ factorization, quantized convergence, 7-bit γ inference, and 14-bit update accumulation.</td></tr>
+            <tr><th>Behavioral model</th><td>Scaling and parasitic attenuation motivate the correction architecture.</td><td>Location-dependent <span class="math-inline alpha" data-math="inline">\alpha_{ij}</span> factors, behavioral/circuit correlation, and the mathematical basis for shared <span class="math-inline gamma" data-math="inline">\gamma_i</span> and <span class="math-inline theta" data-math="inline">\theta_j</span> factors.</td></tr>
+            <tr><th>SEC architecture</th><td>Low-overhead statistical error compensation and measured SNR recovery.</td><td>Training and inference paths, <span class="math-inline" data-math="inline">\alpha/\gamma/\theta</span> factorization, quantized convergence, 7-bit <span class="math-inline gamma" data-math="inline">\gamma</span> inference, and 14-bit update accumulation.</td></tr>
             <tr><th>OCCS</th><td>Offset-compensating sensing integrated with the macro.</td><td>Auto-zero/evaluate operation, level shifting, mismatch/PVT analysis, Monte Carlo bitline variation, and circuit overhead.</td></tr>
-            <tr><th>Measurement method</th><td>Measured SNR, energy trade-off, overhead, and application headline.</td><td>Per-column affine MMSE calibration, 30 states per ideal code, 10 repeats per state, binomial P(c), and probability-weighted compute SNDR.</td></tr>
+            <tr><th>Measurement method</th><td>Measured SNR, energy trade-off, overhead, and application headline.</td><td>Per-column affine MMSE calibration, 30 states per ideal code, 10 repeats per state, binomial <span class="math-inline" data-math="inline">P(c)</span>, and probability-weighted compute SNDR.</td></tr>
             <tr><th>Application mapping</th><td>CIFAR-10 inference with the final fully connected layer of 4-bit ResNet-20 mapped to the macro.</td><td>The same mapping presented with expanded digital, SEC-off, SEC-on, sampling, and confidence details.</td></tr>
             <tr><th>Evidence classes</th><td><span class="evidence-type">Silicon</span></td><td><span class="evidence-type">Silicon</span> <span class="evidence-type">Circuit simulation</span> <span class="evidence-type">Behavioral model</span> <span class="evidence-type">Projection</span></td></tr>
           </tbody>
@@ -131,7 +131,7 @@
         <div class="four-col">
           <article class="card"><span class="evidence-type">Silicon</span><h3>Fabricated macro</h3><p>ADC-column SNDR, SEC improvement, energy/SNDR points, fabricated overhead, and final-layer accuracy.</p></article>
           <article class="card"><span class="evidence-type">Circuit simulation</span><h3>OCCS behavior</h3><p>Transistor-level mismatch, PVT, Monte Carlo bitline variation, and sensing-area comparison.</p></article>
-          <article class="card"><span class="evidence-type">Behavioral model</span><h3>Array and fixed point</h3><p>Parasitic transfer behavior, α extraction, quantized convergence, and precision selection.</p></article>
+          <article class="card"><span class="evidence-type">Behavioral model</span><h3>Array and fixed point</h3><p>Parasitic transfer behavior, <span class="math-inline alpha" data-math="inline">\alpha</span> extraction, quantized convergence, and precision selection.</p></article>
           <article class="card"><span class="evidence-type">Projection</span><h3>Storage alternative</h3><p>SEC area changes from 12.2% in the fabricated implementation to 3.7% with SRAM-backed storage.</p></article>
         </div>
         <div class="takeaway"><span>Terminology</span><strong>The conference paper reports SNR; the journal uses SNDR to include distortion. SEC means statistical error compensation, and its training learns hardware correction factors.</strong></div>
