@@ -1,0 +1,55 @@
+cff-version: 1.2.0
+message: "Please cite the JSSC paper and this software artifact."
+title: "SEC-Enabled 22 nm MRAM In-Memory Computing: Engineering Artifact"
+type: software
+version: 1.0.0
+date-released: 2026-08-07
+repository-code: "https://github.com/calmyor/SEC-Enabled-MRAM-IMC"
+url: "https://calmyor.github.io/SEC-Enabled-MRAM-IMC/"
+license: MIT
+authors:
+  - family-names: Roy
+    given-names: "Saion K."
+    orcid: "https://orcid.org/0000-0001-7893-7168"
+  - family-names: Ou
+    given-names: Han-Mo
+  - family-names: Ahmed
+    given-names: "Mostafa G."
+  - family-names: Deaville
+    given-names: Peter
+  - family-names: Zhang
+    given-names: Bonan
+  - family-names: Verma
+    given-names: Naveen
+  - family-names: Hanumolu
+    given-names: "Pavan K."
+  - family-names: Shanbhag
+    given-names: "Naresh R."
+preferred-citation:
+  type: article
+  title: "Compute SNDR-Boosted 22-nm MRAM-Based In-Memory Computing Macro Using Statistical Error Compensation"
+  journal: "IEEE Journal of Solid-State Circuits"
+  volume: 60
+  issue: 3
+  start: 1092
+  end: 1102
+  year: 2025
+  month: 3
+  doi: "10.1109/JSSC.2024.3442013"
+  authors:
+    - family-names: Roy
+      given-names: "Saion K."
+    - family-names: Ou
+      given-names: Han-Mo
+    - family-names: Ahmed
+      given-names: "Mostafa G."
+    - family-names: Deaville
+      given-names: Peter
+    - family-names: Zhang
+      given-names: Bonan
+    - family-names: Verma
+      given-names: Naveen
+    - family-names: Hanumolu
+      given-names: "Pavan K."
+    - family-names: Shanbhag
+      given-names: "Naresh R."

@@ -1,0 +1,38 @@
+.DS_Store
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+# Raw or machine-specific measurement artifacts
+data/raw/
+data/private/
+*.npy
+*.npz
+*.h5
+*.hdf5
+*.csv.tmp
+
+# Hardware/foundry implementation artifacts are review-gated
+*.bit
+*.hwh
+*.xsa
+*.dcp
+*.gds
+*.gdsii
+*.oas
+*.oasis
+*.lef
+*.lib
+*.spef
+*.sdf
+*.vcd
+*.fsdb
+
+# Local build and scratch outputs
+tmp/
+build/
+dist/
+coverage/

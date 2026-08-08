@@ -1,0 +1,105 @@
+    <main id="main">
+      <section class="hero">
+        <div class="hero-grid">
+          <div>
+            <p class="eyebrow">ESSCIRC 2023 · JSSC journal extension</p>
+            <h1>Making MRAM compute <em>measurably</em> more reliable.</h1>
+            <p class="hero-summary">This project traces one 22 nm MRAM in-memory-computing macro from a parasitic-aware behavioral model to statistical error compensation, mixed-signal circuit design, tapeout, PCB and PYNQ bring-up, and measured silicon.</p>
+            <p class="authors">Saion K. Roy · Han-Mo Ou · Mostafa G. Ahmed · Peter Deaville · Bonan Zhang · Naveen Verma · Pavan K. Hanumolu · Naresh R. Shanbhag</p>
+            <div class="actions">
+              <a class="button button-primary" href="design.html">Follow the design reasoning</a>
+              <a class="button button-secondary" href="papers.html">Read the papers</a>
+            </div>
+          </div>
+          <figure class="hero-visual">
+            <img src="assets/figures/die-summary.png" alt="Annotated die micrograph and measured summary of the 22 nanometer MRAM in-memory-computing prototype" />
+            <figcaption class="visual-caption"><span>512 × 512 MRAM array · 128 ADC columns</span><span>Commercial 22 nm FD-SOI</span></figcaption>
+          </figure>
+        </div>
+        <div class="metric-rail" aria-label="Measured prototype highlights">
+          <article><strong>22 <small>nm</small></strong><span>Commercial FD-SOI measured prototype</span></article>
+          <article><strong>512²</strong><span>Physical 1T1R MRAM array</span></article>
+          <article><strong>128</strong><span>Parallel 6-bit ADC columns</span></article>
+          <article><strong>2.7–6 <small>dB</small></strong><span>Measured SEC SNDR improvement</span></article>
+          <article><strong>5×</strong><span>Energy reduction at iso-SNDR</span></article>
+        </div>
+      </section>
+
+      <section class="section section-white">
+        <div class="section-head">
+          <p class="kicker">The complete research arc</p>
+          <h2>The algorithm is only one link in the chain.</h2>
+          <p>The central contribution is a co-design process. Array behavior is modeled, converted into a low-dimensional compensation problem, mapped into fixed-point hardware, integrated with a more stable current sensor, and then evaluated through a purpose-built test stack.</p>
+        </div>
+        <div class="research-chain">
+          <article><span class="step">01 · Observe</span><h3>Model the nonideal array</h3><p>MTJ variation, line parasitics, read noise, binary column weighting, and ADC quantization expose location-dependent distortion.</p></article>
+          <article><span class="step">02 · Abstract</span><h3>Factor the error</h3><p>Per-cell attenuation αᵢⱼ turns an opaque circuit effect into a compensable input/output model.</p></article>
+          <article><span class="step">03 · Co-design</span><h3>Learn SEC factors</h3><p>Shared row factors γᵢ and column normalizers θⱼ correct bank-level compute statistics with modest storage.</p></article>
+          <article><span class="step">04 · Realize</span><h3>Build OCCS + fixed point</h3><p>Behavioral precision studies select a 7-bit inference scale and 14-bit update path; OCCS reduces readout mismatch.</p></article>
+          <article><span class="step">05 · Measure</span><h3>Close the silicon loop</h3><p>Python, PYNQ-Z2, a custom PCB, and code-conditioned sampling reconstruct calibrated SNDR on packaged chips.</p></article>
+        </div>
+      </section>
+
+      <section class="section section-dark">
+        <div class="two-col">
+          <div class="section-head">
+            <p class="kicker">Why the problem is hard</p>
+            <h2>A useful signal can be a fraction of one percent.</h2>
+            <p>For a 128-row dot product, the paper’s representative conductance step is 80 μS against a nominal 20 mS column conductance: about 0.4%. Bitline and sourceline voltage gradients, current-sensor noise, column mismatch, and supply drop compete directly with that small step.</p>
+          </div>
+          <div>
+            <div class="equation" aria-label="Eighty microsiemens divided by twenty millisiemens equals zero point four percent">80 μS ÷ 20 mS = <span class="gamma">0.4%</span></div>
+            <div class="callout">
+              <strong>Scaling changes the design question.</strong>
+              <p>Increasing the dot-product dimension improves parallelism, yet makes adjacent output states harder to distinguish. The project therefore optimizes measurable compute quality—not array density in isolation.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <p class="kicker">Prototype at a glance</p>
+          <h2>One macro, viewed at four abstraction levels.</h2>
+          <p>The terminology changes with the layer being discussed. Keeping those layers separate prevents several common misreadings of the work.</p>
+        </div>
+        <div class="four-col">
+          <article class="card"><span class="number">DEVICE</span><h3>Physical memory</h3><p>Commercial 22 nm FD-SOI, 512 × 512 physical 1T1R MRAM cells, operated at 0.8 V.</p></article>
+          <article class="card"><span class="number">LOGIC</span><h3>Signed weight</h3><p>A differential 2T2R logical representation forms signed 4-bit weights across binary-weighted physical columns.</p></article>
+          <article class="card"><span class="number">CIRCUIT</span><h3>Column conversion</h3><p>128 ADC columns combine offset-compensated current sensing, a 6-bit SAR ADC, and local control.</p></article>
+          <article class="card"><span class="number">ALGORITHM</span><h3>SEC correction</h3><p>Learned row scaling and per-column normalization improve task-agnostic bank-level compute SNDR.</p></article>
+        </div>
+        <figure class="figure-frame figure-wide">
+          <img src="assets/figures/macro-architecture.png" alt="Paper figure showing the OCCS and SEC-enabled MRAM in-memory-computing macro architecture" loading="lazy" />
+          <figcaption><strong>Integrated architecture.</strong> Physical array, binary-weighted columns, OCCS, ADC conversion, SEC scaling, and local control are treated as one signal path.</figcaption>
+        </figure>
+      </section>
+
+      <section class="section section-teal">
+        <div class="section-head">
+          <p class="kicker">Engineering record</p>
+          <h2>From mathematical intent to a repeatable measurement.</h2>
+          <p>This repository documents the decision gates that papers usually compress: what was modeled, what was frozen for implementation, what was checked at tapeout, what the board had to make observable, and how the measurement state space was sampled.</p>
+        </div>
+        <div class="three-col">
+          <article class="card"><span class="number">DESIGN</span><h3>Behavior → architecture</h3><p>Trace α, γ, and θ from the behavioral model into OCCS, fixed-point precision, and dataflow.</p><a href="design.html">Open design principles →</a></article>
+          <article class="card"><span class="number">IMPLEMENT</span><h3>Netlist → packaged die</h3><p>Review the mixed-signal tapeout gates and the explicit boundary between public process guidance and restricted foundry artifacts.</p><a href="tapeout.html">Open tapeout workflow →</a></article>
+          <article class="card"><span class="number">TEST</span><h3>Host → calibrated result</h3><p>Follow the PYNQ, PCB, scan-chain, calibration, sampling, and analysis sequence used to interrogate silicon.</p><a href="test-platform.html">Open test platform →</a></article>
+        </div>
+      </section>
+
+      <section class="section section-white">
+        <div class="two-col">
+          <div>
+            <p class="kicker">What SEC means here</p>
+            <h2>Statistical error compensation.</h2>
+            <p>SEC learns hardware correction factors for the MRAM compute bank. It does not mean single-error correction, does not replace memory ECC, and does not train the application neural network on-chip.</p>
+            <p>The target is bank-level, task-agnostic compute SNDR. The reported CIFAR-10 experiment maps only the final fully connected layer of ResNet-20 to measured hardware.</p>
+          </div>
+          <div class="callout">
+            <strong>Terminology note</strong>
+            <p>The conference paper reports SNR; the expanded journal paper uses SNDR to account for both noise and distortion. This site follows the journal terminology when discussing the full measurement method.</p>
+          </div>
+        </div>
+      </section>
+    </main>

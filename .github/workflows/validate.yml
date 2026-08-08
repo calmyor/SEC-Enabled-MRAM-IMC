@@ -1,0 +1,30 @@
+name: Validate artifact
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Unit tests
+        run: PYTHONPATH=src python3 -m unittest discover -s tests -v
+      - name: Synthetic method demo
+        run: PYTHONPATH=src python3 examples/protocol_demo.py
+      - name: Rebuild website
+        run: node scripts/build-site.mjs
+      - name: Validate website
+        run: node scripts/validate-site.mjs
+      - name: Verify generated site is committed
+        run: git diff --exit-code -- docs

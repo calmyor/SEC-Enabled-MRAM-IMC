@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#071b22" />
+    <meta name="description" content="A curated artifact map, runnable method demo, reproduction paths, and clear public-release boundaries." />
+    <link rel="canonical" href="https://calmyor.github.io/SEC-Enabled-MRAM-IMC/repository.html" />
+    <meta property="og:title" content="Repository and reproducibility · SEC–MRAM IMC" />
+    <meta property="og:description" content="A curated artifact map, runnable method demo, reproduction paths, and clear public-release boundaries." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://calmyor.github.io/SEC-Enabled-MRAM-IMC/repository.html" />
+    <meta property="og:image" content="https://calmyor.github.io/SEC-Enabled-MRAM-IMC/assets/og.png" />
+    <meta property="og:image:alt" content="SEC–MRAM IMC: from behavioral model to measured 22 nm silicon." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"ScholarlyArticle","name":"Compute SNDR-Boosted 22-nm MRAM-Based In-Memory Computing Macro Using Statistical Error Compensation","author":[{"@type":"Person","name":"Saion K. Roy"},{"@type":"Person","name":"Han-Mo Ou"},{"@type":"Person","name":"Mostafa G. Ahmed"},{"@type":"Person","name":"Peter Deaville"},{"@type":"Person","name":"Bonan Zhang"},{"@type":"Person","name":"Naveen Verma"},{"@type":"Person","name":"Pavan K. Hanumolu"},{"@type":"Person","name":"Naresh R. Shanbhag"}],"isPartOf":{"@type":"Periodical","name":"IEEE Journal of Solid-State Circuits"},"identifier":"https://doi.org/10.1109/JSSC.2024.3442013","url":"https://calmyor.github.io/SEC-Enabled-MRAM-IMC/repository.html"}</script>
+    <script src="app.js" defer></script>
+    <title>Repository and reproducibility · SEC–MRAM IMC</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="SEC–MRAM IMC overview">
+        <span class="brand-icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <span><strong>SEC–MRAM IMC</strong><small>Model → silicon → measurement</small></span>
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <nav id="site-nav" class="site-nav" aria-label="Project sections">
+          <a href="index.html">Overview</a>
+          <a href="design.html">Design</a>
+          <a href="tapeout.html">Tapeout</a>
+          <a href="test-platform.html">Test platform</a>
+          <a href="measurements.html">Measurements</a>
+          <a href="repository.html" aria-current="page">Repository</a>
+          <a href="papers.html">Papers</a>
+      </nav>
+      <a class="repo-link" href="https://github.com/calmyor/SEC-Enabled-MRAM-IMC">GitHub <span aria-hidden="true">↗</span></a>
+    </header>
+    <main id="main">
+      <header class="page-hero">
+        <p class="breadcrumb">Overview / Repository</p>
+        <p class="eyebrow">Curated code · method reproduction · provenance</p>
+        <h1>Publish what can be defended.</h1>
+        <p>The original working archive is large, duplicated, and interleaves research code with foundry material, personal paperwork, vendor packages, raw data, and machine-specific notebooks. This repository is a reviewed public layer—not a bulk mirror.</p>
+      </header>
+
+      <section class="section section-white">
+        <div class="section-head">
+          <p class="kicker">Repository map</p>
+          <h2>Documentation and executable methods share one provenance spine.</h2>
+          <p>The website is built from editable source into the GitHub Pages <span class="mono">docs/</span> directory. The Python package keeps public analysis methods small, deterministic, tested, and independent of unavailable hardware.</p>
+        </div>
+        <div class="two-col">
+          <pre class="tree" aria-label="Repository directory tree"><span class="folder">SEC-Enabled-MRAM-IMC/</span>
+├── <span class="folder">website/</span>            editable page fragments, CSS, JS, assets
+├── <span class="folder">docs/</span>               generated GitHub Pages site
+├── <span class="folder">src/sec_mram_imc/</span>  calibration, sampling, SNDR, toy SEC
+├── <span class="folder">examples/</span>           deterministic synthetic protocol demo
+├── <span class="folder">tests/</span>              standard-library unit tests
+├── <span class="folder">measurements/</span>       method and interpretation guide
+├── <span class="folder">design/</span>             model and SEC/OCCS design notes
+├── <span class="folder">hardware/</span>           PCB/PYNQ release-boundary notes
+├── <span class="folder">tapeout/</span>            sanitized process guide
+├── <span class="folder">papers/</span>             citation and paper-evolution notes
+├── <span class="folder">scripts/</span>            site build and validation
+├── <span class="folder">.github/workflows/</span> Pages + validation automation
+├── <span class="file">CITATION.cff</span>
+├── <span class="file">CONTRIBUTING.md</span>
+├── <span class="file">LICENSE</span>
+└── <span class="file">README.md</span></pre>
+          <div>
+            <div class="callout">
+              <strong>Design rule for the repository</strong>
+              <p>Every artifact is labeled as public source, sanitized derivative, hardware-dependent, or restricted/unavailable. A file’s presence in the private working archive is not permission to redistribute it.</p>
+            </div>
+            <table class="spec-table" style="margin-top:24px" aria-label="Repository evidence classes">
+              <tbody>
+                <tr><th>Measured</th><td>Values reported from the fabricated macro and tied to a paper figure or method.</td></tr>
+                <tr><th>Simulated</th><td>Behavioral/circuit evidence clearly separated from measured silicon.</td></tr>
+                <tr><th>Projected</th><td>Design alternatives such as SRAM-based SEC storage, not fabricated claims.</td></tr>
+                <tr><th>Synthetic</th><td>Toy data produced by the public demonstration package.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <p class="kicker">Artifact availability</p>
+          <h2>Filter the release boundary.</h2>
+          <p>“Restricted” includes proprietary, identifying, incomplete, or unlicensed material. It describes provenance honestly; it is not an invitation to request foundry-confidential files.</p>
+        </div>
+        <div class="filter-bar" aria-label="Filter artifacts by release tier">
+          <button type="button" data-artifact-filter="all" aria-pressed="true">All</button>
+          <button type="button" data-artifact-filter="public" aria-pressed="false">Public source</button>
+          <button type="button" data-artifact-filter="derived" aria-pressed="false">Sanitized derivative</button>
+          <button type="button" data-artifact-filter="restricted" aria-pressed="false">Restricted / unavailable</button>
+        </div>
+        <div class="artifact-grid">
+          <article class="artifact-card" data-tier="public"><span class="tier">Public source</span><h3>Measurement-method package</h3><p>Affine per-column MMSE calibration, deterministic state/repetition sampling, weighted code-conditioned SNDR, and tested result objects.</p></article>
+          <article class="artifact-card" data-tier="public"><span class="tier">Public source</span><h3>Synthetic SEC illustration</h3><p>An educational multiplicative correction learner with an explicit warning that it is not controller RTL, firmware, or measured data.</p></article>
+          <article class="artifact-card" data-tier="public"><span class="tier">Public source</span><h3>Engineering documentation</h3><p>Design reasoning, tapeout gates, board review, bring-up ladder, protocol, claim boundaries, citations, and provenance.</p></article>
+          <article class="artifact-card" data-tier="derived"><span class="tier">Sanitized derivative</span><h3>Paper figures and board visual</h3><p>Selected research figures and a final-board rendering, stripped of personal, supplier, and confidential process collateral.</p></article>
+          <article class="artifact-card" data-tier="derived"><span class="tier">Sanitized derivative</span><h3>PCB design guide</h3><p>Public rail/signal, pin-map, revision, and bring-up principles. The older editable TO2/QFN80 source is not mislabeled as the final TO3/QFN64 board.</p></article>
+          <article class="artifact-card" data-tier="derived"><span class="tier">Sanitized derivative</span><h3>Tapeout process guide</h3><p>Newly authored phase and review guidance without foundry rule names, paths, configuration data, waiver details, or release databases.</p></article>
+          <article class="artifact-card" data-tier="restricted"><span class="tier">Restricted / unavailable</span><h3>ASIC implementation</h3><p>No public RTL-to-GDS flow is present. PDKs, configuration files, validator material, GDS/OASIS, netlists, raw signoff output, and waivers stay private.</p></article>
+          <article class="artifact-card" data-tier="restricted"><span class="tier">Restricted / unavailable</span><h3>FPGA rebuild sources</h3><p>Bit/HWH and notebooks exist, but complete custom RTL, XDC, Vivado project, and build Tcl were not found. No reproducible-overlay claim is made.</p></article>
+          <article class="artifact-card" data-tier="restricted"><span class="tier">Restricted / unavailable</span><h3>Raw lab archive</h3><p>Large NPZ/NPY captures, machine-specific paths, instrument identifiers, invoices, airway bills, supplier carts, and unlicensed collaborator code are excluded.</p></article>
+        </div>
+      </section>
+
+      <section class="section section-dark">
+        <div class="section-head">
+          <p class="kicker">Quick start</p>
+          <h2>Reproduce the public method layer.</h2>
+          <p>The package uses only the Python standard library at runtime. The demo generates toy data locally; it never connects to a board or instrument.</p>
+        </div>
+        <div class="two-col">
+          <div>
+            <h3>Run the deterministic demonstration</h3>
+            <pre class="tree"><code>python3 -m venv .venv
+source .venv/bin/activate
+python3 -m pip install -e .
+python3 examples/protocol_demo.py</code></pre>
+          </div>
+          <div>
+            <h3>Run all tests</h3>
+            <pre class="tree"><code>PYTHONPATH=src python3 -m unittest \
+  discover -s tests -v</code></pre>
+            <h3 style="margin-top:28px">Build the website</h3>
+            <pre class="tree"><code>node scripts/build-site.mjs</code></pre>
+          </div>
+        </div>
+        <div class="callout" style="margin-top:38px">
+          <strong>Interpret the output correctly.</strong>
+          <p>Protocol counts, fit coefficients, and SNDR values emitted by the demo come from synthetic inputs. The measured 22 nm results on this site come from the ESSCIRC/JSSC record, not from executing the toy example.</p>
+        </div>
+      </section>
+
+      <section class="section section-white">
+        <div class="section-head">
+          <p class="kicker">Data release pattern</p>
+          <h2>Keep Git small and the dataset inspectable.</h2>
+          <p>The audited archive contains more than one hundred NPZ files, dozens of NPY arrays, duplicates, and individual files tens of megabytes in size. A responsible release requires curation before upload.</p>
+        </div>
+        <div class="four-col">
+          <article class="card"><span class="number">01 · SCHEMA</span><h3>Name every dimension</h3><p>Units, dtype, shape, code convention, column, chip, mode, clock, voltage, repeat, and missing/fault encoding.</p></article>
+          <article class="card"><span class="number">02 · MANIFEST</span><h3>Bind files to provenance</h3><p>SHA-256, byte count, acquisition script/commit, overlay hash, board/chip IDs, run time, operator policy, and license.</p></article>
+          <article class="card"><span class="number">03 · SAMPLE</span><h3>Ship a small end-to-end slice</h3><p>One de-identified representative dataset in Git exercises parsing, calibration, per-code MSE, and plot generation.</p></article>
+          <article class="card"><span class="number">04 · ARCHIVE</span><h3>Deposit approved raw data</h3><p>Deduplicated full captures belong in a versioned archival release with DOI/checksums, not the Git history.</p></article>
+        </div>
+      </section>
+
+      <section class="section section-teal">
+        <div class="two-col">
+          <div>
+            <p class="kicker">Contributing</p>
+            <h2>Make additions traceable.</h2>
+            <p>New measured results need the raw-data manifest, protocol parameters, calibration split, analysis command, and evidence class. Hardware assets need ownership approval and a rebuild/version statement. Paper claims need a citation and must retain the scope of the source experiment.</p>
+          </div>
+          <div class="callout">
+            <strong>Never commit</strong>
+            <p>Credentials, personal addresses, instrument serial identifiers, commercial invoices, airway bills, PDK/foundry configuration, raw signoff/waiver material, proprietary IP, or third-party code without a redistribution license.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <a class="footer-brand" href="index.html">SEC–MRAM IMC</a>
+        <p>Statistical error compensation for a measured 22 nm MRAM in-memory-computing macro.</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://doi.org/10.1109/ESSCIRC59616.2023.10268688">ESSCIRC 2023 <span aria-hidden="true">↗</span></a>
+        <a href="https://doi.org/10.1109/JSSC.2024.3442013">JSSC extension <span aria-hidden="true">↗</span></a>
+        <a href="repository.html">Reproducibility</a>
+      </div>
+      <p class="footer-note">© <span data-current-year>2026</span> The authors. Paper figures are reproduced for this research artifact.</p>
+    </footer>
+  </body>
+</html>

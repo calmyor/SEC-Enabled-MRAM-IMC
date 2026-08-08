@@ -1,0 +1,11 @@
+{
+  "name": "sec-enabled-mram-imc-site",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build-site.mjs",
+    "validate": "node scripts/validate-site.mjs",
+    "test": "PYTHONPATH=src python3 -m unittest discover -s tests -v"
+  }
+}

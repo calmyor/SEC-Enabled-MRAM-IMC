@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#071b22" />
+    <meta name="description" content="A practical, evidence-bounded guide to the mixed-signal tapeout process behind the 22 nm MRAM IMC prototype." />
+    <link rel="canonical" href="https://calmyor.github.io/SEC-Enabled-MRAM-IMC/tapeout.html" />
+    <meta property="og:title" content="Tapeout engineering · SEC–MRAM IMC" />
+    <meta property="og:description" content="A practical, evidence-bounded guide to the mixed-signal tapeout process behind the 22 nm MRAM IMC prototype." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://calmyor.github.io/SEC-Enabled-MRAM-IMC/tapeout.html" />
+    <meta property="og:image" content="https://calmyor.github.io/SEC-Enabled-MRAM-IMC/assets/og.png" />
+    <meta property="og:image:alt" content="SEC–MRAM IMC: from behavioral model to measured 22 nm silicon." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"ScholarlyArticle","name":"Compute SNDR-Boosted 22-nm MRAM-Based In-Memory Computing Macro Using Statistical Error Compensation","author":[{"@type":"Person","name":"Saion K. Roy"},{"@type":"Person","name":"Han-Mo Ou"},{"@type":"Person","name":"Mostafa G. Ahmed"},{"@type":"Person","name":"Peter Deaville"},{"@type":"Person","name":"Bonan Zhang"},{"@type":"Person","name":"Naveen Verma"},{"@type":"Person","name":"Pavan K. Hanumolu"},{"@type":"Person","name":"Naresh R. Shanbhag"}],"isPartOf":{"@type":"Periodical","name":"IEEE Journal of Solid-State Circuits"},"identifier":"https://doi.org/10.1109/JSSC.2024.3442013","url":"https://calmyor.github.io/SEC-Enabled-MRAM-IMC/tapeout.html"}</script>
+    <script src="app.js" defer></script>
+    <title>Tapeout engineering · SEC–MRAM IMC</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="SEC–MRAM IMC overview">
+        <span class="brand-icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <span><strong>SEC–MRAM IMC</strong><small>Model → silicon → measurement</small></span>
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <nav id="site-nav" class="site-nav" aria-label="Project sections">
+          <a href="index.html">Overview</a>
+          <a href="design.html">Design</a>
+          <a href="tapeout.html" aria-current="page">Tapeout</a>
+          <a href="test-platform.html">Test platform</a>
+          <a href="measurements.html">Measurements</a>
+          <a href="repository.html">Repository</a>
+          <a href="papers.html">Papers</a>
+      </nav>
+      <a class="repo-link" href="https://github.com/calmyor/SEC-Enabled-MRAM-IMC">GitHub <span aria-hidden="true">↗</span></a>
+    </header>
+    <main id="main">
+      <header class="page-hero">
+        <p class="breadcrumb">Overview / Tapeout</p>
+        <p class="eyebrow">Mixed-signal implementation discipline</p>
+        <h1>Tapeout is a sequence of evidence gates.</h1>
+        <p>For this macro, “tapeout” connected bit-accurate SEC logic, sensitive current sensing, a dense MRAM array, pad and package constraints, power integrity, and future observability. This page documents the engineering questions and review artifacts without publishing foundry-confidential implementation data.</p>
+      </header>
+
+      <section class="section section-white">
+        <div class="section-head">
+          <p class="kicker">Process map</p>
+          <h2>Freeze intent, prove interfaces, then close the physical design.</h2>
+          <p>The phases overlap in practice, but each needs an explicit exit condition. A final database is not ready because a date arrived; it is ready when the evidence package is internally consistent and every remaining exception has an owner and disposition.</p>
+        </div>
+        <div class="phase-list">
+          <article class="phase"><h3>Specification and ownership</h3><p>Freeze compute modes, array/ADC organization, voltage domains, clocks, scan/register maps, SEC training and inference semantics, test access, authorship, IP provenance, and public-release boundaries.<br /><span class="gate">Gate · signed interface specification</span></p></article>
+          <article class="phase"><h3>Behavioral and bit-accurate correlation</h3><p>Cross-check ideal, parasitic-aware, circuit, RTL/fixed-point, and system-level models on shared vectors. Define saturation, rounding, update ordering, and reset state before logic hardens.<br /><span class="gate">Gate · golden-vector agreement</span></p></article>
+          <article class="phase"><h3>Mixed-signal block verification</h3><p>Verify MRAM access, OCCS auto-zero/evaluate phases, ADC decision timing, references, startup, and calibration hooks across corners. Separate nominal/PVT sweeps from mismatch Monte Carlo and noise analysis.<br /><span class="gate">Gate · corner and mismatch review</span></p></article>
+          <article class="phase"><h3>Digital implementation and DFT</h3><p>Lint and CDC/RDC review, synthesis equivalence, timing constraints, test-mode exceptions, scan access, clock gating, and controllability of every SEC state. Run gate-level checks where timing or reset behavior warrants them.<br /><span class="gate">Gate · constrained and testable netlist</span></p></article>
+          <article class="phase"><h3>Floorplan, power, and signal integrity</h3><p>Co-plan macro placement, analog quiet regions, power domains, return paths, clock and reference shielding, decoupling, pad-ring access, and package current paths. Revisit the model if extracted interconnect changes the signal budget.<br /><span class="gate">Gate · post-layout correlation</span></p></article>
+          <article class="phase"><h3>Physical verification and signoff</h3><p>Close DRC, LVS, ERC, antenna, density/fill, timing, and EM/IR using the qualified foundry flow. Review hierarchical summaries, not only a top-level “completed” message. Track every waiver to a rule, geometry, risk argument, and approver.<br /><span class="gate">Gate · reviewed signoff ledger</span></p></article>
+          <article class="phase"><h3>Top-level, padframe, and package</h3><p>Verify pad types, ESD structures, clamps, domain crossings, no-connects, die orientation, bond-wire feasibility, QFN64 pin mapping, package parasitics, and naming consistency from schematic through bench documentation.<br /><span class="gate">Gate · package-to-register traceability</span></p></article>
+          <article class="phase"><h3>Release and secure handoff</h3><p>Generate the exact release database, manifest, tool/run identifiers, checksums, layer map, exception list, and foundry forms. Transfer only through the approved channel and verify the received digest before declaring handoff complete.<br /><span class="gate">Gate · immutable release manifest</span></p></article>
+          <article class="phase"><h3>Post-silicon readiness</h3><p>Freeze the board revision, firmware/overlay version, register map, current limits, smoke vectors, expected observables, raw-data schema, and failure triage tree before packaged parts arrive.<br /><span class="gate">Gate · executable bring-up plan</span></p></article>
+        </div>
+      </section>
+
+      <section class="section section-dark">
+        <div class="section-head">
+          <p class="kicker">Cross-domain closure</p>
+          <h2>Four reviews must agree on the same signal path.</h2>
+          <p>A mixed-signal IMC can pass each local review and still fail at the boundary between them. These are the boundary questions that mattered most.</p>
+        </div>
+        <div class="four-col">
+          <article class="card"><span class="number">MODEL ↔ CIRCUIT</span><h3>Is α still representative?</h3><p class="muted">Extracted parasitics, sensor headroom, and input ordering must stay inside the modeled correction range.</p></article>
+          <article class="card"><span class="number">CIRCUIT ↔ DIGITAL</span><h3>Is conversion deterministic?</h3><p class="muted">Auto-zero, evaluation, SAR control, capture, and SEC update phases need unambiguous cycle and reset semantics.</p></article>
+          <article class="card"><span class="number">DIE ↔ PACKAGE</span><h3>Can the pins carry it?</h3><p class="muted">Pad type, bond map, simultaneous switching, references, supplies, and safe unused states must agree.</p></article>
+          <article class="card"><span class="number">PACKAGE ↔ BENCH</span><h3>Can the result be observed?</h3><p class="muted">The board and FPGA must reach every mode, control timing, limit current, and preserve raw ADC data with metadata.</p></article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <p class="kicker">Review ledger</p>
+          <h2>What a defensible signoff record contains.</h2>
+        </div>
+        <div class="two-col">
+          <div>
+            <h3>For every qualified run</h3>
+            <ul class="checklist">
+              <li>Immutable design identifier and checksum.</li>
+              <li>Tool, rule-deck, library, extraction, and corner versions.</li>
+              <li>Command/configuration provenance and run timestamp.</li>
+              <li>Summary counts linked to reviewable detail.</li>
+              <li>Owner and disposition for every nonzero category.</li>
+              <li>Cross-probe evidence for representative violations.</li>
+              <li>Relationship to the exact handoff database.</li>
+            </ul>
+          </div>
+          <div>
+            <h3>For every waiver</h3>
+            <ul class="checklist risk-list">
+              <li>Exact rule, cell/hierarchy, and affected geometry.</li>
+              <li>Why the result is intentional rather than ignored.</li>
+              <li>Electrical, reliability, yield, and integration impact.</li>
+              <li>Foundry or IP-owner concurrence when required.</li>
+              <li>Scope narrow enough to prevent masking new errors.</li>
+              <li>Revalidation after fill, ECO, or database regeneration.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="callout" style="margin-top:42px">
+          <strong>Archive caution</strong>
+          <p>The internal archive contains run summaries with nonzero counts and intermediate status. This public site does not reinterpret them as a clean-signoff claim. Final signoff status belongs to the qualified release ledger and foundry review, not to an isolated report copied from a working directory.</p>
+        </div>
+      </section>
+
+      <section class="section section-teal">
+        <div class="two-col">
+          <div class="section-head">
+            <p class="kicker">Design for observability</p>
+            <h2>The bench begins at tapeout.</h2>
+            <p>Scan chains, bypasses, raw ADC visibility, independent write/read/MVM modes, controllable clocks, deterministic reset, SEC state access, and current-isolation options are architectural features—not accessories added after fabrication.</p>
+          </div>
+          <div class="callout">
+            <strong>Minimum bring-up ladder</strong>
+            <p>Power integrity → static interface → scan-chain loopback → deterministic register access → single-cell read/write → raw ADC capture → MVM → calibration → SEC learning → repeated statistical measurement.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-white">
+        <div class="section-head">
+          <p class="kicker">Public artifact boundary</p>
+          <h2>Document the process without redistributing the process kit.</h2>
+          <p>The source archive is a working record, not an open ASIC release. This repository publishes new, sanitized process guidance and an availability matrix.</p>
+        </div>
+        <div class="three-col">
+          <article class="card"><span class="number">PUBLIC</span><h3>Engineering method</h3><p>Phase map, review checklists, interface questions, package/board coordination, artifact taxonomy, and measured paper results.</p></article>
+          <article class="card"><span class="number">DERIVED</span><h3>Sanitized summaries</h3><p>Redrawn block diagrams, aggregate specifications, safe figures, and descriptions that remove personal, supplier, and foundry details.</p></article>
+          <article class="card"><span class="number">RESTRICTED</span><h3>Implementation collateral</h3><p>PDK/configuration data, validator material, raw rule reports, waivers, export forms, GDS/OASIS, netlists, commercial IP, and personal paths.</p></article>
+        </div>
+        <p class="provenance" style="margin-top:32px"><strong>Availability finding:</strong> the audited archive does not contain a reproducible open RTL-to-GDS flow, final source database, netlists, or a complete signoff package. This site therefore makes no open-source ASIC implementation claim.</p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <a class="footer-brand" href="index.html">SEC–MRAM IMC</a>
+        <p>Statistical error compensation for a measured 22 nm MRAM in-memory-computing macro.</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://doi.org/10.1109/ESSCIRC59616.2023.10268688">ESSCIRC 2023 <span aria-hidden="true">↗</span></a>
+        <a href="https://doi.org/10.1109/JSSC.2024.3442013">JSSC extension <span aria-hidden="true">↗</span></a>
+        <a href="repository.html">Reproducibility</a>
+      </div>
+      <p class="footer-note">© <span data-current-year>2026</span> The authors. Paper figures are reproduced for this research artifact.</p>
+    </footer>
+  </body>
+</html>

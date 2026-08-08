@@ -1,0 +1,143 @@
+    <main id="main">
+      <header class="page-hero">
+        <p class="breadcrumb">Overview / Design</p>
+        <p class="eyebrow">Behavioral model → SEC/OCCS co-design</p>
+        <h1>Start with the error, then design the correction.</h1>
+        <p>The architecture did not begin as a compensation block looking for a use. It began with a behavioral model that showed where each activated row’s contribution is attenuated—and which part of that structure can be shared efficiently in hardware.</p>
+      </header>
+
+      <section class="section section-white">
+        <div class="section-head">
+          <p class="kicker">01 · Behavioral model</p>
+          <h2>Represent the whole analog path, not an ideal multiply.</h2>
+          <p>The model couples device variation and interconnect to readout and quantization. Its purpose is not transistor-level replacement; it is to expose the dominant error structure quickly enough to explore array size, input ordering, precision, and compensation.</p>
+        </div>
+        <div class="two-col">
+          <table class="spec-table" aria-label="Behavioral model components">
+            <tbody>
+              <tr><th>MRAM device</th><td>Parallel/antiparallel conductance states and MTJ variability.</td></tr>
+              <tr><th>Array network</th><td>Bitline and sourceline resistance, position-dependent voltage loss, and row activation.</td></tr>
+              <tr><th>Column formation</th><td>Differential signed weights and four binary-weighted physical columns per ADC column.</td></tr>
+              <tr><th>Readout</th><td>Sensor noise, column gain/offset, and 6-bit ADC quantization.</td></tr>
+              <tr><th>Cross-check</th><td>Ideal, nonideal, and circuit-simulation CSV comparisons across controlled sweeps.</td></tr>
+            </tbody>
+          </table>
+          <div>
+            <div class="callout">
+              <strong>The key observation is spatial.</strong>
+              <p>The same logical activation produces a different analog contribution depending on its physical row. Near- and far-end patterns can bend to opposite sides of the ideal transfer line, with large relative error near a zero-valued dot product.</p>
+            </div>
+            <p class="muted" style="margin-top:24px">Model parameters should be interpreted as a calibrated design instrument. Exact foundry device decks and proprietary PDK parameters are intentionally outside the public repository.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-dark">
+        <div class="two-col">
+          <div class="section-head">
+            <p class="kicker">02 · Error abstraction</p>
+            <h2>Turn parasitics into factors the architecture can act on.</h2>
+            <p>Let αᵢⱼ describe the attenuation for row i as observed by column j. SEC applies one learned γᵢ to row i across the bank, then normalizes each output column with θⱼ.</p>
+          </div>
+          <div data-equation-explainer>
+            <div class="equation">yⱼ = Σᵢ <span class="theta">θⱼ</span> · <span class="gamma">γᵢ</span> · <span class="alpha">αᵢⱼ</span> · wᵢⱼ · xᵢ</div>
+            <div class="legend-buttons" aria-label="Explain equation terms">
+              <button type="button" data-equation-term="alpha" aria-pressed="true">αᵢⱼ · attenuation</button>
+              <button type="button" data-equation-term="gamma" aria-pressed="false">γᵢ · row correction</button>
+              <button type="button" data-equation-term="theta" aria-pressed="false">θⱼ · column normalization</button>
+            </div>
+            <p class="equation-readout" data-equation-readout aria-live="polite">αᵢⱼ is the row- and column-dependent attenuation produced by array parasitics. It is a behavioral description of the error, not an extra hardware state.</p>
+          </div>
+        </div>
+        <div class="three-col" style="margin-top:56px">
+          <article class="card"><span class="number">SHARE</span><h3>One γ per row</h3><p class="muted">Sharing the input-side correction across ADC columns avoids storing a full correction matrix.</p></article>
+          <article class="card"><span class="number">LEARN</span><h3>Fit the physical die</h3><p class="muted">On-chip stochastic-gradient updates adapt γ to instance-specific parasitics that are unknown before fabrication.</p></article>
+          <article class="card"><span class="number">NORMALIZE</span><h3>One θ per column</h3><p class="muted">Output normalization absorbs column gain so that θⱼγᵢαᵢⱼ approaches unity statistically.</p></article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <p class="kicker">03 · Precision selection</p>
+          <h2>Use convergence studies to freeze the fixed-point path.</h2>
+          <p>Floating-point SEC establishes the algorithmic target. Quantized sweeps then choose widths that preserve convergence while bounding area and switching energy. The implemented inference scale is 7 bit, backed by a 14-bit update accumulator; a power-of-two learning rate enables shift-based updates.</p>
+        </div>
+        <div class="two-col">
+          <figure class="figure-frame">
+            <img src="assets/figures/sec-datapath.png" alt="Fixed-point statistical error compensation training and inference datapath" loading="lazy" />
+            <figcaption><strong>SEC datapath.</strong> Training updates correction state; inference reuses the learned row scale in the input path.</figcaption>
+          </figure>
+          <div>
+            <table class="spec-table" aria-label="SEC fixed point choices">
+              <tbody>
+                <tr><th>Inference factor</th><td>7-bit γ path selected from behavioral quantization sweeps.</td></tr>
+                <tr><th>Update state</th><td>14-bit accumulator retains the smaller training increments.</td></tr>
+                <tr><th>Learning rate</th><td>Power-of-two μ permits a shift in place of a general multiplier.</td></tr>
+                <tr><th>Validation</th><td>Fixed- and floating-point learning trajectories remain closely aligned.</td></tr>
+                <tr><th>Interpretation</th><td>“Training” calibrates hardware correction factors; it is not application-model training.</td></tr>
+              </tbody>
+            </table>
+            <figure class="figure-frame" style="margin-top:20px">
+              <img src="assets/figures/sec-convergence.png" alt="Comparison of floating-point and fixed-point SEC convergence" loading="lazy" />
+              <figcaption><strong>Precision check.</strong> Behavioral convergence is the gate between the compensation concept and the hardware widths.</figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-teal">
+        <div class="section-head">
+          <p class="kicker">04 · Circuit co-design</p>
+          <h2>Correct the array without ignoring the sensor.</h2>
+          <p>SEC addresses structured array error, but static mismatch and PVT sensitivity in the column sensor can still consume the available signal margin. The offset-compensated current sensor (OCCS) therefore changes both the level-shifting element and the operating sequence.</p>
+        </div>
+        <div class="three-col">
+          <article class="card"><span class="number">AUTO-ZERO</span><h3>Capture static offset</h3><p class="muted">An auto-zero phase stores mismatch before the array current is evaluated.</p></article>
+          <article class="card"><span class="number">RESISTIVE SHIFT</span><h3>Reduce PVT dependence</h3><p class="muted">A resistor replaces the prior transistor level shifter to stabilize the sensing bias.</p></article>
+          <article class="card"><span class="number">EVALUATE</span><h3>Resolve a small current step</h3><p class="muted">The evaluation phase presents an offset-reduced signal to the 6-bit SAR conversion path.</p></article>
+        </div>
+        <div class="callout" style="margin-top:38px">
+          <strong>Simulation boundary</strong>
+          <p>The reported 3.8%–8.4% bitline-voltage variation and roughly 17% OCCS area overhead are Monte Carlo circuit-simulation results. They are not direct measurements of the fabricated macro.</p>
+        </div>
+      </section>
+
+      <section class="section section-white">
+        <div class="section-head">
+          <p class="kicker">05 · Integrated macro</p>
+          <h2>Preserve the signal definition across memory, conversion, and correction.</h2>
+          <p>Each ADC column combines four binary-weighted physical columns. Differential MRAM storage and wordline selection implement signed 1-bit-input × 4-bit-weight operations; multibit activations are evaluated bit-serially.</p>
+        </div>
+        <figure class="figure-frame">
+          <img src="assets/figures/macro-architecture.png" alt="Full MRAM IMC macro with memory array, OCCS, SAR ADC, SEC, and control blocks" loading="lazy" />
+          <figcaption><strong>Macro signal chain.</strong> 512 × 512 physical cells feed 128 ADC columns, each with sensing, 6-bit conversion, SEC-related data handling, and local sequencing.</figcaption>
+        </figure>
+        <div class="result-grid" style="margin-top:32px">
+          <article><span class="claim-badge">Fabricated</span><strong>48.7%</strong><span>Core area occupied by ADC columns.</span></article>
+          <article><span class="claim-badge">Fabricated</span><strong>7.9%</strong><span>Core area occupied by the MRAM array.</span></article>
+          <article><span class="claim-badge">Fabricated</span><strong>12.2%</strong><span>SEC area overhead in this implementation.</span></article>
+          <article><span class="claim-badge">Projected</span><strong>3.7%</strong><span>Possible SEC overhead with register storage replaced by SRAM.</span></article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <p class="kicker">Design review checklist</p>
+          <h2>Questions that carried from model to layout.</h2>
+        </div>
+        <div class="two-col">
+          <ul class="checklist">
+            <li>Is each modeled nonideality physical, calibrated, and separable from numerical quantization?</li>
+            <li>Does the compensation structure scale with rows and columns more slowly than a full α matrix?</li>
+            <li>Do fixed-point widths preserve convergence across the expected range, not only one seed?</li>
+            <li>Are saturation, rounding, reset, and update ordering defined at bit accuracy?</li>
+          </ul>
+          <ul class="checklist">
+            <li>Can the sensor resolve the post-parasitic current step across PVT and mismatch?</li>
+            <li>Are physical 1T1R cells and logical differential 2T2R weights distinguished in verification?</li>
+            <li>Can every internal training and inference mode be reached through the test interface?</li>
+            <li>Does the measurement plan estimate noise and distortion over comparable code populations?</li>
+          </ul>
+        </div>
+      </section>
+    </main>

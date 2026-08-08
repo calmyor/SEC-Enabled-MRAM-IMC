@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#071b22" />
+    <meta name="description" content="Calibration, code-conditioned sampling, SNDR reconstruction, SEC evaluation, and bounded application results." />
+    <link rel="canonical" href="https://calmyor.github.io/SEC-Enabled-MRAM-IMC/measurements.html" />
+    <meta property="og:title" content="Measurement methodology and results · SEC–MRAM IMC" />
+    <meta property="og:description" content="Calibration, code-conditioned sampling, SNDR reconstruction, SEC evaluation, and bounded application results." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://calmyor.github.io/SEC-Enabled-MRAM-IMC/measurements.html" />
+    <meta property="og:image" content="https://calmyor.github.io/SEC-Enabled-MRAM-IMC/assets/og.png" />
+    <meta property="og:image:alt" content="SEC–MRAM IMC: from behavioral model to measured 22 nm silicon." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"ScholarlyArticle","name":"Compute SNDR-Boosted 22-nm MRAM-Based In-Memory Computing Macro Using Statistical Error Compensation","author":[{"@type":"Person","name":"Saion K. Roy"},{"@type":"Person","name":"Han-Mo Ou"},{"@type":"Person","name":"Mostafa G. Ahmed"},{"@type":"Person","name":"Peter Deaville"},{"@type":"Person","name":"Bonan Zhang"},{"@type":"Person","name":"Naveen Verma"},{"@type":"Person","name":"Pavan K. Hanumolu"},{"@type":"Person","name":"Naresh R. Shanbhag"}],"isPartOf":{"@type":"Periodical","name":"IEEE Journal of Solid-State Circuits"},"identifier":"https://doi.org/10.1109/JSSC.2024.3442013","url":"https://calmyor.github.io/SEC-Enabled-MRAM-IMC/measurements.html"}</script>
+    <script src="app.js" defer></script>
+    <title>Measurement methodology and results · SEC–MRAM IMC</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="SEC–MRAM IMC overview">
+        <span class="brand-icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <span><strong>SEC–MRAM IMC</strong><small>Model → silicon → measurement</small></span>
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <nav id="site-nav" class="site-nav" aria-label="Project sections">
+          <a href="index.html">Overview</a>
+          <a href="design.html">Design</a>
+          <a href="tapeout.html">Tapeout</a>
+          <a href="test-platform.html">Test platform</a>
+          <a href="measurements.html" aria-current="page">Measurements</a>
+          <a href="repository.html">Repository</a>
+          <a href="papers.html">Papers</a>
+      </nav>
+      <a class="repo-link" href="https://github.com/calmyor/SEC-Enabled-MRAM-IMC">GitHub <span aria-hidden="true">↗</span></a>
+    </header>
+    <main id="main">
+      <header class="page-hero">
+        <p class="breadcrumb">Overview / Measurements</p>
+        <p class="eyebrow">Calibration · sampling · SNDR · application boundary</p>
+        <h1>A measurement is a protocol, not a plotted point.</h1>
+        <p>Compute SNDR must capture both temporal noise and state-dependent distortion over an impossibly large digital state space. The methodology makes that estimation tractable while keeping calibration, sampling, weighting, and repeated trials explicit.</p>
+      </header>
+
+      <section class="section section-white">
+        <div class="section-head">
+          <p class="kicker">01 · Per-column calibration</p>
+          <h2>Calibrate gain and offset before attributing residual error.</h2>
+          <p>Raw 6-bit ADC output ŷ is mapped to the ideal dot product y₀ with an affine MMSE fit computed off-chip for each physical ADC column. SEC-on evaluation additionally applies the learned output normalization θ.</p>
+        </div>
+        <div class="two-col">
+          <div>
+            <div class="equation">ỹ = <span class="theta">θ</span>(aŷ + b)</div>
+            <table class="spec-table" aria-label="Affine calibration equations">
+              <tbody>
+                <tr><th>Gain</th><td><span class="mono">a = Cov(y₀, ŷ) / Var(ŷ)</span></td></tr>
+                <tr><th>Offset</th><td><span class="mono">b = E[y₀] − aE[ŷ]</span></td></tr>
+                <tr><th>SEC off</th><td>θ = 1</td></tr>
+                <tr><th>SEC on</th><td>θ includes the SEC output normalization defined for the measured configuration.</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="callout">
+            <strong>Avoid calibration leakage.</strong>
+            <p>Fit a and b on a designated calibration dataset, freeze them, and evaluate SNDR on separately identified measurement records. Store the fit population, column ID, configuration digest, coefficients, units, and analysis commit with every result.</p>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-dark">
+        <div class="section-head">
+          <p class="kicker">02 · State-space reduction</p>
+          <h2>Sample configurations within every ideal output code.</h2>
+          <p>A binary N-dimensional dot product has 2²ᴺ weight/input configurations. The method groups configurations that yield the same ideal output code c, fixes the weight vector to all ones, randomly selects 30 activation states per code, and repeats every state K = 10 times.</p>
+        </div>
+        <div class="protocol-calculator" data-protocol-calculator>
+          <h3>Protocol scale calculator</h3>
+          <p class="muted">Defaults reproduce the N = 64 protocol over 65 reachable ±1 dot-product codes and eight measured ADC columns.</p>
+          <div class="calculator-grid">
+            <label>States per code<input name="states" type="number" min="1" value="30" /></label>
+            <label>Repeats per state<input name="repeats" type="number" min="1" value="10" /></label>
+            <label>Reachable codes<input name="codes" type="number" min="1" value="65" /></label>
+            <label>ADC columns<input name="columns" type="number" min="1" value="8" /></label>
+          </div>
+          <div class="calculator-output" aria-live="polite">
+            <div><strong data-per-code>300</strong><span>measurements / code / column</span></div>
+            <div><strong data-per-column>19,500</strong><span>measurements / column</span></div>
+            <div><strong data-total>156,000</strong><span>total captures</span></div>
+          </div>
+        </div>
+        <div class="three-col" style="margin-top:36px">
+          <article class="card"><span class="number">WITHIN STATE</span><h3>Repeated noise</h3><p class="muted">Ten captures of the same state expose temporal variation without conflating it with spatial pattern dependence.</p></article>
+          <article class="card"><span class="number">WITHIN CODE</span><h3>Pattern distortion</h3><p class="muted">Thirty distinct row patterns with the same ideal result expose parasitic location dependence.</p></article>
+          <article class="card"><span class="number">ACROSS CODES</span><h3>Operating range</h3><p class="muted">Code-conditioned MSE is weighted by the assumed ideal-output distribution to form column SNDR.</p></article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <p class="kicker">03 · Compute SNDR</p>
+          <h2>Keep the population definition beside the number.</h2>
+          <p>For each ideal code c, the squared residuals of calibrated output ỹ are averaged over sampled states and repeated activations. Column SNDR compares the ideal-output variance with the probability-weighted sum of those code-conditioned errors.</p>
+        </div>
+        <div class="two-col">
+          <div>
+            <div class="equation">MSE<sub>code</sub>(c) = mean[(ỹ − c)²]</div>
+            <div class="equation">SNDR<sub>col</sub> = 10 log₁₀ { Var(y₀) / Σ<sub>c</sub> MSE<sub>code</sub>(c)P(c) }</div>
+          </div>
+          <div>
+            <h3>Result record must include</h3>
+            <ul class="checklist">
+              <li>Dot-product dimension N and reachable code set.</li>
+              <li>Weight policy, state-selection seed, states/code, and repeats/state.</li>
+              <li>ADC precision, column IDs, voltage, clock, and operating mode.</li>
+              <li>Calibration split and per-column gain/offset/normalization.</li>
+              <li>Ideal-code probability model P(c).</li>
+              <li>SEC state/version and whether learning or inference was active.</li>
+              <li>Raw-data and analysis-code checksums.</li>
+            </ul>
+          </div>
+        </div>
+        <figure class="figure-frame figure-wide">
+          <img src="assets/figures/code-error.png" alt="Measured MRAM ADC outputs with one-sigma error bars across ideal dot-product codes for dimensions 64 and 128" loading="lazy" />
+          <figcaption><strong>Code-dependent error.</strong> Calibrated output distributions broaden and distort across the operating range; a single RMS value from one input pattern would miss this structure.</figcaption>
+        </figure>
+      </section>
+
+      <section class="section section-white">
+        <div class="section-head">
+          <p class="kicker">Measured silicon</p>
+          <h2>SEC improves the quality–energy operating frontier.</h2>
+          <p>All headline values below are measured unless marked otherwise. The SNDR range spans multiple dimensions, clock conditions, and ADC precisions; it should not be reduced to one universal operating point.</p>
+        </div>
+        <div class="result-grid">
+          <article><span class="claim-badge">Measured</span><strong>5.15 dB</strong><span>Column SNDR at N = 64 before SEC in the reported characterization.</span></article>
+          <article><span class="claim-badge">Measured</span><strong>0.77 dB</strong><span>Column SNDR at N = 128 before SEC as line resistance and noise increase.</span></article>
+          <article><span class="claim-badge">Measured · N=64</span><strong>4 → 9.15 dB</strong><span>Average over eight ADC columns before and after SEC.</span></article>
+          <article><span class="claim-badge">Measured range</span><strong>2.7–6 dB</strong><span>SEC-enabled improvement across evaluated operating points.</span></article>
+          <article><span class="claim-badge">Trade-off</span><strong>5×</strong><span>Energy reduction per 1-bit operation at iso-SNDR.</span></article>
+          <article><span class="claim-badge">Measured · N=64</span><strong>0.8%</strong><span>SEC energy overhead for the reported N = 64 condition.</span></article>
+          <article><span class="claim-badge">Measured · N=128</span><strong>1.8%</strong><span>SEC energy overhead for the reported N = 128 condition.</span></article>
+          <article><span class="claim-badge">Fabricated</span><strong>12.2%</strong><span>SEC area overhead; the 3.7% SRAM option is a projection.</span></article>
+        </div>
+        <figure class="figure-frame figure-wide">
+          <img src="assets/figures/sndr-columns.png" alt="Measured SNDR across eight ADC columns before and after statistical error compensation" loading="lazy" />
+          <figcaption><strong>Across-column result.</strong> At N = 64, the journal reports average SNDR increasing from 4 dB to 9.15 dB across eight measured columns.</figcaption>
+        </figure>
+      </section>
+
+      <section class="section section-teal">
+        <div class="section-head">
+          <p class="kicker">Application experiment</p>
+          <h2>One measured layer, with a clear boundary.</h2>
+          <p>The CIFAR-10 experiment trains a 4-bit-weight ResNet-20 in software, quantizes 1,000 test inputs to 7 bit, and maps only the final fully connected layer to the measured MRAM macro. It does not map the complete network on-chip and does not use network-specific noise-aware training.</p>
+        </div>
+        <div class="three-col">
+          <article class="card"><span class="number">DIGITAL BASELINE</span><h3>91.1%</h3><p class="muted">Top-1 accuracy for the fixed-point digital reference on the 1,000-input evaluation.</p></article>
+          <article class="card"><span class="number">HARDWARE · SEC OFF</span><h3>74.8% ±5%</h3><p class="muted">Measured top-1 accuracy; ±5 percentage points at 90% confidence.</p></article>
+          <article class="card"><span class="number">HARDWARE · SEC ON</span><h3>82.0% ±5%</h3><p class="muted">Measured top-1 accuracy after SEC, under the same stated confidence convention.</p></article>
+        </div>
+        <div class="callout" style="margin-top:38px">
+          <strong>What this supports</strong>
+          <p>The result shows that task-agnostic bank-level SNDR improvement can recover part of the last-layer accuracy loss without network-specific noise-aware training. It does not establish full-network equivalence to digital inference; a material gap remains after SEC.</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="two-col">
+          <div>
+            <p class="kicker">Runnable method demo</p>
+            <h2>Exercise the analysis without pretending to emulate the chip.</h2>
+            <p>The repository’s standard-library Python package generates deterministic protocol requests, fits independent affine calibration per column, computes code-conditioned SNDR, and demonstrates an illustrative correction-factor learner on synthetic data.</p>
+            <p><a class="button button-dark" href="repository.html">Run the method demo</a></p>
+          </div>
+          <div class="callout">
+            <strong>Synthetic means synthetic.</strong>
+            <p>Demo outputs are software checks for method and packaging. They are never presented as measured silicon, cycle-accurate controller behavior, an FPGA overlay, or a reproduction of proprietary hardware.</p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <a class="footer-brand" href="index.html">SEC–MRAM IMC</a>
+        <p>Statistical error compensation for a measured 22 nm MRAM in-memory-computing macro.</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://doi.org/10.1109/ESSCIRC59616.2023.10268688">ESSCIRC 2023 <span aria-hidden="true">↗</span></a>
+        <a href="https://doi.org/10.1109/JSSC.2024.3442013">JSSC extension <span aria-hidden="true">↗</span></a>
+        <a href="repository.html">Reproducibility</a>
+      </div>
+      <p class="footer-note">© <span data-current-year>2026</span> The authors. Paper figures are reproduced for this research artifact.</p>
+    </footer>
+  </body>
+</html>

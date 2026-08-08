@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#071b22" />
+    <meta name="description" content="The host-to-silicon measurement stack: Python control, PYNQ-Z2, custom PCB, package, power, and bring-up." />
+    <link rel="canonical" href="https://calmyor.github.io/SEC-Enabled-MRAM-IMC/test-platform.html" />
+    <meta property="og:title" content="PCB and PYNQ test platform · SEC–MRAM IMC" />
+    <meta property="og:description" content="The host-to-silicon measurement stack: Python control, PYNQ-Z2, custom PCB, package, power, and bring-up." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://calmyor.github.io/SEC-Enabled-MRAM-IMC/test-platform.html" />
+    <meta property="og:image" content="https://calmyor.github.io/SEC-Enabled-MRAM-IMC/assets/og.png" />
+    <meta property="og:image:alt" content="SEC–MRAM IMC: from behavioral model to measured 22 nm silicon." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+    <script type="application/ld+json">{"@context":"https://schema.org","@type":"ScholarlyArticle","name":"Compute SNDR-Boosted 22-nm MRAM-Based In-Memory Computing Macro Using Statistical Error Compensation","author":[{"@type":"Person","name":"Saion K. Roy"},{"@type":"Person","name":"Han-Mo Ou"},{"@type":"Person","name":"Mostafa G. Ahmed"},{"@type":"Person","name":"Peter Deaville"},{"@type":"Person","name":"Bonan Zhang"},{"@type":"Person","name":"Naveen Verma"},{"@type":"Person","name":"Pavan K. Hanumolu"},{"@type":"Person","name":"Naresh R. Shanbhag"}],"isPartOf":{"@type":"Periodical","name":"IEEE Journal of Solid-State Circuits"},"identifier":"https://doi.org/10.1109/JSSC.2024.3442013","url":"https://calmyor.github.io/SEC-Enabled-MRAM-IMC/test-platform.html"}</script>
+    <script src="app.js" defer></script>
+    <title>PCB and PYNQ test platform · SEC–MRAM IMC</title>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="SEC–MRAM IMC overview">
+        <span class="brand-icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+        <span><strong>SEC–MRAM IMC</strong><small>Model → silicon → measurement</small></span>
+      </a>
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
+      <nav id="site-nav" class="site-nav" aria-label="Project sections">
+          <a href="index.html">Overview</a>
+          <a href="design.html">Design</a>
+          <a href="tapeout.html">Tapeout</a>
+          <a href="test-platform.html" aria-current="page">Test platform</a>
+          <a href="measurements.html">Measurements</a>
+          <a href="repository.html">Repository</a>
+          <a href="papers.html">Papers</a>
+      </nav>
+      <a class="repo-link" href="https://github.com/calmyor/SEC-Enabled-MRAM-IMC">GitHub <span aria-hidden="true">↗</span></a>
+    </header>
+    <main id="main">
+      <header class="page-hero">
+        <p class="breadcrumb">Overview / Test platform</p>
+        <p class="eyebrow">Python host · PYNQ-Z2 · custom PCB · QFN64</p>
+        <h1>Build a trustworthy path from a script to silicon.</h1>
+        <p>The test platform had to exercise scan, read/write, MVM, ADC capture, and SEC modes while preserving voltage, timing, and raw-data provenance. The result is a four-layer control stack whose interfaces can be tested independently.</p>
+      </header>
+
+      <section class="section section-white">
+        <div class="section-head">
+          <p class="kicker">System stack</p>
+          <h2>Separate experiment intent from electrical transport.</h2>
+          <p>Each layer has a distinct responsibility. That separation makes a failing experiment diagnosable: a protocol error should not be confused with a DMA fault, a pin-map error, or a power-integrity problem.</p>
+        </div>
+        <div class="stack" aria-label="Measurement control stack">
+          <article><code>LAYER 01</code><h3>Python host</h3><p>Declares experiment state, seeds, repetitions, metadata, calibration, and analysis.</p></article>
+          <article><code>LAYER 02</code><h3>PYNQ-Z2</h3><p>Loads the overlay, transports command/data words, sequences digital timing, and captures results.</p></article>
+          <article><code>LAYER 03</code><h3>Custom PCB</h3><p>Maps headers to QFN64, distributes rails and references, decouples, and exposes safe checkpoints.</p></article>
+          <article><code>LAYER 04</code><h3>MRAM IMC</h3><p>Executes memory, conversion, MVM, and SEC operations and returns raw observable state.</p></article>
+        </div>
+        <figure class="figure-frame figure-wide">
+          <img src="assets/figures/measurement-setup.png" alt="Annotated measurement setup connecting a Python host, PYNQ-Z2 board, test PCB, and MRAM IMC chip" loading="lazy" />
+          <figcaption><strong>Measured-silicon setup.</strong> Control and capture run from a Python host through a PYNQ-Z2 FPGA to the test board and packaged macro.</figcaption>
+        </figure>
+      </section>
+
+      <section class="section section-dark">
+        <div class="two-col">
+          <div class="section-head">
+            <p class="kicker">PCB design</p>
+            <h2>The board is part of the measurement instrument.</h2>
+            <p>The final test hardware targets a 64-pin QFN package. Its public documentation focuses on design intent and bring-up evidence; the editable board sources found in the working archive correspond to an older TO2/QFN80 revision and are not presented as the final TO3 design.</p>
+          </div>
+          <figure class="figure-frame">
+            <img src="assets/figures/pcb-front.png" alt="Front rendering of the purple custom MRAM IMC test printed circuit board" loading="lazy" />
+            <figcaption><strong>Final-board rendering.</strong> A sanitized visual is published; supplier carts, order records, personal details, and obsolete design revisions are excluded.</figcaption>
+          </figure>
+        </div>
+        <div class="four-col" style="margin-top:44px">
+          <article class="card"><span class="number">POWER</span><h3>Make safe states explicit</h3><p class="muted">Name every rail, return path, current limit, ramp order, decoupling role, and expected unconfigured draw.</p></article>
+          <article class="card"><span class="number">SIGNAL</span><h3>Preserve timing and references</h3><p class="muted">Control clock/scan edges, level compatibility, ground continuity, crosstalk, and analog-reference quietness.</p></article>
+          <article class="card"><span class="number">ACCESS</span><h3>Probe without perturbing</h3><p class="muted">Expose checkpoints for rails, clocks, reset, and critical modes while managing stub and loading effects.</p></article>
+          <article class="card"><span class="number">TRACE</span><h3>Bind revision to silicon</h3><p class="muted">Record board revision, assembly variant, package/lot, modifications, overlay hash, and measurement run together.</p></article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <p class="kicker">Board review</p>
+          <h2>Checks before assembly and before power.</h2>
+        </div>
+        <div class="two-col">
+          <div>
+            <h3>Design-release checklist</h3>
+            <ul class="checklist">
+              <li>QFN64 orientation and pin-one convention match the bond map.</li>
+              <li>Every package pin maps to one net, no-connect, or documented reserve.</li>
+              <li>Rail names and nominal/absolute limits agree across chip, schematic, BOM, and scripts.</li>
+              <li>Interface voltage levels and FPGA bank constraints are compatible.</li>
+              <li>Decoupling values and placement are reviewed by rail and load step.</li>
+              <li>Return-current paths remain continuous across connector and plane transitions.</li>
+              <li>Testpoints are labeled and do not compromise sensitive nodes.</li>
+              <li>Fabrication outputs, drill files, stackup, BOM, and assembly drawing share one revision.</li>
+            </ul>
+          </div>
+          <div>
+            <h3>Unpowered inspection checklist</h3>
+            <ul class="checklist">
+              <li>Visual inspection, package orientation, polarity, solder bridges, and rework log.</li>
+              <li>Resistance-to-ground and rail-to-rail screening against expected ranges.</li>
+              <li>Continuity from FPGA header to key package pins.</li>
+              <li>External supplies set to zero volts with conservative current limits.</li>
+              <li>FPGA I/O held in a defined high-impedance or safe reset state.</li>
+              <li>Oscilloscope/DMM ground strategy reviewed before attaching probes.</li>
+              <li>Board ID, chip ID, operator, time, instruments, and ambient recorded.</li>
+              <li>Stop conditions and shutdown order visible at the bench.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-teal">
+        <div class="two-col">
+          <figure class="figure-frame">
+            <img src="assets/figures/open-lid-chips.jpg" alt="Multiple packaged MRAM IMC test chips, including open-lid packages showing the bonded die" loading="lazy" />
+            <figcaption><strong>Packaged parts.</strong> Open-lid packages make die orientation and wire-bond inspection possible before electrical diagnosis.</figcaption>
+          </figure>
+          <div>
+            <p class="kicker">Bring-up ladder</p>
+            <h2>Increase complexity only after the prior invariant holds.</h2>
+            <ol class="checklist">
+              <li>Apply rails under current limit; verify voltage and quiescent current.</li>
+              <li>Assert/reset controls; confirm no unsafe pin contention.</li>
+              <li>Validate clock and static GPIO at slow speed.</li>
+              <li>Shift a known scan pattern and verify loopback/PASS behavior.</li>
+              <li>Read and write one controlled row; repeat after reset.</li>
+              <li>Capture raw ADC codes for deterministic low/high states.</li>
+              <li>Run a small MVM vector with an analytically known ideal code.</li>
+              <li>Only then automate calibration, SEC, and statistical sweeps.</li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <section class="section section-white">
+        <div class="section-head">
+          <p class="kicker">PYNQ control plane</p>
+          <h2>Version the overlay as experimental equipment.</h2>
+          <p>Audited hardware metadata identifies a PYNQ-Z2 (XC7Z020) overlay built with Vivado 2022.2, a 100 MHz design, AXI DMA, and custom all-pin test logic. Notebooks exercise all-pin scan, read/write, MVM capture, SEC runs, and network evaluation.</p>
+        </div>
+        <div class="three-col">
+          <article class="card"><span class="number">DISCOVER</span><h3>Overlay self-check</h3><p>Confirm board, bitstream/HWH pairing, clock rate, DMA topology, register signature, and a known loopback before chip access.</p></article>
+          <article class="card"><span class="number">TRANSPORT</span><h3>Typed command framing</h3><p>Define word width, endianness, opcode, payload length, timeout, and returned status. Reject partial or stale transfers.</p></article>
+          <article class="card"><span class="number">PROVENANCE</span><h3>Hash every binary</h3><p>Record overlay digest, PYNQ image, Python/package versions, notebook/script commit, pin-map revision, and clock configuration.</p></article>
+        </div>
+        <div class="callout" style="margin-top:40px">
+          <strong>Rebuildability boundary</strong>
+          <p>The archive contains bit/HWH files and notebooks, but not the complete custom RTL, XDC constraints, Vivado project, or build Tcl needed to regenerate the overlay. Binary release therefore requires ownership approval and a version/checksum manifest; the repository does not claim an open rebuildable FPGA design.</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <p class="kicker">Software construction</p>
+          <h2>Turn notebooks into an auditable measurement framework.</h2>
+          <p>The historical scripts prove that the experiments were executed, but several embed machine-specific serial/VISA resources and fixed filenames. The public architecture separates configuration, transport, protocol, acquisition, and analysis.</p>
+        </div>
+        <div class="research-chain">
+          <article><span class="step">CONFIG</span><h3>Describe hardware</h3><p>Board/chip IDs, endpoints, rail limits, clock, overlay checksum, and instrument resources live in validated configuration.</p></article>
+          <article><span class="step">DRIVER</span><h3>Move typed data</h3><p>FPGA, serial, DMA, and instrument drivers expose bounded operations with timeouts and returned status.</p></article>
+          <article><span class="step">PROTOCOL</span><h3>Declare a run</h3><p>Scan, read/write, MVM, calibration, and SEC sequences are pure plans with seeds and stop conditions.</p></article>
+          <article><span class="step">ACQUIRE</span><h3>Keep raw evidence</h3><p>Append-only records store command, response, timestamp, units, configuration digest, and fault state.</p></article>
+          <article><span class="step">ANALYZE</span><h3>Derive results</h3><p>Calibration and SNDR analysis consume versioned raw data and emit provenance, never silently overwriting it.</p></article>
+        </div>
+        <p class="provenance" style="margin-top:30px"><strong>Repository status:</strong> a standard-library method package demonstrates sampling, affine calibration, and SNDR analysis. It deliberately does not emulate proprietary chip control or claim to replace the original hardware notebooks. <a href="repository.html">See the artifact map →</a></p>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <a class="footer-brand" href="index.html">SEC–MRAM IMC</a>
+        <p>Statistical error compensation for a measured 22 nm MRAM in-memory-computing macro.</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://doi.org/10.1109/ESSCIRC59616.2023.10268688">ESSCIRC 2023 <span aria-hidden="true">↗</span></a>
+        <a href="https://doi.org/10.1109/JSSC.2024.3442013">JSSC extension <span aria-hidden="true">↗</span></a>
+        <a href="repository.html">Reproducibility</a>
+      </div>
+      <p class="footer-note">© <span data-current-year>2026</span> The authors. Paper figures are reproduced for this research artifact.</p>
+    </footer>
+  </body>
+</html>

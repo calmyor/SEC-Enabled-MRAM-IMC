@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://calmyor.github.io/SEC-Enabled-MRAM-IMC/data/schema.json",
+  "title": "SEC-MRAM IMC measurement record",
+  "description": "Proposed schema for one de-identified raw or derived measurement record.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "run_id",
+    "timestamp_utc",
+    "configuration",
+    "protocol",
+    "sample",
+    "provenance"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0.0" },
+    "run_id": { "type": "string", "pattern": "^[A-Za-z0-9._-]+$" },
+    "timestamp_utc": { "type": "string", "format": "date-time" },
+    "configuration": {
+      "type": "object",
+      "required": ["chip_alias", "board_revision", "overlay_sha256", "supply_v", "clock_hz", "dot_product_dimension", "adc_bits", "sec_mode"],
+      "properties": {
+        "chip_alias": { "type": "string" },
+        "board_revision": { "type": "string" },
+        "overlay_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "supply_v": { "type": "number" },
+        "clock_hz": { "type": "number" },
+        "dot_product_dimension": { "type": "integer", "minimum": 1 },
+        "adc_bits": { "type": "integer", "minimum": 1 },
+        "sec_mode": { "enum": ["off", "learn", "on"] }
+      },
+      "additionalProperties": true
+    },
+    "protocol": {
+      "type": "object",
+      "required": ["name", "seed", "states_per_code", "repeats_per_state", "weight_policy"],
+      "properties": {
+        "name": { "type": "string" },
+        "seed": { "type": "integer" },
+        "states_per_code": { "type": "integer", "minimum": 1 },
+        "repeats_per_state": { "type": "integer", "minimum": 1 },
+        "weight_policy": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "sample": {
+      "type": "object",
+      "required": ["adc_column", "ideal_code", "state_id", "repeat_index", "raw_adc_code", "fault_status"],
+      "properties": {
+        "adc_column": { "type": "integer", "minimum": 0 },
+        "ideal_code": { "type": "number" },
+        "state_id": { "type": "string" },
+        "repeat_index": { "type": "integer", "minimum": 0 },
+        "raw_adc_code": { "type": "integer" },
+        "fault_status": { "type": ["string", "null"] }
+      }
+    },
+    "calibration": {
+      "type": ["object", "null"],
+      "properties": {
+        "calibration_run_id": { "type": "string" },
+        "gain": { "type": "number" },
+        "offset": { "type": "number" },
+        "theta": { "type": "number" }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["host_software_commit", "record_sha256"],
+      "properties": {
+        "host_software_commit": { "type": "string" },
+        "record_sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+        "instrument_aliases": { "type": "array", "items": { "type": "string" } }
+      }
+    }
+  },
+  "additionalProperties": false
+}
