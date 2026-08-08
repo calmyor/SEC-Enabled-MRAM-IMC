@@ -26,7 +26,7 @@ A full correction matrix would scale with rows × columns. Sharing `gamma_i` acr
 5. Clip/quantize state using the same fixed-point rules as the implemented datapath.
 6. Stop on the defined iteration or convergence rule and freeze the factors.
 
-This phase learns correction state for the hardware. It does **not** update neural-network weights.
+This phase learns correction state for the hardware while neural-network weights remain fixed.
 
 ### Inference phase
 
@@ -47,7 +47,7 @@ Multibit activations are processed bit-serially.
 | Learning rate `mu` | Power of two | Implements scaling with a shift |
 | ADC output | 6 bit | Balances conversion overhead with analog-noise/distortion limits |
 
-The widths come from floating- versus fixed-point convergence studies. They are not generic optimum values for every eNVM array.
+The widths are the implementation point selected by floating- versus fixed-point convergence studies for this macro.
 
 ## Offset-compensated current sensing (OCCS)
 
@@ -58,7 +58,7 @@ SEC addresses structured array nonlinearity; OCCS reduces a different error sour
 - An evaluation phase senses the array current after compensation.
 - The bitline operating point is held more consistently across columns.
 
-The paper reports 3.8%–8.4% bitline-voltage variation and about 17% sensor area overhead from Monte Carlo **simulation**. These are not fabricated-macro measurements.
+**Circuit simulation / Monte Carlo:** the paper reports 3.8%–8.4% bitline-voltage variation and about 17% sensor area overhead for OCCS.
 
 ## Integrated macro organization
 
@@ -69,7 +69,7 @@ The paper reports 3.8%–8.4% bitline-voltage variation and about 17% sensor are
 - 6-bit SAR ADC and local sequencing.
 - SEC processor with 12.2% fabricated area overhead.
 
-The paper projects that replacing register-heavy SEC storage with SRAM could reduce overhead to 3.7%; that number is a projection, not measured silicon.
+**Projection:** replacing register-heavy SEC storage with SRAM reduces the estimated SEC area overhead to 3.7%. The fabricated register-based SEC processor occupies 12.2% overhead.
 
 ## Verification checklist
 

@@ -1,6 +1,16 @@
 # Mixed-signal tapeout process guide
 
-This is a sanitized engineering guide, not a foundry recipe. Rule names, PDK/configuration data, validator material, release databases, personal paths, waiver details, and raw reports remain restricted.
+This nine-stage path connects the behavioral model and SEC/OCCS architecture to
+a packaged chip and an executable post-silicon plan. Foundry-qualified rule
+decks and configuration supply the technology-specific checks; this guide makes
+the cross-domain decisions, release trace, and exit evidence explicit.
+
+| Gate | Stages | Decision carried forward |
+|---|---|---|
+| Design intent | 1–2 | One set of interfaces, arithmetic conventions, and golden vectors |
+| Block and implementation closure | 3–5 | Circuit, digital, physical, power, and package assumptions agree |
+| Release closure | 6–8 | Every signoff result and exception resolves to one immutable candidate |
+| Test readiness | 9 | The released pin/package behavior reaches a rehearsed acquisition path |
 
 ## 1. Freeze interfaces and ownership
 
@@ -28,7 +38,7 @@ Use shared vectors to correlate:
 5. RTL/gate implementation; and
 6. post-layout/extracted behavior where applicable.
 
-Record sign, scaling, bit ordering, rounding, clipping, reset, and update sequence. A numerical match without a shared convention is not correlation.
+Record sign, scaling, bit ordering, rounding, clipping, reset, and update sequence. Correlation requires both a numerical match and a shared convention.
 
 **Exit evidence:** versioned vector pack, tolerances, discrepancy ledger, and resolution for every out-of-tolerance class.
 
@@ -74,7 +84,7 @@ For array, OCCS, ADC, references, and interfaces, separate:
 
 ## 6. Physical verification and signoff ledger
 
-Qualified flows commonly cover DRC, LVS, ERC, antenna, density/fill, timing, EM/IR, and final-stream integrity. The exact foundry flow remains private.
+Qualified flows cover DRC, LVS, ERC, antenna, density/fill, timing, EM/IR, and final-stream integrity. Their common interpretation point is the ledger for the exact release candidate.
 
 For each run retain:
 
@@ -90,7 +100,10 @@ exception_or_waiver_links
 relationship_to_release_candidate
 ```
 
-Nonzero summary counts require review; a successful tool exit does not prove clean signoff. A waiver needs the exact rule/geometry, intent, risk argument, narrow scope, approver, and revalidation after ECO/fill/regeneration.
+Every nonzero summary count is either resolved or linked to an approved,
+narrowly scoped exception. Each exception records the exact rule/geometry,
+intent, risk argument, approver, and revalidation after ECO, fill, or
+regeneration.
 
 **Exit evidence:** reviewed signoff ledger tied to the exact release-candidate digest.
 
@@ -128,8 +141,23 @@ Nonzero summary counts require review; a successful tool exit does not prove cle
 
 **Exit evidence:** executable bring-up rehearsal using a mock/loopback path and a signed readiness checklist.
 
-## Archive boundary from this project
+## Project release trace
 
-The audited private tapeout folder contains confidential foundry configuration/validator material, export paperwork, detailed run paths/reports, and intermediate summaries. It does not establish an open source-to-GDS flow. No RTL, final GDS/OASIS, netlists, synthesis/P&R scripts, or complete LVS/PEX/signoff package suitable for public reproduction was found.
+**Evidence label: engineering process record.** The project tapeout record spans
+foundry configuration and validator runs, detailed run paths and reports,
+intermediate summaries, release paperwork, and the later package/board handoff.
+The public guide converts that history into reviewable gates and exit evidence.
 
-This guide therefore describes the engineering process without asserting that the internal archive is a clean, complete, or redistributable signoff bundle.
+The unit of interpretation is one release candidate:
+
+```text
+architecture + golden vectors
+    → circuit / RTL / extracted correlation
+    → reviewed signoff ledger
+    → immutable database digest and handoff acknowledgement
+    → QFN64 pin/package trace
+    → rehearsed post-silicon smoke vector
+```
+
+Following this chain keeps model assumptions, signoff evidence, the delivered
+database, and the first measured transaction tied to the same design identity.

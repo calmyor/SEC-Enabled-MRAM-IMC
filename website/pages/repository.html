@@ -1,46 +1,91 @@
     <main id="main">
       <header class="page-hero">
         <p class="breadcrumb">Overview / Repository</p>
-        <p class="eyebrow">Curated code · method reproduction · provenance</p>
-        <h1>Publish what can be defended.</h1>
-        <p>The original working archive is large, duplicated, and interleaves research code with foundry material, personal paperwork, vendor packages, raw data, and machine-specific notebooks. This repository is a reviewed public layer—not a bulk mirror.</p>
+        <p class="eyebrow">Design reasoning · runnable methods · engineering record</p>
+        <h1>Explore the design-to-measurement repository.</h1>
+        <p>The repository connects the published architecture to tested code for protocol generation, affine calibration, and code-conditioned SNDR. Design, tapeout, PCB/PYNQ, measurement, and publication notes are organized by the question they answer.</p>
       </header>
+      <div class="thesis-strip" aria-label="Repository page summary">
+        <article><span>Understand</span><strong>Trace row-dependent attenuation into the α, γ, θ factorization and fixed-point SEC/OCCS macro.</strong></article>
+        <article><span>Reproduce</span><strong>Run deterministic state sampling, per-column calibration, and probability-weighted SNDR.</strong></article>
+        <article><span>Extend</span><strong>Use the tapeout, PCB, PYNQ, data-schema, and provenance guides as engineering handoffs.</strong></article>
+      </div>
+
+      <section class="section section-white">
+        <div class="section-head">
+          <p class="kicker">Choose a path</p>
+          <h2>Start from the question you want to answer.</h2>
+        </div>
+        <div class="path-grid">
+          <article class="path-card"><span>Architecture</span><h3>How does SEC correct the array?</h3><p>Follow the behavioral model, α/γ/θ factorization, fixed-point widths, OCCS, and integrated macro.</p><a href="design.html">Open the design story →</a></article>
+          <article class="path-card"><span>Implementation</span><h3>How did the idea become a chip?</h3><p>Walk through model freeze, mixed-signal integration, physical/package closure, and post-silicon readiness.</p><a href="tapeout.html">Open the tapeout story →</a></article>
+          <article class="path-card"><span>Measurement</span><h3>How is compute SNDR estimated?</h3><p>Inspect calibration, 30 × 10 code-conditioned sampling, probability weighting, and measured results.</p><a href="measurements.html">Open the measurement story →</a></article>
+          <article class="path-card"><span>Reproduction</span><h3>What can I run immediately?</h3><p>Generate the protocol, fit independent ADC-column calibration, and compute weighted SNDR on deterministic data.</p><a href="#quick-start">Jump to quick start ↓</a></article>
+        </div>
+      </section>
+
+      <section id="quick-start" class="section section-dark">
+        <div class="section-head">
+          <p class="kicker">Quick start</p>
+          <h2>Run the public measurement method.</h2>
+          <p>The deterministic example generates code-conditioned requests, synthetic column responses, per-column calibration, and final weighted SNDR using the Python standard library.</p>
+        </div>
+        <div class="two-col">
+          <div>
+            <h3>Run the example</h3>
+            <pre class="tree"><code>python3 -m venv .venv
+source .venv/bin/activate
+python3 -m pip install -e .
+python3 examples/protocol_demo.py</code></pre>
+          </div>
+          <div>
+            <h3>Run the tests</h3>
+            <pre class="tree"><code>PYTHONPATH=src python3 -m unittest \
+  discover -s tests -v</code></pre>
+            <h3 style="margin-top:28px">Build the website</h3>
+            <pre class="tree"><code>node scripts/build-site.mjs
+node scripts/validate-site.mjs</code></pre>
+          </div>
+        </div>
+        <div class="evidence-note" style="margin-top:38px">
+          <span class="evidence-type">Output labels</span>
+          <p>Example output is labeled <strong>Synthetic</strong>; prototype values on the site are labeled <strong>Silicon</strong>, <strong>Circuit simulation</strong>, <strong>Behavioral model</strong>, or <strong>Projection</strong>.</p>
+        </div>
+      </section>
 
       <section class="section section-white">
         <div class="section-head">
           <p class="kicker">Repository map</p>
-          <h2>Documentation and executable methods share one provenance spine.</h2>
-          <p>The website is built from editable source into the GitHub Pages <span class="mono">docs/</span> directory. The Python package keeps public analysis methods small, deterministic, tested, and independent of unavailable hardware.</p>
+          <h2>Each directory owns one part of the story.</h2>
+          <p>The editable website builds into <span class="mono">docs/</span>; the Python package implements deterministic sampling, calibration, correction illustration, and weighted compute-SNDR.</p>
         </div>
         <div class="two-col">
           <pre class="tree" aria-label="Repository directory tree"><span class="folder">SEC-Enabled-MRAM-IMC/</span>
 ├── <span class="folder">website/</span>            editable page fragments, CSS, JS, assets
 ├── <span class="folder">docs/</span>               generated GitHub Pages site
-├── <span class="folder">src/sec_mram_imc/</span>  calibration, sampling, SNDR, toy SEC
-├── <span class="folder">examples/</span>           deterministic synthetic protocol demo
+├── <span class="folder">src/sec_mram_imc/</span>  calibration, sampling, SNDR, SEC demo
+├── <span class="folder">examples/</span>           deterministic protocol demonstration
 ├── <span class="folder">tests/</span>              standard-library unit tests
 ├── <span class="folder">measurements/</span>       method and interpretation guide
 ├── <span class="folder">design/</span>             model and SEC/OCCS design notes
-├── <span class="folder">hardware/</span>           PCB/PYNQ release-boundary notes
-├── <span class="folder">tapeout/</span>            sanitized process guide
-├── <span class="folder">papers/</span>             citation and paper-evolution notes
-├── <span class="folder">scripts/</span>            site build and validation
-├── <span class="folder">.github/workflows/</span> Pages + validation automation
-├── <span class="file">CITATION.cff</span>
-├── <span class="file">CONTRIBUTING.md</span>
-├── <span class="file">LICENSE</span>
-└── <span class="file">README.md</span></pre>
+├── <span class="folder">hardware/</span>           PCB and PYNQ engineering guides
+├── <span class="folder">tapeout/</span>            mixed-signal process guide
+├── <span class="folder">data/</span>               measurement schema and release pattern
+├── <span class="folder">papers/</span>             citations and paper evolution
+├── <span class="folder">provenance/</span>         artifact and visual manifests
+└── <span class="folder">.github/workflows/</span> validation and Pages deployment</pre>
           <div>
             <div class="callout">
-              <strong>Design rule for the repository</strong>
-              <p>Every artifact is labeled as public source, sanitized derivative, hardware-dependent, or restricted/unavailable. A file’s presence in the private working archive is not permission to redistribute it.</p>
+              <strong>How to read every number</strong>
+              <p>A compact evidence label identifies the source of each result, while the adjacent condition identifies N, ADC columns, clock/precision, sample population, or application mapping.</p>
             </div>
             <table class="spec-table" style="margin-top:24px" aria-label="Repository evidence classes">
               <tbody>
-                <tr><th>Measured</th><td>Values reported from the fabricated macro and tied to a paper figure or method.</td></tr>
-                <tr><th>Simulated</th><td>Behavioral/circuit evidence clearly separated from measured silicon.</td></tr>
-                <tr><th>Projected</th><td>Design alternatives such as SRAM-based SEC storage, not fabricated claims.</td></tr>
-                <tr><th>Synthetic</th><td>Toy data produced by the public demonstration package.</td></tr>
+                <tr><th>Silicon</th><td>Measured on the fabricated 22 nm macro under the stated protocol.</td></tr>
+                <tr><th>Circuit simulation</th><td>Transistor-level PVT, mismatch, and Monte Carlo evidence.</td></tr>
+                <tr><th>Behavioral model</th><td>Parasitic-aware array and fixed-point SEC studies.</td></tr>
+                <tr><th>Projection</th><td>Estimated implementation alternative, such as SRAM-backed SEC storage.</td></tr>
+                <tr><th>Synthetic</th><td>Deterministic input generated by the runnable method example.</td></tr>
               </tbody>
             </table>
           </div>
@@ -49,68 +94,39 @@
 
       <section class="section">
         <div class="section-head">
-          <p class="kicker">Artifact availability</p>
-          <h2>Filter the release boundary.</h2>
-          <p>“Restricted” includes proprietary, identifying, incomplete, or unlicensed material. It describes provenance honestly; it is not an invitation to request foundry-confidential files.</p>
+          <p class="kicker">Artifact map</p>
+          <h2>Choose what you want to inspect or run.</h2>
         </div>
-        <div class="filter-bar" aria-label="Filter artifacts by release tier">
+        <div class="filter-bar" aria-label="Filter artifacts by engineering topic">
           <button type="button" data-artifact-filter="all" aria-pressed="true">All</button>
-          <button type="button" data-artifact-filter="public" aria-pressed="false">Public source</button>
-          <button type="button" data-artifact-filter="derived" aria-pressed="false">Sanitized derivative</button>
-          <button type="button" data-artifact-filter="restricted" aria-pressed="false">Restricted / unavailable</button>
+          <button type="button" data-artifact-filter="design" aria-pressed="false">Design</button>
+          <button type="button" data-artifact-filter="hardware" aria-pressed="false">Hardware</button>
+          <button type="button" data-artifact-filter="measurement" aria-pressed="false">Measurements</button>
+          <button type="button" data-artifact-filter="papers" aria-pressed="false">Papers</button>
         </div>
         <div class="artifact-grid">
-          <article class="artifact-card" data-tier="public"><span class="tier">Public source</span><h3>Measurement-method package</h3><p>Affine per-column MMSE calibration, deterministic state/repetition sampling, weighted code-conditioned SNDR, and tested result objects.</p></article>
-          <article class="artifact-card" data-tier="public"><span class="tier">Public source</span><h3>Synthetic SEC illustration</h3><p>An educational multiplicative correction learner with an explicit warning that it is not controller RTL, firmware, or measured data.</p></article>
-          <article class="artifact-card" data-tier="public"><span class="tier">Public source</span><h3>Engineering documentation</h3><p>Design reasoning, tapeout gates, board review, bring-up ladder, protocol, claim boundaries, citations, and provenance.</p></article>
-          <article class="artifact-card" data-tier="derived"><span class="tier">Sanitized derivative</span><h3>Paper figures and board visual</h3><p>Selected research figures and a final-board rendering, stripped of personal, supplier, and confidential process collateral.</p></article>
-          <article class="artifact-card" data-tier="derived"><span class="tier">Sanitized derivative</span><h3>PCB design guide</h3><p>Public rail/signal, pin-map, revision, and bring-up principles. The older editable TO2/QFN80 source is not mislabeled as the final TO3/QFN64 board.</p></article>
-          <article class="artifact-card" data-tier="derived"><span class="tier">Sanitized derivative</span><h3>Tapeout process guide</h3><p>Newly authored phase and review guidance without foundry rule names, paths, configuration data, waiver details, or release databases.</p></article>
-          <article class="artifact-card" data-tier="restricted"><span class="tier">Restricted / unavailable</span><h3>ASIC implementation</h3><p>No public RTL-to-GDS flow is present. PDKs, configuration files, validator material, GDS/OASIS, netlists, raw signoff output, and waivers stay private.</p></article>
-          <article class="artifact-card" data-tier="restricted"><span class="tier">Restricted / unavailable</span><h3>FPGA rebuild sources</h3><p>Bit/HWH and notebooks exist, but complete custom RTL, XDC, Vivado project, and build Tcl were not found. No reproducible-overlay claim is made.</p></article>
-          <article class="artifact-card" data-tier="restricted"><span class="tier">Restricted / unavailable</span><h3>Raw lab archive</h3><p>Large NPZ/NPY captures, machine-specific paths, instrument identifiers, invoices, airway bills, supplier carts, and unlicensed collaborator code are excluded.</p></article>
-        </div>
-      </section>
-
-      <section class="section section-dark">
-        <div class="section-head">
-          <p class="kicker">Quick start</p>
-          <h2>Reproduce the public method layer.</h2>
-          <p>The package uses only the Python standard library at runtime. The demo generates toy data locally; it never connects to a board or instrument.</p>
-        </div>
-        <div class="two-col">
-          <div>
-            <h3>Run the deterministic demonstration</h3>
-            <pre class="tree"><code>python3 -m venv .venv
-source .venv/bin/activate
-python3 -m pip install -e .
-python3 examples/protocol_demo.py</code></pre>
-          </div>
-          <div>
-            <h3>Run all tests</h3>
-            <pre class="tree"><code>PYTHONPATH=src python3 -m unittest \
-  discover -s tests -v</code></pre>
-            <h3 style="margin-top:28px">Build the website</h3>
-            <pre class="tree"><code>node scripts/build-site.mjs</code></pre>
-          </div>
-        </div>
-        <div class="callout" style="margin-top:38px">
-          <strong>Interpret the output correctly.</strong>
-          <p>Protocol counts, fit coefficients, and SNDR values emitted by the demo come from synthetic inputs. The measured 22 nm results on this site come from the ESSCIRC/JSSC record, not from executing the toy example.</p>
+          <article class="artifact-card" data-artifact-kind="design"><span class="tier">Read · Design</span><h3>Behavioral model guide</h3><p>Signal-path components, controlled sweeps, α extraction, correlation ladder, and validation invariants.</p><code>design/behavioral-model/</code></article>
+          <article class="artifact-card" data-artifact-kind="design"><span class="tier">Read · Design</span><h3>SEC/OCCS architecture</h3><p>γ/θ roles, learning and inference paths, fixed-point widths, sensing phases, and macro organization.</p><code>design/sec-architecture/</code></article>
+          <article class="artifact-card" data-artifact-kind="hardware"><span class="tier">Follow · Hardware</span><h3>Tapeout process guide</h3><p>Four evidence gates from model freeze through physical/package closure and executable bring-up.</p><code>tapeout/process-guide/</code></article>
+          <article class="artifact-card" data-artifact-kind="hardware"><span class="tier">Follow · Hardware</span><h3>PCB and PYNQ guides</h3><p>QFN64 board intent, power/bring-up ladder, overlay fingerprint, typed transport, and acquisition flow.</p><code>hardware/</code></article>
+          <article class="artifact-card" data-artifact-kind="measurement"><span class="tier">Run · Measurement</span><h3>Measurement package</h3><p>Affine MMSE calibration, deterministic state sampling, signed-code probability model, and weighted SNDR.</p><code>src/sec_mram_imc/</code></article>
+          <article class="artifact-card" data-artifact-kind="measurement"><span class="tier">Run · Measurement</span><h3>Protocol demonstration</h3><p>A 30-states/code × 10-repeats example with explicit synthetic correction and column results.</p><code>examples/protocol_demo.py</code></article>
+          <article class="artifact-card" data-artifact-kind="measurement"><span class="tier">Build · Data</span><h3>Measurement schema</h3><p>Run configuration, protocol, raw sample, calibration, and provenance fields for structured captures.</p><code>data/schema.json</code></article>
+          <article class="artifact-card" data-artifact-kind="papers"><span class="tier">Cite · Papers</span><h3>ESSCIRC and JSSC</h3><p>Canonical metadata, copyable citations, publication progression, and selected research figures.</p><code>papers/README.md</code></article>
         </div>
       </section>
 
       <section class="section section-white">
         <div class="section-head">
-          <p class="kicker">Data release pattern</p>
-          <h2>Keep Git small and the dataset inspectable.</h2>
-          <p>The audited archive contains more than one hundred NPZ files, dozens of NPY arrays, duplicates, and individual files tens of megabytes in size. A responsible release requires curation before upload.</p>
+          <p class="kicker">Data organization</p>
+          <h2>One schema connects a compact sample to full captures.</h2>
+          <p>A small end-to-end dataset belongs in Git for immediate reproduction; versioned full captures belong in DOI-backed archival storage. Both use the same units, dimensions, run fields, configuration digest, and SHA-256 manifest.</p>
         </div>
         <div class="four-col">
-          <article class="card"><span class="number">01 · SCHEMA</span><h3>Name every dimension</h3><p>Units, dtype, shape, code convention, column, chip, mode, clock, voltage, repeat, and missing/fault encoding.</p></article>
-          <article class="card"><span class="number">02 · MANIFEST</span><h3>Bind files to provenance</h3><p>SHA-256, byte count, acquisition script/commit, overlay hash, board/chip IDs, run time, operator policy, and license.</p></article>
-          <article class="card"><span class="number">03 · SAMPLE</span><h3>Ship a small end-to-end slice</h3><p>One de-identified representative dataset in Git exercises parsing, calibration, per-code MSE, and plot generation.</p></article>
-          <article class="card"><span class="number">04 · ARCHIVE</span><h3>Deposit approved raw data</h3><p>Deduplicated full captures belong in a versioned archival release with DOI/checksums, not the Git history.</p></article>
+          <article class="card"><span class="number">01 · SCHEMA</span><h3>Name every dimension</h3><p>Code, state, repeat, ADC column, chip, mode, clock, voltage, units, and fault status.</p></article>
+          <article class="card"><span class="number">02 · MANIFEST</span><h3>Bind provenance</h3><p>SHA-256, acquisition commit, overlay fingerprint, board/chip aliases, timestamp, and license.</p></article>
+          <article class="card"><span class="number">03 · SAMPLE</span><h3>Exercise the full path</h3><p>Parsing, calibration, per-code MSE, P(c) weighting, SNDR, and expected output in one compact fixture.</p></article>
+          <article class="card"><span class="number">04 · ARCHIVE</span><h3>Scale the record</h3><p>Deduplicated captures, immutable release version, DOI, manifest, and the same analysis command.</p></article>
         </div>
       </section>
 
@@ -118,12 +134,12 @@ python3 examples/protocol_demo.py</code></pre>
         <div class="two-col">
           <div>
             <p class="kicker">Contributing</p>
-            <h2>Make additions traceable.</h2>
-            <p>New measured results need the raw-data manifest, protocol parameters, calibration split, analysis command, and evidence class. Hardware assets need ownership approval and a rebuild/version statement. Paper claims need a citation and must retain the scope of the source experiment.</p>
+            <h2>Make every addition traceable.</h2>
+            <p>A strong contribution connects source, condition, protocol, data, analysis command, and expected result. Hardware additions include their board/overlay identity; numerical additions carry an evidence label and citation.</p>
           </div>
           <div class="callout">
-            <strong>Never commit</strong>
-            <p>Credentials, personal addresses, instrument serial identifiers, commercial invoices, airway bills, PDK/foundry configuration, raw signoff/waiver material, proprietary IP, or third-party code without a redistribution license.</p>
+            <strong>Contribution record</strong>
+            <p>Question → artifact → configuration → validation → result → citation. This sequence lets the next reader reproduce the conclusion and understand why the artifact exists.</p>
           </div>
         </div>
       </section>

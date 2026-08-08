@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The behavioral model is the bridge between transistor/circuit behavior and an architecture that can be explored quickly. It asks:
+The behavioral model is the bridge from transistor/circuit behavior to the SEC architecture. It answers:
 
 - how much each activated MRAM row contributes after BL/SL voltage loss;
 - how MTJ variation, read noise, and ADC quantization combine;
@@ -10,7 +10,7 @@ The behavioral model is the bridge between transistor/circuit behavior and an ar
 - whether a low-dimensional correction can compensate the dominant structure; and
 - which fixed-point widths preserve the learning trajectory.
 
-It is not a substitute for PDK-qualified circuit verification or extracted signoff.
+Its output is a compact description of the dominant structured error: a spatial attenuation field that the on-chip correction can learn economically.
 
 ## Signal path represented
 
@@ -29,7 +29,7 @@ For a signed dot product, the nonideal output can be abstracted as
 y_j = sum_i alpha_ij * w_ij * x_i + readout/quantization error
 ```
 
-where `alpha_ij` is an effective, location-dependent attenuation term. It is inferred from behavior; it is not stored as a full on-chip matrix.
+where `alpha_ij` is an effective, location-dependent attenuation term inferred from behavior. SEC approximates this field with shared row factors and per-column normalization instead of storing a rows × columns correction matrix.
 
 ## Why location matters
 
@@ -61,15 +61,20 @@ Change one nonideality at a time before relying on the combined result. Preserve
 - Fixed-point update order and saturation match the hardware specification cycle by cycle.
 - Every plotted aggregate can be regenerated from stored numeric outputs.
 
-## Public release boundary
+## Reproduction package
 
-The working archive contains substantial model code, but it also contains collaborator-authored modules without a confirmed redistribution license and parameters derived from proprietary process context. This repository therefore documents the model and publishes independently written method code only. A future source release should include:
+The public behavioral-model layer is organized around the equations, controlled
+experiment sequence, and validation invariants above. The runnable package adds
+calibration, code probabilities, SNDR, and a synthetic SEC illustration. A
+calibrated model release binds the same structure to:
 
-- authorship and license review;
-- parameter provenance and safe public defaults;
-- a versioned environment;
-- unit tests for ideal limits and edge cases;
-- small circuit-correlation fixtures with permission; and
-- a command that regenerates each public model figure.
+- versioned device, interconnect, sensor, and ADC parameters with provenance;
+- a declared environment and random seeds;
+- ideal-limit and edge-case unit tests;
+- small circuit-correlation fixtures;
+- floating- and fixed-point SEC traces; and
+- a command that regenerates each model figure from stored numeric output.
 
-Do not substitute toy public parameters for calibrated silicon parameters and then label the output a reproduction of the measured chip.
+Use the evidence label **behavioral model** for calibrated model sweeps and
+**synthetic** for the public toy parameters. Measured-silicon values retain the
+separate **silicon measurement** label.

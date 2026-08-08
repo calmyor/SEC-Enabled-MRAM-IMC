@@ -5,7 +5,7 @@ from __future__ import annotations
 import random
 
 from sec_mram_imc import (
-    PUBLIC_SAFETY_NOTICE,
+    SYNTHETIC_DEMO_LABEL,
     code_conditioned_sndr,
     fit_column_calibrations,
     learn_synthetic_correction_factors,
@@ -128,7 +128,7 @@ def main() -> None:
             code_probabilities=code_probabilities,
         ).db
 
-    print(PUBLIC_SAFETY_NOTICE)
+    print(SYNTHETIC_DEMO_LABEL)
     print(f"Protocol requests: {len(requests)} ({len(requests) // len(states_by_code)} per code)")
     print(f"SNDR code model: signed +/-1 binomial distribution, N={width}, p=0.5")
     print(f"Synthetic learner MSE: {sec_fit.initial_mse:.5f} -> {sec_fit.final_mse:.5f}")

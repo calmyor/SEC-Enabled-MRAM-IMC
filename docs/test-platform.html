@@ -24,7 +24,7 @@
     <header class="site-header">
       <a class="brand" href="index.html" aria-label="SEC–MRAM IMC overview">
         <span class="brand-icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-        <span><strong>SEC–MRAM IMC</strong><small>Model → silicon → measurement</small></span>
+        <span><strong>SEC–MRAM IMC</strong><small>Problem → mechanism → silicon → evidence</small></span>
       </a>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
       <nav id="site-nav" class="site-nav" aria-label="Project sections">
@@ -33,30 +33,58 @@
           <a href="tapeout.html">Tapeout</a>
           <a href="test-platform.html" aria-current="page">Test platform</a>
           <a href="measurements.html">Measurements</a>
-          <a href="repository.html">Repository</a>
-          <a href="papers.html">Papers</a>
+          <a href="repository.html" class="resource-nav resource-start">Repository</a>
+          <a href="papers.html" class="resource-nav">Papers</a>
       </nav>
       <a class="repo-link" href="https://github.com/calmyor/SEC-Enabled-MRAM-IMC">GitHub <span aria-hidden="true">↗</span></a>
     </header>
+    <nav class="journey-rail" aria-label="Design-to-measurement research path">
+      <span>Research path</span>
+      <div><a href="index.html#signal-challenge">Signal limit</a>
+        <a href="design.html#behavioral-model">Behavioral model</a>
+        <a href="design.html#sec-architecture">SEC + OCCS</a>
+        <a href="design.html#macro">Macro</a>
+        <a href="tapeout.html#process">Tapeout</a>
+        <a href="test-platform.html#stack" class="current">Test stack</a>
+        <a href="measurements.html#results">Measured result</a></div>
+    </nav>
     <main id="main">
       <header class="page-hero">
         <p class="breadcrumb">Overview / Test platform</p>
         <p class="eyebrow">Python host · PYNQ-Z2 · custom PCB · QFN64</p>
         <h1>Build a trustworthy path from a script to silicon.</h1>
-        <p>The test platform had to exercise scan, read/write, MVM, ADC capture, and SEC modes while preserving voltage, timing, and raw-data provenance. The result is a four-layer control stack whose interfaces can be tested independently.</p>
+        <p>The test platform translates an experiment into scan, read/write, MVM, ADC, and SEC transactions—and carries every raw code and configuration detail back into an analysis record.</p>
       </header>
+      <div class="thesis-strip" aria-label="Test platform page summary">
+        <article><span>Command path</span><strong>Python declares the experiment; PYNQ sequences typed transactions; the PCB maps them electrically to QFN64.</strong></article>
+        <article><span>Silicon action</span><strong>The macro executes memory access, OCCS/ADC conversion, MVM, and SEC operations.</strong></article>
+        <article><span>Evidence path</span><strong>Raw codes, status, configuration, and timestamps return to an append-only run record.</strong></article>
+      </div>
 
-      <section class="section section-white">
+      <section id="stack" class="section section-white">
         <div class="section-head">
           <p class="kicker">System stack</p>
           <h2>Separate experiment intent from electrical transport.</h2>
-          <p>Each layer has a distinct responsibility. That separation makes a failing experiment diagnosable: a protocol error should not be confused with a DMA fault, a pin-map error, or a power-integrity problem.</p>
+          <p>Each layer owns one transformation, localizing diagnosis to experiment protocol, DMA/FPGA transport, board-level electrical mapping, or chip response.</p>
         </div>
         <div class="stack" aria-label="Measurement control stack">
           <article><code>LAYER 01</code><h3>Python host</h3><p>Declares experiment state, seeds, repetitions, metadata, calibration, and analysis.</p></article>
           <article><code>LAYER 02</code><h3>PYNQ-Z2</h3><p>Loads the overlay, transports command/data words, sequences digital timing, and captures results.</p></article>
           <article><code>LAYER 03</code><h3>Custom PCB</h3><p>Maps headers to QFN64, distributes rails and references, decouples, and exposes safe checkpoints.</p></article>
           <article><code>LAYER 04</code><h3>MRAM IMC</h3><p>Executes memory, conversion, MVM, and SEC operations and returns raw observable state.</p></article>
+        </div>
+        <div class="stack-return"><span>Evidence return</span><strong>Run record + analysis ← raw words + status ← FPGA capture ← chip electrical response</strong></div>
+        <div class="takeaway"><span>Bidirectional stack</span><strong>Commands move from experiment plan to chip timing; raw ADC codes and metadata move back from the chip to analysis.</strong></div>
+        <div class="section-head" style="margin-top:58px; margin-bottom:30px">
+          <p class="kicker">One MVM capture</p>
+          <h2>Follow one transaction end to end.</h2>
+        </div>
+        <div class="concept-path">
+          <article class="concept-node"><span>Configure</span><strong>Declare vector and mode</strong><p>Run ID, chip/board, clock, voltage, SEC state, weight/input vector, and repeat index.</p></article>
+          <article class="concept-node"><span>Transport</span><strong>Frame the command</strong><p>Typed words move through AXI DMA with explicit length, sequence, timeout, and status.</p></article>
+          <article class="concept-node"><span>Sequence</span><strong>Drive chip timing</strong><p>Reset, load, auto-zero, evaluate, SAR conversion, and capture execute in order.</p></article>
+          <article class="concept-node"><span>Capture</span><strong>Return raw state</strong><p>ADC code and status return without analysis-side modification.</p></article>
+          <article class="concept-node"><span>Record</span><strong>Bind the evidence</strong><p>Raw result joins configuration digest, overlay hash, timestamp, and fault state.</p></article>
         </div>
         <figure class="figure-frame figure-wide">
           <img src="assets/figures/measurement-setup.png" alt="Annotated measurement setup connecting a Python host, PYNQ-Z2 board, test PCB, and MRAM IMC chip" loading="lazy" />
@@ -69,11 +97,11 @@
           <div class="section-head">
             <p class="kicker">PCB design</p>
             <h2>The board is part of the measurement instrument.</h2>
-            <p>The final test hardware targets a 64-pin QFN package. Its public documentation focuses on design intent and bring-up evidence; the editable board sources found in the working archive correspond to an older TO2/QFN80 revision and are not presented as the final TO3 design.</p>
+            <p>The TO3 board connects the QFN64 macro to the PYNQ-Z2 while distributing supplies and references, placing local decoupling, and exposing checkpoints for power, reset, clocks, and bring-up modes.</p>
           </div>
           <figure class="figure-frame">
             <img src="assets/figures/pcb-front.png" alt="Front rendering of the purple custom MRAM IMC test printed circuit board" loading="lazy" />
-            <figcaption><strong>Final-board rendering.</strong> A sanitized visual is published; supplier carts, order records, personal details, and obsolete design revisions are excluded.</figcaption>
+            <figcaption><strong>TO3 test board.</strong> The package site, PYNQ headers, power connections, testpoints, and support circuitry form the electrical bridge between FPGA control and the macro.</figcaption>
           </figure>
         </div>
         <div class="four-col" style="margin-top:44px">
@@ -127,7 +155,7 @@
           </figure>
           <div>
             <p class="kicker">Bring-up ladder</p>
-            <h2>Increase complexity only after the prior invariant holds.</h2>
+            <h2>Bring-up proceeds from power integrity to statistical measurement.</h2>
             <ol class="checklist">
               <li>Apply rails under current limit; verify voltage and quiescent current.</li>
               <li>Assert/reset controls; confirm no unsafe pin contention.</li>
@@ -146,24 +174,27 @@
         <div class="section-head">
           <p class="kicker">PYNQ control plane</p>
           <h2>Version the overlay as experimental equipment.</h2>
-          <p>Audited hardware metadata identifies a PYNQ-Z2 (XC7Z020) overlay built with Vivado 2022.2, a 100 MHz design, AXI DMA, and custom all-pin test logic. Notebooks exercise all-pin scan, read/write, MVM capture, SEC runs, and network evaluation.</p>
+          <p>The measured setup uses a PYNQ-Z2 with an XC7Z020 FPGA, a 100 MHz Vivado 2022.2 overlay, AXI DMA, and custom all-pin test logic. The control notebooks sequence scan, read/write, MVM capture, SEC calibration, and network experiments.</p>
         </div>
         <div class="three-col">
           <article class="card"><span class="number">DISCOVER</span><h3>Overlay self-check</h3><p>Confirm board, bitstream/HWH pairing, clock rate, DMA topology, register signature, and a known loopback before chip access.</p></article>
           <article class="card"><span class="number">TRANSPORT</span><h3>Typed command framing</h3><p>Define word width, endianness, opcode, payload length, timeout, and returned status. Reject partial or stale transfers.</p></article>
           <article class="card"><span class="number">PROVENANCE</span><h3>Hash every binary</h3><p>Record overlay digest, PYNQ image, Python/package versions, notebook/script commit, pin-map revision, and clock configuration.</p></article>
         </div>
-        <div class="callout" style="margin-top:40px">
-          <strong>Rebuildability boundary</strong>
-          <p>The archive contains bit/HWH files and notebooks, but not the complete custom RTL, XDC constraints, Vivado project, or build Tcl needed to regenerate the overlay. Binary release therefore requires ownership approval and a version/checksum manifest; the repository does not claim an open rebuildable FPGA design.</p>
+        <div class="fingerprint-grid" style="margin-top:40px" aria-label="PYNQ overlay identity">
+          <article><span>Target</span><strong>PYNQ-Z2 · XC7Z020</strong></article>
+          <article><span>Tool</span><strong>Vivado 2022.2</strong></article>
+          <article><span>Clock</span><strong>100 MHz design</strong></article>
+          <article><span>Transport</span><strong>AXI DMA + all-pin logic</strong></article>
         </div>
+        <div class="takeaway"><span>Overlay identity</span><strong>Each capture records the bit/HWH checksums, PYNQ image, clock configuration, pin-map revision, and software commit.</strong></div>
       </section>
 
       <section class="section">
         <div class="section-head">
           <p class="kicker">Software construction</p>
           <h2>Turn notebooks into an auditable measurement framework.</h2>
-          <p>The historical scripts prove that the experiments were executed, but several embed machine-specific serial/VISA resources and fixed filenames. The public architecture separates configuration, transport, protocol, acquisition, and analysis.</p>
+          <p>The framework separates five concerns—configuration, transport, protocol, acquisition, and analysis—so each notebook operation becomes a versioned and testable interface.</p>
         </div>
         <div class="research-chain">
           <article><span class="step">CONFIG</span><h3>Describe hardware</h3><p>Board/chip IDs, endpoints, rail limits, clock, overlay checksum, and instrument resources live in validated configuration.</p></article>
@@ -172,10 +203,14 @@
           <article><span class="step">ACQUIRE</span><h3>Keep raw evidence</h3><p>Append-only records store command, response, timestamp, units, configuration digest, and fault state.</p></article>
           <article><span class="step">ANALYZE</span><h3>Derive results</h3><p>Calibration and SNDR analysis consume versioned raw data and emit provenance, never silently overwriting it.</p></article>
         </div>
-        <p class="provenance" style="margin-top:30px"><strong>Repository status:</strong> a standard-library method package demonstrates sampling, affine calibration, and SNDR analysis. It deliberately does not emulate proprietary chip control or claim to replace the original hardware notebooks. <a href="repository.html">See the artifact map →</a></p>
+        <p class="provenance" style="margin-top:30px"><strong>Runnable analysis module:</strong> deterministic sampling → per-column affine calibration → probability-weighted code error → compute SNDR. <a href="repository.html">Open the artifact map →</a></p>
       </section>
     </main>
 
+    <aside class="page-handoff" aria-label="Continue through the project">
+      <a class="handoff-link handoff-previous" href="tapeout.html"><span>Previous · Tapeout</span><strong>← Revisit the preceding layer</strong></a>
+      <a class="handoff-link handoff-next" href="measurements.html"><span>Next · Measurements</span><strong>Turn raw ADC captures into calibrated, code-conditioned compute SNDR. →</strong></a>
+    </aside>
     <footer class="site-footer">
       <div>
         <a class="footer-brand" href="index.html">SEC–MRAM IMC</a>

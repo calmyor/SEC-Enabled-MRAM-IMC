@@ -28,19 +28,20 @@
       <section class="section section-white">
         <div class="section-head">
           <p class="kicker">The complete research arc</p>
-          <h2>The algorithm is only one link in the chain.</h2>
-          <p>The central contribution is a co-design process. Array behavior is modeled, converted into a low-dimensional compensation problem, mapped into fixed-point hardware, integrated with a more stable current sensor, and then evaluated through a purpose-built test stack.</p>
+          <h2>One idea, carried through five engineering layers.</h2>
+          <p>The project begins with a physical observation—row position changes analog contribution—and follows it all the way to a measured result. Each layer turns the output of the previous layer into a concrete design decision.</p>
         </div>
         <div class="research-chain">
-          <article><span class="step">01 · Observe</span><h3>Model the nonideal array</h3><p>MTJ variation, line parasitics, read noise, binary column weighting, and ADC quantization expose location-dependent distortion.</p></article>
-          <article><span class="step">02 · Abstract</span><h3>Factor the error</h3><p>Per-cell attenuation αᵢⱼ turns an opaque circuit effect into a compensable input/output model.</p></article>
-          <article><span class="step">03 · Co-design</span><h3>Learn SEC factors</h3><p>Shared row factors γᵢ and column normalizers θⱼ correct bank-level compute statistics with modest storage.</p></article>
-          <article><span class="step">04 · Realize</span><h3>Build OCCS + fixed point</h3><p>Behavioral precision studies select a 7-bit inference scale and 14-bit update path; OCCS reduces readout mismatch.</p></article>
-          <article><span class="step">05 · Measure</span><h3>Close the silicon loop</h3><p>Python, PYNQ-Z2, a custom PCB, and code-conditioned sampling reconstruct calibrated SNDR on packaged chips.</p></article>
+          <article><span class="step">01 · Observe</span><h3>Row position changes the signal</h3><p>MTJ variation, BL/SL parasitics, read noise, and ADC conversion reveal where ideal arithmetic diverges from analog behavior.</p></article>
+          <article><span class="step">02 · Model</span><h3>Describe that change with α</h3><p>αᵢⱼ captures the contribution of row i as observed by column j, making the spatial error structure explicit.</p></article>
+          <article><span class="step">03 · Compensate</span><h3>Learn γ and θ</h3><p>γᵢ pre-scales each row and θⱼ normalizes each output column, bringing the combined path toward unity.</p></article>
+          <article><span class="step">04 · Realize</span><h3>Quantize and integrate</h3><p>Precision studies select the fixed-point SEC path; OCCS, the MRAM array, ADCs, and local control form one macro.</p></article>
+          <article><span class="step">05 · Measure</span><h3>Estimate compute SNDR</h3><p>Python, PYNQ-Z2, a custom PCB, and code-conditioned sampling turn raw ADC captures into calibrated evidence.</p></article>
         </div>
+        <div class="takeaway"><span>Research thesis</span><strong>SEC works because the dominant array error has spatial structure that can be learned with one correction per row and one normalization per column.</strong></div>
       </section>
 
-      <section class="section section-dark">
+      <section class="section section-dark" id="signal-challenge">
         <div class="two-col">
           <div class="section-head">
             <p class="kicker">Why the problem is hard</p>
@@ -50,18 +51,26 @@
           <div>
             <div class="equation" aria-label="Eighty microsiemens divided by twenty millisiemens equals zero point four percent">80 μS ÷ 20 mS = <span class="gamma">0.4%</span></div>
             <div class="callout">
-              <strong>Scaling changes the design question.</strong>
-              <p>Increasing the dot-product dimension improves parallelism, yet makes adjacent output states harder to distinguish. The project therefore optimizes measurable compute quality—not array density in isolation.</p>
+              <strong>Parallelism compresses the analog margin.</strong>
+              <p>A larger dot product activates more rows and accumulates more current, while the step between adjacent ideal outputs remains small. Compute SNDR becomes the link between array scaling and useful arithmetic.</p>
             </div>
           </div>
         </div>
+        <div class="concept-path" aria-label="End-to-end correction and measurement path" style="margin-top:52px">
+          <article class="concept-node"><span>Input</span><strong>x and w define the ideal dot product</strong><p>The experiment selects an activation and weight state with a known ideal code.</p></article>
+          <article class="concept-node"><span class="gamma">Row scale γ</span><strong>Pre-scale each activated row</strong><p>A learned 7-bit factor adjusts the digital input before array evaluation.</p></article>
+          <article class="concept-node"><span class="alpha">Array response α</span><strong>Position shapes analog contribution</strong><p>MRAM state, BL/SL parasitics, and row location determine the column current.</p></article>
+          <article class="concept-node"><span>OCCS + ADC</span><strong>Sense and digitize the current</strong><p>Offset-compensated sensing feeds a 6-bit SAR conversion for each ADC column.</p></article>
+          <article class="concept-node"><span class="theta">Calibrate + score</span><strong>Normalize output and compute SNDR</strong><p>Per-column affine calibration and code-conditioned error turn raw codes into the reported metric.</p></article>
+        </div>
+        <div class="takeaway"><span>Signal path</span><strong>The same chain explains both the architecture and the experiment: γ acts before the physical array, OCCS preserves the small analog step, and column calibration makes measured codes comparable to the ideal output.</strong></div>
       </section>
 
       <section class="section">
         <div class="section-head">
           <p class="kicker">Prototype at a glance</p>
-          <h2>One macro, viewed at four abstraction levels.</h2>
-          <p>The terminology changes with the layer being discussed. Keeping those layers separate prevents several common misreadings of the work.</p>
+          <h2>Four layers describe the same dot product.</h2>
+          <p>A physical 1T1R array stores MRAM states, differential 2T2R pairs encode signed weights, OCCS and the SAR ADC convert column current, and SEC scales rows and columns to improve bank-level compute SNDR.</p>
         </div>
         <div class="four-col">
           <article class="card"><span class="number">DEVICE</span><h3>Physical memory</h3><p>Commercial 22 nm FD-SOI, 512 × 512 physical 1T1R MRAM cells, operated at 0.8 V.</p></article>
@@ -83,7 +92,7 @@
         </div>
         <div class="three-col">
           <article class="card"><span class="number">DESIGN</span><h3>Behavior → architecture</h3><p>Trace α, γ, and θ from the behavioral model into OCCS, fixed-point precision, and dataflow.</p><a href="design.html">Open design principles →</a></article>
-          <article class="card"><span class="number">IMPLEMENT</span><h3>Netlist → packaged die</h3><p>Review the mixed-signal tapeout gates and the explicit boundary between public process guidance and restricted foundry artifacts.</p><a href="tapeout.html">Open tapeout workflow →</a></article>
+          <article class="card"><span class="number">IMPLEMENT</span><h3>Netlist → packaged die</h3><p>Follow the mixed-signal design gates from bit-accurate correlation through physical verification, handoff, packaging, and post-silicon readiness.</p><a href="tapeout.html">Open tapeout workflow →</a></article>
           <article class="card"><span class="number">TEST</span><h3>Host → calibrated result</h3><p>Follow the PYNQ, PCB, scan-chain, calibration, sampling, and analysis sequence used to interrogate silicon.</p><a href="test-platform.html">Open test platform →</a></article>
         </div>
       </section>
@@ -91,14 +100,14 @@
       <section class="section section-white">
         <div class="two-col">
           <div>
-            <p class="kicker">What SEC means here</p>
-            <h2>Statistical error compensation.</h2>
-            <p>SEC learns hardware correction factors for the MRAM compute bank. It does not mean single-error correction, does not replace memory ECC, and does not train the application neural network on-chip.</p>
-            <p>The target is bank-level, task-agnostic compute SNDR. The reported CIFAR-10 experiment maps only the final fully connected layer of ResNet-20 to measured hardware.</p>
+            <p class="kicker">The role of SEC</p>
+            <h2>The array learns its own correction.</h2>
+            <p>Statistical error compensation calibrates the physical compute bank. The application weights stay fixed while SEC learns row factors γᵢ and column normalizers θⱼ from the measured hardware response.</p>
+            <p>This raises task-agnostic bank-level compute SNDR. The CIFAR-10 experiment then uses the measured final fully connected layer of ResNet-20 to show how that signal-quality change affects classification.</p>
           </div>
           <div class="callout">
-            <strong>Terminology note</strong>
-            <p>The conference paper reports SNR; the expanded journal paper uses SNDR to account for both noise and distortion. This site follows the journal terminology when discussing the full measurement method.</p>
+            <strong>From SNR to SNDR</strong>
+            <p>The ESSCIRC paper introduces the result as an SNR boost. The JSSC extension separates temporal noise and state-dependent distortion through the broader compute-SNDR methodology used throughout this site.</p>
           </div>
         </div>
       </section>

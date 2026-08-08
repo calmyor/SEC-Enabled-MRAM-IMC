@@ -1,8 +1,7 @@
-"""A deliberately synthetic correction-factor learner for method education.
+"""A synthetic correction-factor learner for inspecting SEC mechanics.
 
-This module is not the tapeout RTL, firmware, PYNQ controller, or an exact model
-of the on-chip fixed-point update engine. It demonstrates only the high-level
-idea that shared multiplicative factors can learn systematic row attenuation.
+The deterministic batch-gradient example shows how shared multiplicative
+factors learn systematic row attenuation before fixed-point hardware mapping.
 """
 
 from __future__ import annotations
@@ -12,9 +11,9 @@ import math
 from typing import Sequence
 
 
-PUBLIC_SAFETY_NOTICE = (
-    "Synthetic method demo only: this is not the proprietary hardware "
-    "controller, tapeout RTL, firmware, or fixed-point implementation."
+SYNTHETIC_DEMO_LABEL = (
+    "Synthetic method demo: deterministic protocol data and an illustrative "
+    "multiplicative correction-factor learner."
 )
 
 
@@ -147,4 +146,3 @@ def learn_synthetic_correction_factors(
         epochs,
         learning_rate,
     )
-

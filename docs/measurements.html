@@ -4,10 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#071b22" />
-    <meta name="description" content="Calibration, code-conditioned sampling, SNDR reconstruction, SEC evaluation, and bounded application results." />
+    <meta name="description" content="Calibration, code-conditioned sampling, SNDR reconstruction, SEC evaluation, and the measured ResNet-20 output-layer result." />
     <link rel="canonical" href="https://calmyor.github.io/SEC-Enabled-MRAM-IMC/measurements.html" />
     <meta property="og:title" content="Measurement methodology and results · SEC–MRAM IMC" />
-    <meta property="og:description" content="Calibration, code-conditioned sampling, SNDR reconstruction, SEC evaluation, and bounded application results." />
+    <meta property="og:description" content="Calibration, code-conditioned sampling, SNDR reconstruction, SEC evaluation, and the measured ResNet-20 output-layer result." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://calmyor.github.io/SEC-Enabled-MRAM-IMC/measurements.html" />
     <meta property="og:image" content="https://calmyor.github.io/SEC-Enabled-MRAM-IMC/assets/og.png" />
@@ -24,7 +24,7 @@
     <header class="site-header">
       <a class="brand" href="index.html" aria-label="SEC–MRAM IMC overview">
         <span class="brand-icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-        <span><strong>SEC–MRAM IMC</strong><small>Model → silicon → measurement</small></span>
+        <span><strong>SEC–MRAM IMC</strong><small>Problem → mechanism → silicon → evidence</small></span>
       </a>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
       <nav id="site-nav" class="site-nav" aria-label="Project sections">
@@ -33,18 +33,33 @@
           <a href="tapeout.html">Tapeout</a>
           <a href="test-platform.html">Test platform</a>
           <a href="measurements.html" aria-current="page">Measurements</a>
-          <a href="repository.html">Repository</a>
-          <a href="papers.html">Papers</a>
+          <a href="repository.html" class="resource-nav resource-start">Repository</a>
+          <a href="papers.html" class="resource-nav">Papers</a>
       </nav>
       <a class="repo-link" href="https://github.com/calmyor/SEC-Enabled-MRAM-IMC">GitHub <span aria-hidden="true">↗</span></a>
     </header>
+    <nav class="journey-rail" aria-label="Design-to-measurement research path">
+      <span>Research path</span>
+      <div><a href="index.html#signal-challenge">Signal limit</a>
+        <a href="design.html#behavioral-model">Behavioral model</a>
+        <a href="design.html#sec-architecture">SEC + OCCS</a>
+        <a href="design.html#macro">Macro</a>
+        <a href="tapeout.html#process">Tapeout</a>
+        <a href="test-platform.html#stack">Test stack</a>
+        <a href="measurements.html#results" class="current">Measured result</a></div>
+    </nav>
     <main id="main">
       <header class="page-hero">
         <p class="breadcrumb">Overview / Measurements</p>
-        <p class="eyebrow">Calibration · sampling · SNDR · application boundary</p>
-        <h1>A measurement is a protocol, not a plotted point.</h1>
-        <p>Compute SNDR must capture both temporal noise and state-dependent distortion over an impossibly large digital state space. The methodology makes that estimation tractable while keeping calibration, sampling, weighting, and repeated trials explicit.</p>
+        <p class="eyebrow">Calibration · state sampling · SNDR · application outcome</p>
+        <h1>Compute SNDR separates temporal noise from spatial distortion.</h1>
+        <p>Compute SNDR combines temporal noise and state-dependent distortion. The protocol groups the 2²ᴺ weight/input configurations by ideal code, samples row patterns within each code, and repeats each pattern to estimate both effects.</p>
       </header>
+      <div class="thesis-strip" aria-label="Measurement page summary">
+        <article><span>Raw signal</span><strong>Each ADC column returns codes shaped by gain, offset, noise, and row-dependent distortion.</strong></article>
+        <article><span>Protocol</span><strong>Calibrate per column, sample 30 states per ideal code, and repeat every state 10 times.</strong></article>
+        <article><span>Metric</span><strong>Weight code-conditioned residual error by P(c) and compare it with ideal-output variance.</strong></article>
+      </div>
 
       <section class="section section-white">
         <div class="section-head">
@@ -65,8 +80,8 @@
             </table>
           </div>
           <div class="callout">
-            <strong>Avoid calibration leakage.</strong>
-            <p>Fit a and b on a designated calibration dataset, freeze them, and evaluate SNDR on separately identified measurement records. Store the fit population, column ID, configuration digest, coefficients, units, and analysis commit with every result.</p>
+            <strong>Calibration split</strong>
+            <p>Fit a and b on designated calibration records, freeze the coefficients, and compute SNDR on evaluation records. The result retains the fit population, column ID, configuration digest, coefficients, units, and analysis commit.</p>
           </div>
         </div>
       </section>
@@ -76,6 +91,17 @@
           <p class="kicker">02 · State-space reduction</p>
           <h2>Sample configurations within every ideal output code.</h2>
           <p>A binary N-dimensional dot product has 2²ᴺ weight/input configurations. The method groups configurations that yield the same ideal output code c, fixes the weight vector to all ones, randomly selects 30 activation states per code, and repeats every state K = 10 times.</p>
+        </div>
+        <div class="evidence-note" style="margin-bottom:34px">
+          <span class="evidence-type">Why states matter</span>
+          <p>For a symbolic four-row example, <span class="mono">[+ + − −]</span> and <span class="mono">[+ − + −]</span> both sum to the ideal code <span class="mono">c = 0</span>. They activate different physical row patterns, so their α-weighted array currents—and therefore raw ADC codes—can differ. Sampling 30 states inside one code measures that spatial distortion.</p>
+        </div>
+        <div class="state-method" aria-label="Code-conditioned measurement protocol">
+          <article class="state-stage"><span>Ideal code c</span><strong>Group equal arithmetic outputs</strong><p>Many physical row patterns map to the same ideal dot-product code.</p><div class="pattern-row" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></article>
+          <div class="state-arrow" aria-hidden="true">→</div>
+          <article class="state-stage"><span>30 states / code</span><strong>Sample spatial distortion</strong><p>Different active-row locations expose the α-dependent variation inside one code.</p><div class="pattern-row" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></article>
+          <div class="state-arrow" aria-hidden="true">→</div>
+          <article class="state-stage"><span>10 repeats / state</span><strong>Sample temporal noise</strong><p>Repeated evaluation separates within-state noise from pattern-to-pattern distortion.</p><div class="repeat-dots" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></article>
         </div>
         <div class="protocol-calculator" data-protocol-calculator>
           <h3>Protocol scale calculator</h3>
@@ -91,6 +117,7 @@
             <div><strong data-per-column>19,500</strong><span>measurements / column</span></div>
             <div><strong data-total>156,000</strong><span>total captures</span></div>
           </div>
+          <p class="calculator-expression" data-expression>30 states × 10 repeats × 65 codes × 8 columns = 156,000 captures</p>
         </div>
         <div class="three-col" style="margin-top:36px">
           <article class="card"><span class="number">WITHIN STATE</span><h3>Repeated noise</h3><p class="muted">Ten captures of the same state expose temporal variation without conflating it with spatial pattern dependence.</p></article>
@@ -102,8 +129,8 @@
       <section class="section">
         <div class="section-head">
           <p class="kicker">03 · Compute SNDR</p>
-          <h2>Keep the population definition beside the number.</h2>
-          <p>For each ideal code c, the squared residuals of calibrated output ỹ are averaged over sampled states and repeated activations. Column SNDR compares the ideal-output variance with the probability-weighted sum of those code-conditioned errors.</p>
+          <h2>Compute one error distribution per ideal code, then weight across codes.</h2>
+          <p>For each ideal code c, squared residuals of calibrated output ỹ are averaged over states and repeats. Column SNDR compares ideal-output variance with the P(c)-weighted sum of those code-conditioned errors.</p>
         </div>
         <div class="two-col">
           <div>
@@ -129,21 +156,17 @@
         </figure>
       </section>
 
-      <section class="section section-white">
+      <section id="results" class="section section-white">
         <div class="section-head">
           <p class="kicker">Measured silicon</p>
           <h2>SEC improves the quality–energy operating frontier.</h2>
-          <p>All headline values below are measured unless marked otherwise. The SNDR range spans multiple dimensions, clock conditions, and ADC precisions; it should not be reduced to one universal operating point.</p>
+          <p>The measured points expose three relationships: increasing N lowers baseline SNDR, SEC raises SNDR across operating conditions, and that gain shifts the iso-SNDR energy point.</p>
         </div>
-        <div class="result-grid">
-          <article><span class="claim-badge">Measured</span><strong>5.15 dB</strong><span>Column SNDR at N = 64 before SEC in the reported characterization.</span></article>
-          <article><span class="claim-badge">Measured</span><strong>0.77 dB</strong><span>Column SNDR at N = 128 before SEC as line resistance and noise increase.</span></article>
-          <article><span class="claim-badge">Measured · N=64</span><strong>4 → 9.15 dB</strong><span>Average over eight ADC columns before and after SEC.</span></article>
-          <article><span class="claim-badge">Measured range</span><strong>2.7–6 dB</strong><span>SEC-enabled improvement across evaluated operating points.</span></article>
-          <article><span class="claim-badge">Trade-off</span><strong>5×</strong><span>Energy reduction per 1-bit operation at iso-SNDR.</span></article>
-          <article><span class="claim-badge">Measured · N=64</span><strong>0.8%</strong><span>SEC energy overhead for the reported N = 64 condition.</span></article>
-          <article><span class="claim-badge">Measured · N=128</span><strong>1.8%</strong><span>SEC energy overhead for the reported N = 128 condition.</span></article>
-          <article><span class="claim-badge">Fabricated</span><strong>12.2%</strong><span>SEC area overhead; the 3.7% SRAM option is a projection.</span></article>
+        <div class="result-story-grid">
+          <article class="result-panel"><span class="claim-badge">Silicon · SEC off</span><h3>Scaling penalty</h3><div class="pair-value"><strong>5.15 <small>dB</small></strong><b>→</b><strong>0.77 <small>dB</small></strong></div><p>N = 64 → N = 128. Longer active paths increase wire loss and noise.</p></article>
+          <article class="result-panel"><span class="claim-badge">Silicon · N=64 · 8 columns</span><h3>SEC correction</h3><div class="pair-value"><strong>4 <small>dB</small></strong><b>→</b><strong>9.15 <small>dB</small></strong></div><p>Average across eight ADC columns; +2.7–6 dB across evaluated operating points.</p></article>
+          <article class="result-panel"><span class="claim-badge">Silicon · iso-SNDR</span><h3>Energy frontier</h3><div class="pair-value"><strong>5×</strong><b class="text-arrow">lower</b><strong>E/1b-OP</strong></div><p>SEC energy overhead is 0.8% at N = 64 and 1.8% at N = 128.</p></article>
+          <article class="result-panel"><span class="claim-badge">Fabricated / projection</span><h3>Area implementation</h3><div class="pair-value"><strong>12.2%</strong><b>→</b><strong>3.7%</strong></div><p>Fabricated register-based SEC overhead and projected SRAM-backed storage overhead.</p></article>
         </div>
         <figure class="figure-frame figure-wide">
           <img src="assets/figures/sndr-columns.png" alt="Measured SNDR across eight ADC columns before and after statistical error compensation" loading="lazy" />
@@ -154,17 +177,17 @@
       <section class="section section-teal">
         <div class="section-head">
           <p class="kicker">Application experiment</p>
-          <h2>One measured layer, with a clear boundary.</h2>
-          <p>The CIFAR-10 experiment trains a 4-bit-weight ResNet-20 in software, quantizes 1,000 test inputs to 7 bit, and maps only the final fully connected layer to the measured MRAM macro. It does not map the complete network on-chip and does not use network-specific noise-aware training.</p>
+          <h2>SEC recovers 7.2 accuracy points in the measured ResNet-20 output layer.</h2>
+          <p>Software evaluates the convolutional backbone; the macro computes the 4-bit final fully connected layer for 1,000 CIFAR-10 inputs quantized to 7 bits. The same mapping is measured with SEC off and on, with application weights fixed; hardware results report ±5 percentage points at 90% confidence.</p>
         </div>
-        <div class="three-col">
-          <article class="card"><span class="number">DIGITAL BASELINE</span><h3>91.1%</h3><p class="muted">Top-1 accuracy for the fixed-point digital reference on the 1,000-input evaluation.</p></article>
-          <article class="card"><span class="number">HARDWARE · SEC OFF</span><h3>74.8% ±5%</h3><p class="muted">Measured top-1 accuracy; ±5 percentage points at 90% confidence.</p></article>
-          <article class="card"><span class="number">HARDWARE · SEC ON</span><h3>82.0% ±5%</h3><p class="muted">Measured top-1 accuracy after SEC, under the same stated confidence convention.</p></article>
+        <div class="accuracy-chart" aria-label="CIFAR-10 top-1 accuracy comparison">
+          <article><span>Digital reference</span><div><i style="--accuracy:91.1%"></i></div><strong>91.1%</strong></article>
+          <article><span>Silicon · SEC off</span><div><i style="--accuracy:74.8%"></i></div><strong>74.8% ±5%</strong></article>
+          <article><span>Silicon · SEC on</span><div><i style="--accuracy:82%"></i></div><strong>82.0% ±5%</strong></article>
         </div>
-        <div class="callout" style="margin-top:38px">
-          <strong>What this supports</strong>
-          <p>The result shows that task-agnostic bank-level SNDR improvement can recover part of the last-layer accuracy loss without network-specific noise-aware training. It does not establish full-network equivalence to digital inference; a material gap remains after SEC.</p>
+        <div class="evidence-note" style="margin-top:38px">
+          <span class="evidence-type">Observed effect</span>
+          <p>SEC raises top-1 accuracy from 74.8% to 82.0%, recovering 7.2 percentage points toward the 91.1% fixed-point digital reference.</p>
         </div>
       </section>
 
@@ -172,18 +195,22 @@
         <div class="two-col">
           <div>
             <p class="kicker">Runnable method demo</p>
-            <h2>Exercise the analysis without pretending to emulate the chip.</h2>
+            <h2>Run the analysis pipeline on deterministic data.</h2>
             <p>The repository’s standard-library Python package generates deterministic protocol requests, fits independent affine calibration per column, computes code-conditioned SNDR, and demonstrates an illustrative correction-factor learner on synthetic data.</p>
             <p><a class="button button-dark" href="repository.html">Run the method demo</a></p>
           </div>
           <div class="callout">
-            <strong>Synthetic means synthetic.</strong>
-            <p>Demo outputs are software checks for method and packaging. They are never presented as measured silicon, cycle-accurate controller behavior, an FPGA overlay, or a reproduction of proprietary hardware.</p>
+            <strong>Synthetic fixture</strong>
+            <p>The runnable example reports protocol counts, calibration coefficients, and SNDR from generated inputs. The measured result panels above report the ESSCIRC and JSSC silicon data.</p>
           </div>
         </div>
       </section>
     </main>
 
+    <aside class="page-handoff" aria-label="Continue through the project">
+      <a class="handoff-link handoff-previous" href="test-platform.html"><span>Previous · Test platform</span><strong>← Revisit the preceding layer</strong></a>
+      <a class="handoff-link handoff-next" href="repository.html"><span>Next · Repository</span><strong>Run the method and inspect the engineering artifacts behind the result. →</strong></a>
+    </aside>
     <footer class="site-footer">
       <div>
         <a class="footer-brand" href="index.html">SEC–MRAM IMC</a>

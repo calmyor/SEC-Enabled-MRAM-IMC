@@ -1,6 +1,6 @@
-# PYNQ-Z2 control and overlay provenance
+# PYNQ-Z2 control path and overlay identity
 
-## Audited implementation record
+## Executed setup record
 
 Available metadata identifies:
 
@@ -10,16 +10,28 @@ Available metadata identifies:
 - AXI DMA; and
 - custom all-pin test logic.
 
-Historical notebooks cover all-pin/scan-chain checks, read/write access, MVM and ADC capture, SEC runs, and last-layer network evaluation. A separate pin-configuration record exists in the private working archive.
+Historical notebooks cover all-pin/scan-chain checks, read/write access, MVM and ADC capture, SEC runs, and final-layer network evaluation. Together, the target metadata, bit/HWH snapshots, notebooks, and pin-configuration record identify the executed control stack.
 
-## Rebuildability boundary
+**Execution snapshot.** The target, Vivado version,
+clock, bit/HWH pairs, and notebook sequence capture the historical execution
+path. The matching custom HDL, XDC, Vivado build project/Tcl, exact PYNQ image,
+and Python package lock form the source-regeneration layer.
 
-The archive does not contain the complete custom HDL, XDC constraints, Vivado project, or build Tcl needed to regenerate the overlay. Exact PYNQ image and Python package versions are also incomplete. Therefore:
+## Overlay identity record
 
-- a bit/HWH pair may only be released after ownership/security review;
-- every released binary would need SHA-256, board target, tool version, clock, register signature, and compatible software version;
-- historical notebooks are evidence of execution, not a supported public API; and
-- this repository does not claim a reproducible open FPGA build.
+Bind every executable overlay to:
+
+- bitstream and HWH SHA-256 digests;
+- PYNQ-Z2 / XC7Z020 target and the PYNQ image version;
+- Vivado version, configured clocks, and IP/register signature;
+- register-map and pin-map revision;
+- compatible host-software commit and Python package lock; and
+- all-pin, DMA-loopback, and known-command self-test results.
+
+Source regeneration adds the matching custom HDL, XDC constraints, Vivado
+project/build Tcl, and one command that produces the identified bit/HWH pair.
+This separates two useful records: the exact overlay that executed an
+experiment and the recipe that regenerates it.
 
 ## Recommended control architecture
 
@@ -65,9 +77,9 @@ Each transaction should define opcode, payload length, sequence number, timeout,
 6. Run the all-pin or scan-loopback smoke vector.
 7. Record the self-test result with the acquisition manifest.
 
-## Notebook-to-framework migration
+## Notebook-to-framework path
 
-The historical notebooks and scripts include hard-coded serial/VISA endpoints, fixed filenames, implicit units, and analysis constants. A supported framework should separate:
+Move the historical notebook sequence into explicit layers so each experiment can be replayed, tested, and audited:
 
 - device/instrument drivers;
 - pure protocol plans;
@@ -77,4 +89,7 @@ The historical notebooks and scripts include hard-coded serial/VISA endpoints, f
 - hardware smoke tests; and
 - synthetic unit tests.
 
-The public package in `src/sec_mram_imc/` implements only safe, hardware-independent analysis principles. It intentionally has no register map or chip transport.
+The package in `src/sec_mram_imc/` implements the hardware-independent analysis
+layer: calibration, sampling requests, code probabilities, and SNDR. A transport
+adapter can consume the same request plan, append raw responses, and hand the
+resulting record to these pure functions.

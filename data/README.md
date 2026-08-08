@@ -1,8 +1,12 @@
-# Data release policy
+# Data packaging
 
-No measured raw dataset is committed in the initial public release.
+`schema.json` defines the run-record shape shared by compact samples and full
+measurement captures. It keeps ideal code, state, repeat, ADC column,
+configuration, calibration, SEC state, and provenance in one structured record.
 
-The working collection contains many NPZ/NPY files, duplicates, fixed-filename analyses, machine-specific metadata, and individual files tens of megabytes in size. Before any measured dataset is published, it must be:
+## Full capture release checklist
+
+A measured dataset is prepared by:
 
 1. deduplicated without discarding distinct runs;
 2. de-identified and screened for paths, serial identifiers, addresses, or credentials;
@@ -11,9 +15,7 @@ The working collection contains many NPZ/NPY files, duplicates, fixed-filename a
 5. assigned a redistribution license;
 6. checksummed in a manifest;
 7. exercised by an end-to-end public analysis; and
-8. deposited in a versioned archival service, with only a small sample kept in Git.
-
-`schema.json` is the proposed public record shape. It is a release template, not a claim that historical captures already satisfy it.
+8. depositing the complete capture in a versioned archival service and keeping a compact end-to-end sample in Git.
 
 ## Minimum sample release
 

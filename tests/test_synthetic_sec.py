@@ -4,7 +4,7 @@ from itertools import product
 import unittest
 
 from sec_mram_imc import (
-    PUBLIC_SAFETY_NOTICE,
+    SYNTHETIC_DEMO_LABEL,
     learn_synthetic_correction_factors,
 )
 
@@ -21,7 +21,7 @@ class SyntheticSecTests(unittest.TestCase):
 
         fit = learn_synthetic_correction_factors(observed, targets, epochs=300)
 
-        self.assertIn("Synthetic method demo only", PUBLIC_SAFETY_NOTICE)
+        self.assertIn("Synthetic method demo", SYNTHETIC_DEMO_LABEL)
         self.assertLess(fit.final_mse, fit.initial_mse * 1e-6)
         for learned, scale in zip(fit.factors, attenuation):
             self.assertAlmostEqual(learned, 1.0 / scale, places=5)
@@ -29,4 +29,3 @@ class SyntheticSecTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
-

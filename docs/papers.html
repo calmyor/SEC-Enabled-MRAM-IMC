@@ -24,7 +24,7 @@
     <header class="site-header">
       <a class="brand" href="index.html" aria-label="SEC–MRAM IMC overview">
         <span class="brand-icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-        <span><strong>SEC–MRAM IMC</strong><small>Model → silicon → measurement</small></span>
+        <span><strong>SEC–MRAM IMC</strong><small>Problem → mechanism → silicon → evidence</small></span>
       </a>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
       <nav id="site-nav" class="site-nav" aria-label="Project sections">
@@ -33,27 +33,78 @@
           <a href="tapeout.html">Tapeout</a>
           <a href="test-platform.html">Test platform</a>
           <a href="measurements.html">Measurements</a>
-          <a href="repository.html">Repository</a>
-          <a href="papers.html" aria-current="page">Papers</a>
+          <a href="repository.html" class="resource-nav resource-start">Repository</a>
+          <a href="papers.html" class="resource-nav" aria-current="page">Papers</a>
       </nav>
       <a class="repo-link" href="https://github.com/calmyor/SEC-Enabled-MRAM-IMC">GitHub <span aria-hidden="true">↗</span></a>
     </header>
+    <nav class="journey-rail" aria-label="Design-to-measurement research path">
+      <span>Research path</span>
+      <div><a href="index.html#signal-challenge">Signal limit</a>
+        <a href="design.html#behavioral-model">Behavioral model</a>
+        <a href="design.html#sec-architecture">SEC + OCCS</a>
+        <a href="design.html#macro">Macro</a>
+        <a href="tapeout.html#process">Tapeout</a>
+        <a href="test-platform.html#stack">Test stack</a>
+        <a href="measurements.html#results">Measured result</a></div>
+    </nav>
     <main id="main">
       <header class="page-hero">
         <p class="breadcrumb">Overview / Papers</p>
-        <p class="eyebrow">ESSCIRC 2023 → JSSC journal extension</p>
-        <h1>One measured macro, two levels of explanation.</h1>
-        <p>The ESSCIRC paper introduces the SNR-boosting macro and measured headline results. The JSSC extension deepens the circuit, behavioral-model, fixed-point SEC, compute-SNDR methodology, and network-level evaluation.</p>
+        <p class="eyebrow">ISCAS 2022 → ESSCIRC 2023 → JSSC 2025</p>
+        <h1>From accuracy limits to an SEC-enabled silicon system.</h1>
+        <p>The publication sequence begins with a model-based question about computational accuracy, demonstrates statistical error compensation in a measured 22 nm MRAM IMC macro, and then connects the behavioral model, circuit architecture, fixed-point implementation, measurement protocol, and application result in the journal account.</p>
       </header>
+      <div class="thesis-strip" aria-label="Publication page summary">
+        <article><span>Question</span><strong>How do array scaling and parasitic attenuation limit the signal quality of resistive in-memory computation?</strong></article>
+        <article><span>Silicon answer</span><strong>Offset-compensating sensing and learned SEC factors recover signal quality inside a fabricated 22 nm MRAM IMC macro.</strong></article>
+        <article><span>Full account</span><strong>The journal paper links the error model, α/γ/θ correction, fixed-point hardware, compute-SNDR method, and measured outcomes.</strong></article>
+      </div>
 
       <section class="section section-white">
+        <div class="section-head">
+          <p class="kicker">Publication path</p>
+          <h2>Three papers move from limit, to mechanism, to complete evidence.</h2>
+        </div>
+        <div class="three-col">
+          <article class="path-card">
+            <span>01 · ISCAS 2022 · Behavioral model</span>
+            <h3>Frame the accuracy limit</h3>
+            <p>“Fundamental Limits on the Computational Accuracy of Resistive Crossbar-Based In-Memory Architectures” establishes the modeling lineage for understanding compute accuracy and signal quality.</p>
+            <a href="https://doi.org/10.1109/ISCAS48785.2022.9937336">Open the ISCAS DOI →</a>
+          </article>
+          <article class="path-card">
+            <span>02 · ESSCIRC 2023 · Silicon</span>
+            <h3>Demonstrate the mechanism</h3>
+            <p>The conference paper presents the 22 nm MRAM macro, OCCS and SEC architecture, measured SNR gain, iso-SNR energy trade-off, and CIFAR-10 final-layer result.</p>
+            <a href="https://doi.org/10.1109/ESSCIRC59616.2023.10268688">Open the ESSCIRC DOI →</a>
+          </article>
+          <article class="path-card">
+            <span>03 · JSSC 2025 · Expanded evidence</span>
+            <h3>Connect the full chain</h3>
+            <p>The journal extension develops the parasitic model, α/γ/θ factorization, OCCS circuit evidence, fixed-point implementation, compute-SNDR protocol, and system evaluation.</p>
+            <a href="https://doi.org/10.1109/JSSC.2024.3442013">Open the JSSC DOI →</a>
+          </article>
+        </div>
+        <div class="takeaway"><span>Research arc</span><strong>ISCAS asks what limits accuracy; ESSCIRC shows that SEC works in silicon; JSSC explains why it works, how it is implemented, and how the improvement is measured.</strong></div>
+      </section>
+
+      <section class="section">
+        <div class="section-head">
+          <p class="kicker">Primary prototype papers</p>
+          <h2>The conference result and its journal expansion.</h2>
+        </div>
         <article class="paper-card">
           <div class="paper-badge"><strong>ESSCIRC</strong><span>49th IEEE European Solid-State Circuits Conference<br />2023 · pp. 25–28</span></div>
           <div>
             <p class="kicker">Conference paper</p>
             <h2>Compute SNR-Boosted 22 nm MRAM-Based In-Memory Computing Macro Using Statistical Error Compensation</h2>
             <p class="paper-meta">Saion K. Roy, Han-Mo Ou, Mostafa G. Ahmed, Peter Deaville, Bonan Zhang, Naveen Verma, Pavan K. Hanumolu, and Naresh R. Shanbhag.</p>
-            <p>The compact conference account establishes the scaling problem, offset-compensating sensing, low-overhead SEC, measured 2.7–6 dB SNR improvement, the 5× iso-SNR energy trade-off, and the last-layer CIFAR-10 result.</p>
+            <p>The compact conference account establishes the scaling problem, offset-compensating sensing, low-overhead SEC, measured 2.7–6 dB SNR improvement, the 5× iso-SNR energy trade-off, and the final fully connected layer CIFAR-10 result.</p>
+            <div class="evidence-note">
+              <span class="evidence-type">Silicon</span>
+              <p>Measured macro SNR, energy, implementation overhead, and final-layer inference outcomes form the conference paper’s central result.</p>
+            </div>
             <p><a class="button button-dark" href="https://doi.org/10.1109/ESSCIRC59616.2023.10268688">Open DOI <span aria-hidden="true">↗</span></a></p>
             <div class="citation-box">
               <code id="citation-esscirc">S. K. Roy et al., “Compute SNR-boosted 22 nm MRAM-based in-memory computing macro using statistical error compensation,” in ESSCIRC 2023—IEEE 49th European Solid State Circuits Conference, pp. 25–28, 2023, doi: 10.1109/ESSCIRC59616.2023.10268688.</code>
@@ -68,7 +119,11 @@
             <p class="kicker">Journal extension</p>
             <h2>Compute SNDR-Boosted 22-nm MRAM-Based In-Memory Computing Macro Using Statistical Error Compensation</h2>
             <p class="paper-meta">Saion K. Roy, Han-Mo Ou, Mostafa G. Ahmed, Peter Deaville, Bonan Zhang, Naveen Verma, Pavan K. Hanumolu, and Naresh R. Shanbhag.</p>
-            <p>The journal article expands the OCCS analysis and Monte Carlo evidence, parasitic behavioral model, α/γ/θ formulation, fixed-point convergence, macro organization, per-column MMSE calibration, code-conditioned SNDR protocol, measured variation, energy trade-off, and bounded network experiment.</p>
+            <p>The journal article connects the OCCS analysis and Monte Carlo evidence, parasitic behavioral model, α/γ/θ formulation, fixed-point convergence, macro organization, per-column MMSE calibration, code-conditioned SNDR protocol, measured variation, energy trade-off, and final-layer ResNet-20 evaluation.</p>
+            <div class="evidence-note">
+              <span class="evidence-type">Expanded evidence</span>
+              <p>Silicon measurements are interpreted alongside circuit simulation, the behavioral model, fixed-point studies, and the SRAM-backed area projection.</p>
+            </div>
             <p><a class="button button-dark" href="https://doi.org/10.1109/JSSC.2024.3442013">Open DOI <span aria-hidden="true">↗</span></a></p>
             <div class="citation-box">
               <code id="citation-jssc">S. K. Roy et al., “Compute SNDR-boosted 22-nm MRAM-based in-memory computing macro using statistical error compensation,” IEEE Journal of Solid-State Circuits, vol. 60, no. 3, pp. 1092–1102, Mar. 2025, doi: 10.1109/JSSC.2024.3442013.</code>
@@ -80,53 +135,44 @@
 
       <section class="section section-dark">
         <div class="section-head">
-          <p class="kicker">What the journal adds</p>
-          <h2>From headline SNR to a reproducible compute-SNDR argument.</h2>
+          <p class="kicker">Conference → journal</p>
+          <h2>The journal turns the measured result into an end-to-end design argument.</h2>
         </div>
-        <div class="four-col">
-          <article class="card"><span class="number">MODEL</span><h3>Parasitic error structure</h3><p class="muted">Location-dependent attenuation, behavioral/circuit correlation, and the mathematical basis for shared SEC factors.</p></article>
-          <article class="card"><span class="number">CIRCUIT</span><h3>OCCS operation</h3><p class="muted">Auto-zero/evaluate behavior, level shifting, mismatch range, PVT sensitivity, and simulated area trade-offs.</p></article>
-          <article class="card"><span class="number">METHOD</span><h3>Compute SNDR</h3><p class="muted">Per-column affine MMSE calibration, code-conditioned state sampling, probability weighting, and repeated captures.</p></article>
-          <article class="card"><span class="number">SYSTEM</span><h3>Bounded inference test</h3><p class="muted">A measured final-layer ResNet-20 mapping with explicit digital, SEC-off, and SEC-on accuracy.</p></article>
-        </div>
-      </section>
-
-      <section class="section">
-        <div class="section-head">
-          <p class="kicker">Reading guide</p>
-          <h2>Match each claim to its evidence class.</h2>
-        </div>
-        <table class="spec-table" aria-label="Paper evidence guide">
+        <table class="spec-table" aria-label="ESSCIRC and JSSC paper comparison">
+          <thead>
+            <tr><th>Research layer</th><th>ESSCIRC 2023</th><th>JSSC extension</th></tr>
+          </thead>
           <tbody>
-            <tr><th>Measured silicon</th><td>Die/core dimensions, ADC-column SNDR, SEC improvement, energy/SNDR points, area/energy overhead, and last-layer accuracy.</td></tr>
-            <tr><th>Circuit simulation</th><td>OCCS Monte Carlo bitline-voltage variation and the sensor area comparison.</td></tr>
-            <tr><th>Behavioral simulation</th><td>Parasitic transfer behavior, quantized SEC convergence, and precision-selection evidence.</td></tr>
-            <tr><th>Projection</th><td>Reducing SEC area from 12.2% to 3.7% by replacing register storage with SRAM.</td></tr>
-            <tr><th>Author claim</th><td>The “first” characterization language is attributed to the authors unless independently established.</td></tr>
+            <tr><th>Central contribution</th><td>Measured SNR-boosted 22 nm MRAM IMC macro using OCCS and SEC.</td><td>Expanded SNDR account connecting the error mechanism, circuits, fixed-point correction, measurement method, and system result.</td></tr>
+            <tr><th>Behavioral model</th><td>Scaling and parasitic attenuation motivate the correction architecture.</td><td>Location-dependent α factors, behavioral/circuit correlation, and the mathematical basis for shared γ and θ factors.</td></tr>
+            <tr><th>SEC architecture</th><td>Low-overhead statistical error compensation and measured SNR recovery.</td><td>Training and inference paths, α/γ/θ factorization, quantized convergence, 7-bit γ inference, and 14-bit update accumulation.</td></tr>
+            <tr><th>OCCS</th><td>Offset-compensating sensing integrated with the macro.</td><td>Auto-zero/evaluate operation, level shifting, mismatch/PVT analysis, Monte Carlo bitline variation, and circuit overhead.</td></tr>
+            <tr><th>Measurement method</th><td>Measured SNR, energy trade-off, overhead, and application headline.</td><td>Per-column affine MMSE calibration, 30 states per ideal code, 10 repeats per state, binomial P(c), and probability-weighted compute SNDR.</td></tr>
+            <tr><th>Application mapping</th><td>CIFAR-10 inference with the final fully connected layer of 4-bit ResNet-20 mapped to the macro.</td><td>The same mapping presented with expanded digital, SEC-off, SEC-on, sampling, and confidence details.</td></tr>
+            <tr><th>Evidence classes</th><td><span class="evidence-type">Silicon</span></td><td><span class="evidence-type">Silicon</span> <span class="evidence-type">Circuit simulation</span> <span class="evidence-type">Behavioral model</span> <span class="evidence-type">Projection</span></td></tr>
           </tbody>
         </table>
       </section>
 
       <section class="section section-white">
-        <div class="two-col">
-          <div>
-            <p class="kicker">Design lineage</p>
-            <h2>A prior modeling paper informs the question.</h2>
-            <p>The broader reasoning is connected to the 2022 ISCAS work “Fundamental Limits on the Computational Accuracy of Resistive Crossbar-Based In-Memory Architectures.” It helps frame compute accuracy and bank-level signal quality, but it is not one of the two primary prototype papers documented here.</p>
-            <p><a href="https://doi.org/10.1109/ISCAS48785.2022.9937336">Open the ISCAS 2022 DOI <span aria-hidden="true">↗</span></a></p>
-          </div>
-          <div class="callout">
-            <strong>Venue clarification</strong>
-            <p>This repository covers ESSCIRC and JSSC. No ISCA paper for this prototype was found in the source collection, and ISSCC appears as cited prior art rather than the publication venue for this work.</p>
-          </div>
+        <div class="section-head">
+          <p class="kicker">Reading key</p>
+          <h2>Four labels separate the layers of evidence.</h2>
         </div>
+        <div class="four-col">
+          <article class="card"><span class="evidence-type">Silicon</span><h3>Fabricated macro</h3><p>ADC-column SNDR, SEC improvement, energy/SNDR points, fabricated overhead, and final-layer accuracy.</p></article>
+          <article class="card"><span class="evidence-type">Circuit simulation</span><h3>OCCS behavior</h3><p>Transistor-level mismatch, PVT, Monte Carlo bitline variation, and sensing-area comparison.</p></article>
+          <article class="card"><span class="evidence-type">Behavioral model</span><h3>Array and fixed point</h3><p>Parasitic transfer behavior, α extraction, quantized convergence, and precision selection.</p></article>
+          <article class="card"><span class="evidence-type">Projection</span><h3>Storage alternative</h3><p>SEC area changes from 12.2% in the fabricated implementation to 3.7% with SRAM-backed storage.</p></article>
+        </div>
+        <div class="takeaway"><span>Terminology</span><strong>The conference paper reports SNR; the journal uses SNDR to include distortion. SEC means statistical error compensation, and its training learns hardware correction factors.</strong></div>
       </section>
 
       <section class="section section-teal">
         <div class="section-head">
-          <p class="kicker">Paper access</p>
-          <h2>Use the publisher records as the canonical copies.</h2>
-          <p>The audited source archive contains LaTeX manuscripts and figure PDFs but not a verified public compiled paper PDF. The site therefore links to DOI records instead of republishing an unverified manuscript build.</p>
+          <p class="kicker">Canonical records</p>
+          <h2>Open the papers and their publication metadata.</h2>
+          <p>The DOI and IEEE Xplore records provide the paper text, citation metadata, publication history, and related references.</p>
         </div>
         <div class="actions">
           <a class="button button-primary" href="https://ieeexplore.ieee.org/document/10268688">ESSCIRC on IEEE Xplore <span aria-hidden="true">↗</span></a>
@@ -135,6 +181,9 @@
       </section>
     </main>
 
+    <aside class="page-handoff" aria-label="Continue through the project">
+      <a class="handoff-link handoff-previous" href="repository.html"><span>Previous · Repository</span><strong>← Revisit the preceding layer</strong></a>
+    </aside>
     <footer class="site-footer">
       <div>
         <a class="footer-brand" href="index.html">SEC–MRAM IMC</a>

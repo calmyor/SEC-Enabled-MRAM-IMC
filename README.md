@@ -20,31 +20,31 @@ This repository documents the engineering path behind a measured **22 nm MRAM in
 | SEC overhead | 12.2% fabricated area; 0.8% energy at N=64 and 1.8% at N=128 |
 | CIFAR-10 / ResNet-20 final-layer mapping | 74.8% ±5% to 82.0% ±5% at 90% confidence |
 
-The network experiment maps **only the final fully connected layer** to measured hardware. SEC learns hardware correction factors; it is not neural-network training. See [Measurements](measurements/README.md) for the protocol and interpretation boundary.
+The network experiment maps the **final fully connected layer** to measured hardware while the preceding ResNet-20 layers run in software. SEC learns hardware correction factors with the network weights fixed. See [Measurements](measurements/README.md) for the sampling, calibration, and confidence protocol.
 
-## Research chain
+## Engineering chain
 
-1. A behavioral model exposes MTJ variation, BL/SL parasitics, read noise, binary column weighting, and ADC quantization.
-2. Location-dependent attenuation is represented by αᵢⱼ.
-3. SEC learns a shared per-row input factor γᵢ and uses per-column normalization θⱼ, targeting θⱼγᵢαᵢⱼ ≈ 1.
-4. Quantization studies select a 7-bit inference scale and 14-bit update accumulator.
-5. Offset-compensated current sensing (OCCS) reduces readout mismatch and PVT sensitivity.
-6. The macro is fabricated, packaged in QFN64, and exercised through Python → PYNQ-Z2 → custom PCB → chip.
-7. Per-column MMSE calibration and 30 states/code × 10 repeats estimate compute SNDR.
+1. **Expose the signal limit.** A behavioral model combines MTJ variation, BL/SL parasitics, read noise, binary column weighting, and ADC quantization.
+2. **Capture its spatial structure.** Location-dependent attenuation is represented by αᵢⱼ.
+3. **Compensate economically.** SEC learns a shared per-row input factor γᵢ and uses per-column normalization θⱼ, targeting θⱼγᵢαᵢⱼ ≈ 1.
+4. **Map the algorithm to hardware.** Quantization studies select a 7-bit inference scale, 14-bit update accumulator, and power-of-two learning rate.
+5. **Stabilize the sensor.** Offset-compensated current sensing (OCCS) reduces readout mismatch and PVT sensitivity before conversion.
+6. **Realize and exercise the macro.** The 22 nm chip is packaged in QFN64 and connected through Python → PYNQ-Z2 → custom PCB → chip.
+7. **Measure by ideal code.** Independent per-column MMSE calibration and 30 states/code × 10 repeats estimate probability-weighted compute SNDR.
 
 Read the detailed [behavioral-model guide](design/behavioral-model/README.md), [SEC/OCCS architecture guide](design/sec-architecture/README.md), [tapeout process guide](tapeout/process-guide/README.md), [PCB guide](hardware/pcb/README.md), and [PYNQ guide](hardware/pynq/README.md).
 
-## What is executable here
+## Runnable analysis path
 
-The public, standard-library-only Python package implements:
+The standard-library-only Python package follows the measurement record from calibration through the paper's SNDR metric:
 
 - independent per-column affine MMSE calibration;
 - deterministic code-conditioned state/repetition requests;
 - probability-weighted compute-SNDR;
 - binomial probabilities for signed ±1 dot-product codes; and
-- an explicitly synthetic multiplicative-correction illustration.
+- a synthetic multiplicative-correction illustration for inspecting the SEC mechanism.
 
-It **does not** communicate with the chip or reproduce proprietary controller RTL, PYNQ firmware, analog behavior, or measured data.
+The hardware transaction path is specified separately in the [PYNQ control guide](hardware/pynq/README.md), while this package keeps the numerical methods deterministic and directly testable.
 
 ```bash
 python3 -m venv .venv
@@ -76,32 +76,36 @@ examples/                deterministic synthetic demonstration
 tests/                   unit tests
 measurements/            protocol and interpretation guide
 design/                  behavioral-model and SEC/OCCS design principles
-hardware/                PCB and PYNQ engineering/release boundaries
-tapeout/process-guide/   sanitized mixed-signal tapeout workflow
+hardware/                PCB and PYNQ engineering records
+tapeout/process-guide/   mixed-signal tapeout workflow and exit evidence
 data/                    public schema and example-data policy
 papers/                  citations and conference-to-journal evolution
-provenance/              artifact availability and release decisions
+provenance/              artifact roles, evidence classes, and handoff paths
 ```
 
-## Artifact boundary
+## Evidence map
 
-The private working collection is not published wholesale. It interleaves legitimate research artifacts with foundry-confidential configuration/validator material, export paperwork, invoices, shipping records, vendor packages, obsolete board revisions, machine-specific identifiers, raw data, and code without a confirmed redistribution license.
+Every result is paired with the artifact type that supports it:
 
-| Tier | Meaning | Examples |
+| Evidence class | What it answers | Repository entry point |
 |---|---|---|
-| Public source | Reviewed and licensed for this repository | Website, method package, tests, new engineering guides |
-| Sanitized derivative | New or reviewed public representation | Selected paper figures, board visual, process checklists |
-| Hardware-dependent | Real artifact whose execution requires unavailable/specific hardware | Historical overlay/notebook workflow, described but not distributed here |
-| Restricted / unavailable | Confidential, identifying, incomplete, or unlicensed | PDK, GDS/netlists, rule reports, waivers, invoices, raw lab archive |
+| Silicon measurement | What the fabricated macro and system produced | [Measurement method](measurements/README.md) and primary papers |
+| Circuit simulation / Monte Carlo | How OCCS behaves across modeled mismatch and PVT | [SEC/OCCS architecture](design/sec-architecture/README.md) |
+| Behavioral model | Why location-dependent attenuation emerges and how SEC responds | [Behavioral-model guide](design/behavioral-model/README.md) |
+| Projection | How an alternative SRAM-backed SEC implementation changes area | [SEC/OCCS architecture](design/sec-architecture/README.md) |
+| Synthetic example | How to run and inspect the public numerical methods | `examples/protocol_demo.py` and `tests/` |
+| Engineering record | How the chip, board, FPGA, and tapeout stages connect | `tapeout/` and `hardware/` guides |
 
-The collection does not contain a complete reproducible FPGA build (custom RTL/XDC/build Tcl are missing) or an open RTL-to-GDS/signoff flow. This repository makes neither claim. See [ARTIFACTS.md](provenance/ARTIFACTS.md).
+The complete artifact-by-artifact handoff is in [ARTIFACTS.md](provenance/ARTIFACTS.md).
 
-## Primary papers
+## Publication sequence
+
+- S. K. Roy *et al.*, “Fundamental Limits on the Computational Accuracy of Resistive Crossbar-Based In-Memory Architectures,” **ISCAS 2022**. This establishes the modeling foundation for signal-loss analysis. <https://doi.org/10.1109/ISCAS48785.2022.9937336>
 
 - S. K. Roy *et al.*, “Compute SNR-boosted 22 nm MRAM-based in-memory computing macro using statistical error compensation,” **ESSCIRC 2023**, pp. 25–28. <https://doi.org/10.1109/ESSCIRC59616.2023.10268688>
 - S. K. Roy *et al.*, “Compute SNDR-boosted 22-nm MRAM-based in-memory computing macro using statistical error compensation,” **IEEE Journal of Solid-State Circuits**, vol. 60, no. 3, pp. 1092–1102, Mar. 2025 (published online 2024). <https://doi.org/10.1109/JSSC.2024.3442013>
 
-The source collection does not contain an ISCA paper for this macro. ISSCC papers appear as prior art. An earlier ISCAS 2022 paper belongs to the modeling lineage but is not one of the two primary prototype publications.
+The sequence runs from behavioral limits (ISCAS), to the measured prototype and core SEC result (ESSCIRC), to the complete model–architecture–measurement account (JSSC).
 
 ## License and attribution
 

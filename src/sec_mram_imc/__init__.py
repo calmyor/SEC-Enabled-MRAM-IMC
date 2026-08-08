@@ -1,7 +1,8 @@
-"""Public-safe measurement helpers for the SEC-enabled MRAM IMC project.
+"""Measurement-method helpers for the SEC-enabled MRAM IMC project.
 
-The package reconstructs paper-level analysis methods. It does not contain the
-test-chip bitstream, foundry collateral, or the proprietary hardware controller.
+The package implements deterministic protocol sampling, per-column affine
+calibration, signed-code probabilities, compute SNDR, and a synthetic SEC
+illustration.
 """
 
 from .measurement import (
@@ -15,7 +16,7 @@ from .measurement import (
     signed_dot_product_code_probabilities,
 )
 from .synthetic_sec import (
-    PUBLIC_SAFETY_NOTICE,
+    SYNTHETIC_DEMO_LABEL,
     SyntheticSecFit,
     apply_synthetic_correction,
     learn_synthetic_correction_factors,
@@ -24,7 +25,7 @@ from .synthetic_sec import (
 __all__ = [
     "AffineCalibration",
     "MeasurementRequest",
-    "PUBLIC_SAFETY_NOTICE",
+    "SYNTHETIC_DEMO_LABEL",
     "SndrResult",
     "SyntheticSecFit",
     "apply_synthetic_correction",

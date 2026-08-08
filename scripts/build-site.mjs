@@ -9,10 +9,10 @@ const destination = join(root, "docs");
 const pages = [
   { file: "index.html", source: "overview.html", label: "Overview", title: "SEC-enabled 22 nm MRAM IMC", description: "From behavioral modeling to measured silicon: a 22 nm MRAM in-memory-computing macro with statistical error compensation." },
   { file: "design.html", source: "design.html", label: "Design", title: "Behavioral model to SEC architecture", description: "How parasitic-aware behavioral modeling became the SEC algorithm, OCCS readout, and fixed-point MRAM IMC macro." },
-  { file: "tapeout.html", source: "tapeout.html", label: "Tapeout", title: "Tapeout engineering", description: "A practical, evidence-bounded guide to the mixed-signal tapeout process behind the 22 nm MRAM IMC prototype." },
+  { file: "tapeout.html", source: "tapeout.html", label: "Tapeout", title: "Tapeout engineering", description: "How the SEC-enabled MRAM macro moved from frozen interfaces through mixed-signal implementation, physical closure, packaging, and test readiness." },
   { file: "test-platform.html", source: "test-platform.html", label: "Test platform", title: "PCB and PYNQ test platform", description: "The host-to-silicon measurement stack: Python control, PYNQ-Z2, custom PCB, package, power, and bring-up." },
-  { file: "measurements.html", source: "measurements.html", label: "Measurements", title: "Measurement methodology and results", description: "Calibration, code-conditioned sampling, SNDR reconstruction, SEC evaluation, and bounded application results." },
-  { file: "repository.html", source: "repository.html", label: "Repository", title: "Repository and reproducibility", description: "A curated artifact map, runnable method demo, reproduction paths, and clear public-release boundaries." },
+  { file: "measurements.html", source: "measurements.html", label: "Measurements", title: "Measurement methodology and results", description: "Calibration, code-conditioned sampling, SNDR reconstruction, SEC evaluation, and the measured ResNet-20 output-layer result." },
+  { file: "repository.html", source: "repository.html", label: "Repository", title: "Repository and reproducibility", description: "Explore the architecture, run the measurement method, follow the hardware workflow, and trace the publication record." },
   { file: "papers.html", source: "papers.html", label: "Papers", title: "ESSCIRC and JSSC papers", description: "The ESSCIRC 2023 paper, the JSSC journal extension, citations, authors, and the design lineage." },
 ];
 
@@ -24,8 +24,45 @@ const authors = [
 function nav(current) {
   return pages.map((page) => {
     const active = page.file === current ? ' aria-current="page"' : "";
-    return `<a href="${page.file}"${active}>${page.label}</a>`;
+    const resourceClass = page.file === "repository.html" ? ' class="resource-nav resource-start"' : page.file === "papers.html" ? ' class="resource-nav"' : "";
+    return `<a href="${page.file}"${resourceClass}${active}>${page.label}</a>`;
   }).join("\n          ");
+}
+
+function journey(current) {
+  const steps = [
+    { file: "index.html", href: "index.html#signal-challenge", label: "Signal limit" },
+    { file: "design.html", href: "design.html#behavioral-model", label: "Behavioral model" },
+    { file: "design.html", href: "design.html#sec-architecture", label: "SEC + OCCS" },
+    { file: "design.html", href: "design.html#macro", label: "Macro" },
+    { file: "tapeout.html", href: "tapeout.html#process", label: "Tapeout" },
+    { file: "test-platform.html", href: "test-platform.html#stack", label: "Test stack" },
+    { file: "measurements.html", href: "measurements.html#results", label: "Measured result" },
+  ];
+  return steps.map((step) => `<a href="${step.href}"${step.file === current ? ' class="current"' : ""}>${step.label}</a>`).join("\n        ");
+}
+
+const handoffNotes = {
+  "index.html": "See how the physical attenuation becomes a compact correction architecture.",
+  "design.html": "Carry the fixed-point SEC and OCCS definitions into implementation closure.",
+  "tapeout.html": "Follow the released interfaces into the PCB, FPGA, and bring-up sequence.",
+  "test-platform.html": "Turn raw ADC captures into calibrated, code-conditioned compute SNDR.",
+  "measurements.html": "Run the method and inspect the engineering artifacts behind the result.",
+  "repository.html": "Compare what ESSCIRC introduced with what the JSSC extension develops.",
+  "papers.html": "Return to the complete model-to-silicon research arc.",
+};
+
+function handoff(current) {
+  const index = pages.findIndex((page) => page.file === current);
+  const previous = index > 0 ? pages[index - 1] : null;
+  const next = index < pages.length - 1 ? pages[index + 1] : null;
+  const links = [
+    previous ? `<a class="handoff-link handoff-previous" href="${previous.file}"><span>Previous · ${previous.label}</span><strong>← Revisit the preceding layer</strong></a>` : "",
+    next ? `<a class="handoff-link handoff-next" href="${next.file}"><span>Next · ${next.label}</span><strong>${handoffNotes[current]} →</strong></a>` : "",
+  ].filter(Boolean).join("\n      ");
+  return `<aside class="page-handoff" aria-label="Continue through the project">
+      ${links}
+    </aside>`;
 }
 
 function documentFor(page, content) {
@@ -66,7 +103,7 @@ function documentFor(page, content) {
     <header class="site-header">
       <a class="brand" href="index.html" aria-label="SEC–MRAM IMC overview">
         <span class="brand-icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-        <span><strong>SEC–MRAM IMC</strong><small>Model → silicon → measurement</small></span>
+        <span><strong>SEC–MRAM IMC</strong><small>Problem → mechanism → silicon → evidence</small></span>
       </a>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
       <nav id="site-nav" class="site-nav" aria-label="Project sections">
@@ -74,7 +111,12 @@ function documentFor(page, content) {
       </nav>
       <a class="repo-link" href="https://github.com/calmyor/SEC-Enabled-MRAM-IMC">GitHub <span aria-hidden="true">↗</span></a>
     </header>
+    <nav class="journey-rail" aria-label="Design-to-measurement research path">
+      <span>Research path</span>
+      <div>${journey(page.file)}</div>
+    </nav>
 ${content}
+    ${handoff(page.file)}
     <footer class="site-footer">
       <div>
         <a class="footer-brand" href="index.html">SEC–MRAM IMC</a>

@@ -24,7 +24,7 @@
     <header class="site-header">
       <a class="brand" href="index.html" aria-label="SEC–MRAM IMC overview">
         <span class="brand-icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-        <span><strong>SEC–MRAM IMC</strong><small>Model → silicon → measurement</small></span>
+        <span><strong>SEC–MRAM IMC</strong><small>Problem → mechanism → silicon → evidence</small></span>
       </a>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
       <nav id="site-nav" class="site-nav" aria-label="Project sections">
@@ -33,24 +33,39 @@
           <a href="tapeout.html">Tapeout</a>
           <a href="test-platform.html">Test platform</a>
           <a href="measurements.html">Measurements</a>
-          <a href="repository.html">Repository</a>
-          <a href="papers.html">Papers</a>
+          <a href="repository.html" class="resource-nav resource-start">Repository</a>
+          <a href="papers.html" class="resource-nav">Papers</a>
       </nav>
       <a class="repo-link" href="https://github.com/calmyor/SEC-Enabled-MRAM-IMC">GitHub <span aria-hidden="true">↗</span></a>
     </header>
+    <nav class="journey-rail" aria-label="Design-to-measurement research path">
+      <span>Research path</span>
+      <div><a href="index.html#signal-challenge">Signal limit</a>
+        <a href="design.html#behavioral-model" class="current">Behavioral model</a>
+        <a href="design.html#sec-architecture" class="current">SEC + OCCS</a>
+        <a href="design.html#macro" class="current">Macro</a>
+        <a href="tapeout.html#process">Tapeout</a>
+        <a href="test-platform.html#stack">Test stack</a>
+        <a href="measurements.html#results">Measured result</a></div>
+    </nav>
     <main id="main">
       <header class="page-hero">
         <p class="breadcrumb">Overview / Design</p>
         <p class="eyebrow">Behavioral model → SEC/OCCS co-design</p>
         <h1>Start with the error, then design the correction.</h1>
-        <p>The architecture did not begin as a compensation block looking for a use. It began with a behavioral model that showed where each activated row’s contribution is attenuated—and which part of that structure can be shared efficiently in hardware.</p>
+        <p>A behavioral model reveals how each activated row is attenuated. That spatial pattern becomes the SEC factorization, the fixed-point datapath, and the sensing architecture implemented in silicon.</p>
       </header>
+      <div class="thesis-strip" aria-label="Design page summary">
+        <article><span>Question</span><strong>Why can two row patterns with the same ideal dot product produce different analog outputs?</strong></article>
+        <article><span>Mechanism</span><strong>BL/SL voltage gradients make contribution depend on physical row and column position.</strong></article>
+        <article><span>Design response</span><strong>Learn shared row factors γᵢ, normalize each column with θⱼ, and stabilize sensing with OCCS.</strong></article>
+      </div>
 
-      <section class="section section-white">
+      <section class="section section-white" id="behavioral-model">
         <div class="section-head">
           <p class="kicker">01 · Behavioral model</p>
-          <h2>Represent the whole analog path, not an ideal multiply.</h2>
-          <p>The model couples device variation and interconnect to readout and quantization. Its purpose is not transistor-level replacement; it is to expose the dominant error structure quickly enough to explore array size, input ordering, precision, and compensation.</p>
+          <h2>Model the complete signal path.</h2>
+          <p>The model couples device variation and interconnect to readout and quantization. It exposes how array size, row ordering, precision, and compensation reshape the distribution seen at the ADC output.</p>
         </div>
         <div class="two-col">
           <table class="spec-table" aria-label="Behavioral model components">
@@ -67,13 +82,18 @@
               <strong>The key observation is spatial.</strong>
               <p>The same logical activation produces a different analog contribution depending on its physical row. Near- and far-end patterns can bend to opposite sides of the ideal transfer line, with large relative error near a zero-valued dot product.</p>
             </div>
-            <p class="muted" style="margin-top:24px">Model parameters should be interpreted as a calibrated design instrument. Exact foundry device decks and proprietary PDK parameters are intentionally outside the public repository.</p>
+            <p class="muted" style="margin-top:24px"><strong>Model output:</strong> a row- and column-indexed attenuation map, raw current/ADC distributions, and matched ideal/nonideal vectors that can drive SEC architecture studies.</p>
           </div>
         </div>
       </section>
 
-      <section class="section section-dark">
-        <div class="two-col">
+      <section class="section section-dark" id="sec-architecture">
+        <div class="equation-ladder" aria-label="Ideal, distorted, and SEC-corrected dot product">
+          <article class="equation-step"><span>Ideal arithmetic</span><code>y₀ⱼ = Σᵢ wᵢⱼxᵢ</code><p>Every logical product contributes with unit gain.</p></article>
+          <article class="equation-step alpha-step"><span>Physical array</span><code>yⱼ = Σᵢ αᵢⱼwᵢⱼxᵢ</code><p>α captures the location-dependent analog attenuation.</p></article>
+          <article class="equation-step corrected-step"><span>SEC target</span><code>ỹⱼ = θⱼΣᵢ αᵢⱼwᵢⱼ(γᵢxᵢ)</code><p>Learning drives θⱼγᵢαᵢⱼ toward one across the bank.</p></article>
+        </div>
+        <div class="two-col" style="margin-top:42px">
           <div class="section-head">
             <p class="kicker">02 · Error abstraction</p>
             <h2>Turn parasitics into factors the architecture can act on.</h2>
@@ -86,13 +106,25 @@
               <button type="button" data-equation-term="gamma" aria-pressed="false">γᵢ · row correction</button>
               <button type="button" data-equation-term="theta" aria-pressed="false">θⱼ · column normalization</button>
             </div>
-            <p class="equation-readout" data-equation-readout aria-live="polite">αᵢⱼ is the row- and column-dependent attenuation produced by array parasitics. It is a behavioral description of the error, not an extra hardware state.</p>
+            <p class="equation-readout" data-equation-readout aria-live="polite">αᵢⱼ captures how row position i and column j shape a cell’s analog contribution through BL/SL parasitics.</p>
           </div>
         </div>
         <div class="three-col" style="margin-top:56px">
           <article class="card"><span class="number">SHARE</span><h3>One γ per row</h3><p class="muted">Sharing the input-side correction across ADC columns avoids storing a full correction matrix.</p></article>
           <article class="card"><span class="number">LEARN</span><h3>Fit the physical die</h3><p class="muted">On-chip stochastic-gradient updates adapt γ to instance-specific parasitics that are unknown before fabrication.</p></article>
           <article class="card"><span class="number">NORMALIZE</span><h3>One θ per column</h3><p class="muted">Output normalization absorbs column gain so that θⱼγᵢαᵢⱼ approaches unity statistically.</p></article>
+        </div>
+        <div class="compensation-compare" aria-label="Signal path before and after SEC">
+          <article class="signal-lane">
+            <span>Uncompensated path</span>
+            <div class="signal-route"><i>xᵢ</i><b>→</b><i>αᵢⱼ</i><b>→</b><i>ADCⱼ</i></div>
+            <p>Row position directly modulates the contribution delivered to each ADC column.</p>
+          </article>
+          <article class="signal-lane sec-on">
+            <span>SEC-enabled path</span>
+            <div class="signal-route"><i>γᵢ · xᵢ</i><b>→</b><i>αᵢⱼ</i><b>→</b><i>θⱼ</i><b>→</b><i>ỹⱼ</i></div>
+            <p>Input pre-scaling and output normalization flatten the systematic spatial response.</p>
+          </article>
         </div>
       </section>
 
@@ -114,7 +146,7 @@
                 <tr><th>Update state</th><td>14-bit accumulator retains the smaller training increments.</td></tr>
                 <tr><th>Learning rate</th><td>Power-of-two μ permits a shift in place of a general multiplier.</td></tr>
                 <tr><th>Validation</th><td>Fixed- and floating-point learning trajectories remain closely aligned.</td></tr>
-                <tr><th>Interpretation</th><td>“Training” calibrates hardware correction factors; it is not application-model training.</td></tr>
+                <tr><th>Learning target</th><td>Hardware correction state γ is calibrated while application-model weights remain fixed.</td></tr>
               </tbody>
             </table>
             <figure class="figure-frame" style="margin-top:20px">
@@ -128,7 +160,7 @@
       <section class="section section-teal">
         <div class="section-head">
           <p class="kicker">04 · Circuit co-design</p>
-          <h2>Correct the array without ignoring the sensor.</h2>
+          <h2>Coordinate array correction with offset-compensated sensing.</h2>
           <p>SEC addresses structured array error, but static mismatch and PVT sensitivity in the column sensor can still consume the available signal margin. The offset-compensated current sensor (OCCS) therefore changes both the level-shifting element and the operating sequence.</p>
         </div>
         <div class="three-col">
@@ -136,13 +168,13 @@
           <article class="card"><span class="number">RESISTIVE SHIFT</span><h3>Reduce PVT dependence</h3><p class="muted">A resistor replaces the prior transistor level shifter to stabilize the sensing bias.</p></article>
           <article class="card"><span class="number">EVALUATE</span><h3>Resolve a small current step</h3><p class="muted">The evaluation phase presents an offset-reduced signal to the 6-bit SAR conversion path.</p></article>
         </div>
-        <div class="callout" style="margin-top:38px">
-          <strong>Simulation boundary</strong>
-          <p>The reported 3.8%–8.4% bitline-voltage variation and roughly 17% OCCS area overhead are Monte Carlo circuit-simulation results. They are not direct measurements of the fabricated macro.</p>
+        <div class="evidence-note" style="margin-top:38px">
+          <span class="evidence-type">Circuit simulation</span>
+          <p>Monte Carlo analysis reports 3.8%–8.4% bitline-voltage variation with roughly 17% OCCS area overhead relative to the prior sensing loop. This quantifies the mismatch–area decision before macro integration.</p>
         </div>
       </section>
 
-      <section class="section section-white">
+      <section class="section section-white" id="macro">
         <div class="section-head">
           <p class="kicker">05 · Integrated macro</p>
           <h2>Preserve the signal definition across memory, conversion, and correction.</h2>
@@ -158,6 +190,7 @@
           <article><span class="claim-badge">Fabricated</span><strong>12.2%</strong><span>SEC area overhead in this implementation.</span></article>
           <article><span class="claim-badge">Projected</span><strong>3.7%</strong><span>Possible SEC overhead with register storage replaced by SRAM.</span></article>
         </div>
+        <div class="takeaway"><span>Architecture result</span><strong>Behavioral modeling determines the compensation structure and precision; OCCS preserves the analog margin that SEC then uses at bank scale.</strong></div>
       </section>
 
       <section class="section">
@@ -169,7 +202,7 @@
           <ul class="checklist">
             <li>Is each modeled nonideality physical, calibrated, and separable from numerical quantization?</li>
             <li>Does the compensation structure scale with rows and columns more slowly than a full α matrix?</li>
-            <li>Do fixed-point widths preserve convergence across the expected range, not only one seed?</li>
+            <li>Do fixed-point widths preserve convergence across the expected range and multiple seeds?</li>
             <li>Are saturation, rounding, reset, and update ordering defined at bit accuracy?</li>
           </ul>
           <ul class="checklist">
@@ -182,6 +215,10 @@
       </section>
     </main>
 
+    <aside class="page-handoff" aria-label="Continue through the project">
+      <a class="handoff-link handoff-previous" href="index.html"><span>Previous · Overview</span><strong>← Revisit the preceding layer</strong></a>
+      <a class="handoff-link handoff-next" href="tapeout.html"><span>Next · Tapeout</span><strong>Carry the fixed-point SEC and OCCS definitions into implementation closure. →</strong></a>
+    </aside>
     <footer class="site-footer">
       <div>
         <a class="footer-brand" href="index.html">SEC–MRAM IMC</a>

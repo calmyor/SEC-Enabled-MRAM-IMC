@@ -1,10 +1,10 @@
-# TO3 test PCB: public engineering guide
+# TO3 test PCB engineering guide
 
-## Evidence and boundary
+## Board record
 
-The project archive contains a final one-page TO3 schematic record, QFN64 bonding documents, BOM workbooks, a board rendering, and physical setup/chip photographs. The editable KiCad files found during audit correspond to an older TO2/QFN80 design and reference older fabrication/model paths. They are **not** published or described as the final TO3 source.
+The measured setup is identified by a final TO3 schematic record, QFN64 bonding documents, BOM workbooks, a board rendering, and physical setup/chip photographs. Older editable KiCad files are labeled TO2/QFN80 and serve as historical revision context. The TO3/QFN64 identity anchors every package, pin, and bring-up record below.
 
-A future open board release needs one coherent revision containing schematic, PCB, stackup, fabrication outputs, drill data, BOM, placement, assembly drawing, 3D models with licenses, ERC/DRC summaries, and a board-to-chip/lot manifest.
+A coherent board release binds one revision of the schematic, PCB, stackup, fabrication outputs, drill data, BOM, placement, assembly drawing, licensed 3D models, ERC/DRC summaries, and board-to-chip/lot manifest.
 
 ## Board design principles
 
@@ -52,7 +52,7 @@ ambient_and_timestamp:
 operator_or_automation_id:
 ```
 
-Do not publish personal identifiers or instrument serial numbers in a public dataset; use controlled aliases with an internal mapping.
+Public run records use controlled aliases for people, boards, chips, lots, and instruments, with any identifying mapping retained in the controlled lab record.
 
 ## Bring-up ladder
 
@@ -67,14 +67,18 @@ Do not publish personal identifiers or instrument serial numbers in a public dat
 9. Capture raw ADC low/high and a known MVM vector.
 10. Proceed to calibration, SEC, and statistical sweeps only after prior invariants pass.
 
-## Missing public artifacts
+## Board release bundle
 
-- final editable TO3 KiCad source and fabrication bundle;
-- sanitized pin/rail map;
-- supplier-neutral BOM with order/PII removed;
-- explicit power-up/current-limit/safe-shutdown procedure;
-- expected voltage/current checkpoints;
-- board revision ↔ chip/lot ↔ rework map; and
-- symptom-to-cause fault table.
+Use this checklist to turn the engineering record into a build-and-bring-up handoff:
 
-Their absence is recorded so readers do not mistake a photograph and schematic PDF for a complete reproducible PCB release.
+- final editable TO3/QFN64 schematic, layout, and fabrication bundle;
+- reviewed pin/rail map with voltage domain, direction, and safe state;
+- supplier-neutral BOM with manufacturer part numbers and substitutions;
+- power-up, current-limit, discharge, and safe-shutdown procedure;
+- expected voltage/current checkpoints for each bring-up rung;
+- board revision ↔ chip/lot ↔ rework manifest;
+- overlay and pin-map compatibility record; and
+- symptom → observation → likely cause → next safe test table.
+
+The release is complete when a second setup can follow the bundle from unpowered
+inspection through a known MVM capture while preserving the run manifest above.
