@@ -1,21 +1,27 @@
-# Papers and research sequence
+# Papers and research relationship
 
-The publication sequence follows the same causal path as the repository:
+The three publications expose complementary parts of the same model-to-measurement argument:
 
 | Stage | Publication | Contribution to the chain |
 |---|---|---|
-| Behavioral limits | ISCAS 2022 | Frames how array nonidealities limit resistive-crossbar compute accuracy |
 | Measured prototype | ESSCIRC 2023 | Introduces the 22 nm MRAM macro, OCCS, SEC, and headline silicon results |
+| Parallel-bar analysis | JxCDC 2024 | Develops the behavioral/SNDR framework and validates it against the measured prototype |
 | Complete account | JSSC 2025 | Connects the parasitic-aware model, fixed-point architecture, macro, measurement protocol, and application result |
 
-## Modeling foundation: ISCAS 2022
+The relationship is **JxCDC parallel-bar model ↔ ESSCIRC measured prototype → JSSC complete SEC account**. This is a conceptual map, not a claim about publication order.
 
-S. K. Roy *et al.*, “Fundamental Limits on the Computational Accuracy of Resistive Crossbar-Based In-Memory Architectures,” *ISCAS 2022*.
+## Parallel-bar analytical companion: JxCDC 2024
 
-- DOI: <https://doi.org/10.1109/ISCAS48785.2022.9937336>
+S. K. Roy and N. R. Shanbhag, “Energy-Accuracy Trade-Offs for Resistive In-Memory Computing Architectures,” *IEEE Journal on Exploratory Solid-State Computational Devices and Circuits*, vol. 10, pp. 22–30, 2024.
 
-This paper supplies the modeling lineage for understanding signal attenuation
-and computational accuracy before the MRAM prototype introduces SEC.
+- DOI: <https://doi.org/10.1109/JXCDC.2024.3381888>
+
+This paper models the differential resistive parallel-bar signal path across
+device variation, BL/SL parasitics, current-mirror mismatch, and ADC noise. It
+validates the model against the measured 22 nm MRAM prototype: at `N=64`, a
+6-bit ADC, and a 20 mV reference, the reported compute SNDR is 5.17 dB from the
+model and 5.15 dB from silicon. The JSSC work then carries the structured array
+attenuation into the SEC/OCCS architecture.
 
 ## ESSCIRC 2023
 

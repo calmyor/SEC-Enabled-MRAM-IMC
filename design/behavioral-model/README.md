@@ -12,6 +12,12 @@ The behavioral model is the bridge from transistor/circuit behavior to the SEC a
 
 Its output is a compact description of the dominant structured error: a spatial attenuation field that the on-chip correction can learn economically.
 
+**Modeling reference:** S. K. Roy and N. R. Shanbhag, “Energy-Accuracy
+Trade-Offs for Resistive In-Memory Computing Architectures,” *IEEE JxCDC*,
+vol. 10, pp. 22–30, 2024. The paper develops the parallel-bar behavioral/SNDR
+framework and validates it against the measured 22 nm MRAM prototype.
+[Open the publication record](https://doi.org/10.1109/JXCDC.2024.3381888).
+
 ## Signal path represented
 
 | Layer | Public model concept | Design question |

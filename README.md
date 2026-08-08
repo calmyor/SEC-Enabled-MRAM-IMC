@@ -3,7 +3,7 @@
 [![Pages](https://github.com/calmyor/SEC-Enabled-MRAM-IMC/actions/workflows/pages.yml/badge.svg)](https://github.com/calmyor/SEC-Enabled-MRAM-IMC/actions/workflows/pages.yml)
 [![Validate](https://github.com/calmyor/SEC-Enabled-MRAM-IMC/actions/workflows/validate.yml/badge.svg)](https://github.com/calmyor/SEC-Enabled-MRAM-IMC/actions/workflows/validate.yml)
 
-This repository documents the engineering path behind a measured **22 nm MRAM in-memory-computing (IMC) macro with statistical error compensation (SEC)**: behavioral modeling, SEC/OCCS co-design, fixed-point architecture, mixed-signal tapeout considerations, PCB and PYNQ-Z2 testing, code-conditioned compute-SNDR measurement, and the ESSCIRC/JSSC publication record.
+This repository documents the engineering path behind a measured **22 nm MRAM in-memory-computing (IMC) macro with statistical error compensation (SEC)**: behavioral modeling, SEC/OCCS co-design, fixed-point architecture, mixed-signal tapeout considerations, PCB and PYNQ-Z2 testing, code-conditioned compute-SNDR measurement, and the ESSCIRC/JxCDC/JSSC publication record.
 
 **Project website:** <https://calmyor.github.io/SEC-Enabled-MRAM-IMC/>
 
@@ -98,14 +98,13 @@ Every result is paired with the artifact type that supports it:
 
 The complete artifact-by-artifact handoff is in [ARTIFACTS.md](provenance/ARTIFACTS.md).
 
-## Publication sequence
-
-- S. K. Roy *et al.*, “Fundamental Limits on the Computational Accuracy of Resistive Crossbar-Based In-Memory Architectures,” **ISCAS 2022**. This establishes the modeling foundation for signal-loss analysis. <https://doi.org/10.1109/ISCAS48785.2022.9937336>
+## Publication relationship
 
 - S. K. Roy *et al.*, “Compute SNR-boosted 22 nm MRAM-based in-memory computing macro using statistical error compensation,” **ESSCIRC 2023**, pp. 25–28. <https://doi.org/10.1109/ESSCIRC59616.2023.10268688>
+- S. K. Roy and N. R. Shanbhag, “Energy-Accuracy Trade-Offs for Resistive In-Memory Computing Architectures,” **IEEE JxCDC**, vol. 10, pp. 22–30, 2024. This develops the parallel-bar behavioral/SNDR framework and validates it against the measured 22 nm MRAM prototype. <https://doi.org/10.1109/JXCDC.2024.3381888>
 - S. K. Roy *et al.*, “Compute SNDR-boosted 22-nm MRAM-based in-memory computing macro using statistical error compensation,” **IEEE Journal of Solid-State Circuits**, vol. 60, no. 3, pp. 1092–1102, Mar. 2025 (published online 2024). <https://doi.org/10.1109/JSSC.2024.3442013>
 
-The sequence runs from behavioral limits (ISCAS), to the measured prototype and core SEC result (ESSCIRC), to the complete model–architecture–measurement account (JSSC).
+The relationship is **JxCDC parallel-bar model ↔ ESSCIRC measured prototype → JSSC complete SEC account**. JxCDC explains and validates the uncompensated parallel-bar signal path; ESSCIRC demonstrates OCCS and SEC in silicon; JSSC unifies the model, correction architecture, circuits, and measurement method.
 
 ## License and attribution
 

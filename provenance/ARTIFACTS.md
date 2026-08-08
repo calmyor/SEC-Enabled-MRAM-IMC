@@ -9,7 +9,7 @@ so that each result carries a clear interpretation.
 
 | Area | Evidence anchor | Repository role | Action it supports |
 |---|---|---|---|
-| ISCAS modeling lineage | Publisher DOI | Citation and research-sequence link | Start from the computational-accuracy problem |
+| JxCDC parallel-bar analysis | Publisher DOI; model-to-silicon comparison | Analytical companion and citation link | Follow the behavioral/SNDR framework validated against the 22 nm prototype |
 | ESSCIRC prototype | Publisher paper; manuscript source and figures in the working record | DOI/citation and reviewed visuals | Read the macro, OCCS/SEC idea, and headline measured result |
 | JSSC extension | Publisher paper; manuscript source and figure PDFs in the working record | DOI/citation and reviewed visuals | Follow the complete model–architecture–measurement account |
 | Behavioral model | Equations, model/testbench history, and circuit-correlation scripts | Design guide, experiment sequence, and validation invariants | Isolate αᵢⱼ-producing mechanisms and correlate controlled vectors |

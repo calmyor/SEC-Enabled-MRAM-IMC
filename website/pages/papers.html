@@ -1,49 +1,68 @@
     <main id="main">
       <header class="page-hero">
         <p class="breadcrumb">Overview / Papers</p>
-        <p class="eyebrow">ISCAS 2022 → ESSCIRC 2023 → JSSC 2025</p>
-        <h1>From accuracy limits to an SEC-enabled silicon system.</h1>
-        <p>The publication sequence begins with a model-based question about computational accuracy, demonstrates statistical error compensation in a measured 22 nm MRAM IMC macro, and then connects the behavioral model, circuit architecture, fixed-point implementation, measurement protocol, and application result in the journal account.</p>
+        <p class="eyebrow">Parallel-bar model ↔ measured prototype → complete SEC account</p>
+        <h1>Connect the accuracy model to the SEC-enabled silicon system.</h1>
+        <p>JxCDC develops the behavioral/SNDR model for resistive parallel-bar IMC and validates it against the measured 22 nm MRAM prototype. ESSCIRC presents OCCS and SEC in silicon. JSSC then unifies the model, correction architecture, fixed-point implementation, measurement protocol, and application result.</p>
       </header>
       <div class="thesis-strip" aria-label="Publication page summary">
-        <article><span>Question</span><strong>How do array scaling and parasitic attenuation limit the signal quality of resistive in-memory computation?</strong></article>
-        <article><span>Silicon answer</span><strong>Offset-compensating sensing and learned SEC factors recover signal quality inside a fabricated 22 nm MRAM IMC macro.</strong></article>
-        <article><span>Full account</span><strong>The journal paper links the error model, α/γ/θ correction, fixed-point hardware, compute-SNDR method, and measured outcomes.</strong></article>
+        <article><span>Parallel-bar model</span><strong>Device variation, BL/SL parasitics, sensor mismatch, and ADC noise determine the available compute SNDR.</strong></article>
+        <article><span>Measured macro</span><strong>OCCS and learned SEC factors recover signal quality inside a fabricated 22 nm MRAM IMC macro.</strong></article>
+        <article><span>Complete account</span><strong>JSSC links structured attenuation, α/γ/θ correction, fixed-point hardware, compute SNDR, and measured outcomes.</strong></article>
       </div>
 
       <section class="section section-white">
         <div class="section-head">
-          <p class="kicker">Publication path</p>
-          <h2>Three papers move from limit, to mechanism, to complete evidence.</h2>
+          <p class="kicker">Research relationship</p>
+          <h2>Three publications expose one model-to-measurement argument.</h2>
         </div>
         <div class="three-col">
           <article class="path-card">
-            <span>01 · ISCAS 2022 · Behavioral model</span>
-            <h3>Frame the accuracy limit</h3>
-            <p>“Fundamental Limits on the Computational Accuracy of Resistive Crossbar-Based In-Memory Architectures” establishes the modeling lineage for understanding compute accuracy and signal quality.</p>
-            <a href="https://doi.org/10.1109/ISCAS48785.2022.9937336">Open the ISCAS DOI →</a>
+            <span>Model · JxCDC 2024</span>
+            <h3>Model the parallel-bar limit</h3>
+            <p>“Energy-Accuracy Trade-Offs for Resistive In-Memory Computing Architectures” develops the behavioral/SNDR framework and validates it against the 22 nm MRAM prototype.</p>
+            <a href="https://doi.org/10.1109/JXCDC.2024.3381888">Open the JxCDC DOI →</a>
           </article>
           <article class="path-card">
-            <span>02 · ESSCIRC 2023 · Silicon</span>
-            <h3>Demonstrate the mechanism</h3>
+            <span>Measured macro · ESSCIRC 2023</span>
+            <h3>Demonstrate correction in silicon</h3>
             <p>The conference paper presents the 22 nm MRAM macro, OCCS and SEC architecture, measured SNR gain, iso-SNR energy trade-off, and CIFAR-10 final-layer result.</p>
             <a href="https://doi.org/10.1109/ESSCIRC59616.2023.10268688">Open the ESSCIRC DOI →</a>
           </article>
           <article class="path-card">
-            <span>03 · JSSC 2025 · Expanded evidence</span>
+            <span>Synthesis · JSSC 2025</span>
             <h3>Connect the full chain</h3>
             <p>The journal extension develops the parasitic model, α/γ/θ factorization, OCCS circuit evidence, fixed-point implementation, compute-SNDR protocol, and system evaluation.</p>
             <a href="https://doi.org/10.1109/JSSC.2024.3442013">Open the JSSC DOI →</a>
           </article>
         </div>
-        <div class="takeaway"><span>Research arc</span><strong>ISCAS asks what limits accuracy; ESSCIRC shows that SEC works in silicon; JSSC explains why it works, how it is implemented, and how the improvement is measured.</strong></div>
+        <div class="takeaway"><span>Research arc</span><strong>JxCDC parallel-bar model ↔ ESSCIRC measured prototype → JSSC complete SEC account.</strong></div>
       </section>
 
       <section class="section">
         <div class="section-head">
-          <p class="kicker">Primary prototype papers</p>
-          <h2>The conference result and its journal expansion.</h2>
+          <p class="kicker">Companion and prototype papers</p>
+          <h2>Read the analytical model beside the silicon publications.</h2>
         </div>
+        <article class="paper-card">
+          <div class="paper-badge"><strong>JxCDC</strong><span>Vol. 10<br />2024 · pp. 22–30</span></div>
+          <div>
+            <p class="kicker">Parallel-bar analytical companion</p>
+            <h2>Energy-Accuracy Trade-Offs for Resistive In-Memory Computing Architectures</h2>
+            <p class="paper-meta">Saion K. Roy and Naresh R. Shanbhag.</p>
+            <p>The paper develops a behavioral compute-SNDR model for differential resistive parallel-bar IMCs, spanning device variation, BL/SL parasitics, current-mirror mismatch, and ADC noise. It then uses the framework to study dot-product dimension, ADC precision, conductance contrast, device choice, energy, and network accuracy.</p>
+            <div class="evidence-note">
+              <span class="evidence-type">Model ↔ silicon</span>
+              <p>For N=64, a 6-bit ADC, and a 20 mV reference, the model reports 5.17 dB compute SNDR versus 5.15 dB from the measured 22 nm MRAM prototype.</p>
+            </div>
+            <p><a class="button button-dark" href="https://doi.org/10.1109/JXCDC.2024.3381888">Open DOI <span aria-hidden="true">↗</span></a></p>
+            <div class="citation-box">
+              <code id="citation-jxcdc">S. K. Roy and N. R. Shanbhag, “Energy-Accuracy Trade-Offs for Resistive In-Memory Computing Architectures,” IEEE Journal on Exploratory Solid-State Computational Devices and Circuits, vol. 10, pp. 22–30, 2024, doi: 10.1109/JXCDC.2024.3381888.</code>
+              <button class="copy-button" type="button" data-copy-target="citation-jxcdc">Copy citation</button>
+            </div>
+          </div>
+        </article>
+
         <article class="paper-card">
           <div class="paper-badge"><strong>ESSCIRC</strong><span>49th IEEE European Solid-State Circuits Conference<br />2023 · pp. 25–28</span></div>
           <div>
@@ -125,7 +144,8 @@
           <p>The DOI and IEEE Xplore records provide the paper text, citation metadata, publication history, and related references.</p>
         </div>
         <div class="actions">
-          <a class="button button-primary" href="https://ieeexplore.ieee.org/document/10268688">ESSCIRC on IEEE Xplore <span aria-hidden="true">↗</span></a>
+          <a class="button button-primary" href="https://doi.org/10.1109/JXCDC.2024.3381888">JxCDC publication record <span aria-hidden="true">↗</span></a>
+          <a class="button button-secondary" href="https://ieeexplore.ieee.org/document/10268688">ESSCIRC on IEEE Xplore <span aria-hidden="true">↗</span></a>
           <a class="button button-secondary" href="https://ieeexplore.ieee.org/document/10642976">JSSC on IEEE Xplore <span aria-hidden="true">↗</span></a>
         </div>
       </section>
