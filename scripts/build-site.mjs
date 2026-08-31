@@ -1,3 +1,4 @@
+import { createHash } from "node:crypto";
 import { cp, mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -10,6 +11,8 @@ const katexSource = join(root, "node_modules", "katex");
 const katexDestination = join(destination, "assets", "vendor", "katex");
 const plexSource = join(root, "node_modules", "@fontsource-variable", "ibm-plex-sans");
 const plexDestination = join(destination, "assets", "vendor", "ibm-plex-sans");
+const stylesRevision = createHash("sha256").update(await readFile(join(source, "styles.css"))).digest("hex").slice(0, 12);
+const appRevision = createHash("sha256").update(await readFile(join(source, "app.js"))).digest("hex").slice(0, 12);
 
 const pages = [
   { file: "index.html", source: "overview.html", label: "Overview", title: "SEC-enabled 22 nm MRAM IMC", description: "From behavioral modeling to measured silicon: a 22 nm MRAM in-memory-computing macro with statistical error compensation." },
@@ -126,9 +129,9 @@ function documentFor(page, content) {
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
     <link rel="preload" href="assets/vendor/ibm-plex-sans/files/ibm-plex-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="stylesheet" href="assets/vendor/ibm-plex-sans/index.css" />
-    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="styles.css?v=${stylesRevision}" />
 ${mathStyles}    <script type="application/ld+json">${jsonLd}</script>
-${mathRuntime}    <script src="app.js" defer></script>
+${mathRuntime}    <script src="app.js?v=${appRevision}" defer></script>
     <title>${page.title} · SEC–MRAM IMC</title>
   </head>
   <body>

@@ -49,7 +49,8 @@ for (const page of pages) {
   const references = [...html.matchAll(/\b(?:href|src)="([^"]+)"/g)].map((match) => match[1]);
   for (const reference of references) {
     if (/^(?:https?:|mailto:|tel:|data:)/.test(reference)) continue;
-    const [relativePath, fragment] = reference.split("#", 2);
+    const [pathAndQuery, fragment] = reference.split("#", 2);
+    const relativePath = pathAndQuery.split("?", 1)[0];
     const target = relativePath ? join(docs, relativePath) : path;
     if (!(await exists(target))) {
       failures.push(`${page}: missing local target ${reference}`);
