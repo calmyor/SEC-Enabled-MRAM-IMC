@@ -23,6 +23,10 @@ License. The build copies the required stylesheet, browser runtime, fonts, and
 license into `docs/assets/vendor/katex/`. KaTeX copyright and license terms are
 preserved in `docs/assets/vendor/katex/LICENSE`.
 
+The website uses IBM Plex Sans Variable 5.3.0, distributed under the SIL Open
+Font License 1.1. The build copies the required web fonts and license into
+`docs/assets/vendor/ibm-plex-sans/`.
+
 ## Excluded material
 
 The public repository intentionally excludes foundry/PDK configuration, validator packages, GDS/OASIS, netlists, raw signoff output, waivers, export-control paperwork, invoices, shipping documents, supplier records, personal paths and identifiers, instrument serial identifiers, unreviewed raw measurements, and third-party code without confirmed redistribution permission.

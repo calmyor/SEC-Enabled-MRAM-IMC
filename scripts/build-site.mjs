@@ -8,6 +8,8 @@ const source = join(root, "website");
 const destination = join(root, "docs");
 const katexSource = join(root, "node_modules", "katex");
 const katexDestination = join(destination, "assets", "vendor", "katex");
+const plexSource = join(root, "node_modules", "@fontsource-variable", "ibm-plex-sans");
+const plexDestination = join(destination, "assets", "vendor", "ibm-plex-sans");
 
 const pages = [
   { file: "index.html", source: "overview.html", label: "Overview", title: "SEC-enabled 22 nm MRAM IMC", description: "From behavioral modeling to measured silicon: a 22 nm MRAM in-memory-computing macro with statistical error compensation." },
@@ -122,6 +124,8 @@ function documentFor(page, content) {
     <meta property="og:image:alt" content="SEC–MRAM IMC: from behavioral model to measured 22 nm silicon." />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="assets/vendor/ibm-plex-sans/files/ibm-plex-sans-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="assets/vendor/ibm-plex-sans/index.css" />
     <link rel="stylesheet" href="styles.css" />
 ${mathStyles}    <script type="application/ld+json">${jsonLd}</script>
 ${mathRuntime}    <script src="app.js" defer></script>
@@ -131,8 +135,8 @@ ${mathRuntime}    <script src="app.js" defer></script>
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
       <a class="brand" href="index.html" aria-label="SEC–MRAM IMC overview">
-        <span class="brand-icon" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
-        <span><strong>SEC–MRAM IMC</strong><small>Problem → mechanism → silicon → evidence</small></span>
+        <img class="brand-icon" src="assets/project-mark.svg" alt="" width="48" height="48" />
+        <span><strong>SEC–MRAM IMC</strong><small>Model · architecture · measured silicon</small></span>
       </a>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">Menu</button>
       <nav id="site-nav" class="site-nav" aria-label="Project sections">
@@ -174,6 +178,19 @@ await cp(join(katexSource, "dist", "fonts"), join(katexDestination, "fonts"), { 
 await cp(join(katexSource, "dist", "katex.min.css"), join(katexDestination, "katex.min.css"), { force: true });
 await cp(join(katexSource, "dist", "katex.min.js"), join(katexDestination, "katex.min.js"), { force: true });
 await cp(join(katexSource, "LICENSE"), join(katexDestination, "LICENSE"), { force: true });
+await mkdir(join(plexDestination, "files"), { recursive: true });
+await cp(join(plexSource, "index.css"), join(plexDestination, "index.css"), { force: true });
+for (const file of [
+  "ibm-plex-sans-cyrillic-ext-wght-normal.woff2",
+  "ibm-plex-sans-cyrillic-wght-normal.woff2",
+  "ibm-plex-sans-greek-wght-normal.woff2",
+  "ibm-plex-sans-vietnamese-wght-normal.woff2",
+  "ibm-plex-sans-latin-ext-wght-normal.woff2",
+  "ibm-plex-sans-latin-wght-normal.woff2",
+]) {
+  await cp(join(plexSource, "files", file), join(plexDestination, "files", file), { force: true });
+}
+await cp(join(plexSource, "LICENSE"), join(plexDestination, "LICENSE"), { force: true });
 await cp(join(source, "styles.css"), join(destination, "styles.css"), { force: true });
 await cp(join(source, "app.js"), join(destination, "app.js"), { force: true });
 await writeFile(join(destination, ".nojekyll"), "");

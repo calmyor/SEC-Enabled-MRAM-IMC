@@ -65,10 +65,14 @@ for (const page of pages) {
 
 if (pages.length !== 7) failures.push(`expected 7 HTML pages, found ${pages.length}`);
 if (!(await exists(join(docs, "assets", "og.png")))) failures.push("missing social-preview image");
+if (!(await exists(join(docs, "assets", "project-mark.svg")))) failures.push("missing project mark");
 for (const asset of ["katex.min.css", "katex.min.js", "LICENSE"]) {
   if (!(await exists(join(docs, "assets", "vendor", "katex", asset)))) failures.push(`missing KaTeX asset ${asset}`);
 }
 if (!(await exists(join(docs, "assets", "vendor", "katex", "fonts", "KaTeX_Main-Regular.woff2")))) failures.push("missing KaTeX web fonts");
+for (const asset of ["index.css", "LICENSE", "files/ibm-plex-sans-latin-wght-normal.woff2"]) {
+  if (!(await exists(join(docs, "assets", "vendor", "ibm-plex-sans", asset)))) failures.push(`missing IBM Plex Sans asset ${asset}`);
+}
 
 if (failures.length) {
   console.error(`Site validation failed (${failures.length}):`);
