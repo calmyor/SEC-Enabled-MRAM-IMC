@@ -136,6 +136,7 @@ code, .mono { font-family: var(--mono); }
 .figure-frame figcaption strong { color: var(--ink); }
 .section-dark .figure-frame { border-color: rgba(255,255,255,.18); }
 .figure-wide { margin-top: 42px; }
+.figure-compact { width: min(100%, 680px); margin: 42px auto 0; }
 
 .callout { padding: clamp(28px, 4vw, 48px); border-left: 6px solid var(--copper); background: var(--paper-2); }
 .callout strong { display: block; margin-bottom: 8px; font-size: 1.25rem; }
