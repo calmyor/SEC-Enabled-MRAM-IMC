@@ -102,23 +102,6 @@
         </article>
       </section>
 
-      <section class="section section-dark">
-        <table class="spec-table" aria-label="ESSCIRC and JSSC paper comparison">
-          <thead>
-            <tr><th>Research layer</th><th>ESSCIRC 2023</th><th>JSSC extension</th></tr>
-          </thead>
-          <tbody>
-            <tr><th>Central contribution</th><td>Measured SNR-boosted 22 nm MRAM IMC macro using OCCS and SEC.</td><td>Expanded SNDR account connecting the error mechanism, circuits, fixed-point correction, measurement method, and system result.</td></tr>
-            <tr><th>Behavioral model</th><td>Scaling and parasitic attenuation motivate the correction architecture.</td><td>Location-dependent <span class="math-inline alpha" data-math="inline">\alpha_{ij}</span> factors, behavioral/circuit correlation, and the mathematical basis for shared <span class="math-inline gamma" data-math="inline">\gamma_i</span> and <span class="math-inline theta" data-math="inline">\theta_j</span> factors.</td></tr>
-            <tr><th>SEC architecture</th><td>Low-overhead statistical error compensation and measured SNR recovery.</td><td>Training and inference paths, <span class="math-inline" data-math="inline">\alpha/\gamma/\theta</span> factorization, quantized convergence, 7-bit <span class="math-inline gamma" data-math="inline">\gamma</span> inference, and 14-bit update accumulation.</td></tr>
-            <tr><th>OCCS</th><td>Offset-compensating sensing integrated with the macro.</td><td>Auto-zero/evaluate operation, level shifting, mismatch/PVT analysis, Monte Carlo bitline variation, and circuit overhead.</td></tr>
-            <tr><th>Measurement method</th><td>Measured SNR, energy trade-off, overhead, and application headline.</td><td>Per-column affine MMSE calibration, 30 states per ideal code, 10 repeats per state, binomial <span class="math-inline" data-math="inline">P(c)</span>, and probability-weighted compute SNDR.</td></tr>
-            <tr><th>Application mapping</th><td>CIFAR-10 inference with the final fully connected layer of 4-bit ResNet-20 mapped to the macro.</td><td>The same mapping presented with expanded digital, SEC-off, SEC-on, sampling, and confidence details.</td></tr>
-            <tr><th>Evidence classes</th><td><span class="evidence-type">Silicon</span></td><td><span class="evidence-type">Silicon</span> <span class="evidence-type">Circuit simulation</span> <span class="evidence-type">Behavioral model</span> <span class="evidence-type">Projection</span></td></tr>
-          </tbody>
-        </table>
-      </section>
-
       <section class="section section-white">
         <div class="section-head">
           <p class="kicker">Reading key</p>
