@@ -118,31 +118,4 @@ pnpm run validate</code></pre>
         </div>
       </section>
 
-      <section class="section section-white">
-        <div class="section-head">
-          <p class="kicker">Data organization</p>
-          <h2>One schema connects a compact sample to full captures.</h2>
-          <p>A small end-to-end dataset belongs in Git for immediate reproduction; versioned full captures belong in DOI-backed archival storage. Both use the same units, dimensions, run fields, configuration digest, and SHA-256 manifest.</p>
-        </div>
-        <div class="four-col">
-          <article class="card"><span class="number">01 · SCHEMA</span><h3>Name every dimension</h3><p>Code, state, repeat, ADC column, chip, mode, clock, voltage, units, and fault status.</p></article>
-          <article class="card"><span class="number">02 · MANIFEST</span><h3>Bind provenance</h3><p>SHA-256, acquisition commit, overlay fingerprint, board/chip aliases, timestamp, and license.</p></article>
-          <article class="card"><span class="number">03 · SAMPLE</span><h3>Exercise the full path</h3><p>Parsing, calibration, per-code MSE, <span class="math-inline" data-math="inline">P(c)</span> weighting, SNDR, and expected output in one compact fixture.</p></article>
-          <article class="card"><span class="number">04 · ARCHIVE</span><h3>Scale the record</h3><p>Deduplicated captures, immutable release version, DOI, manifest, and the same analysis command.</p></article>
-        </div>
-      </section>
-
-      <section class="section section-teal">
-        <div class="two-col">
-          <div>
-            <p class="kicker">Contributing</p>
-            <h2>Make every addition traceable.</h2>
-            <p>A strong contribution connects source, condition, protocol, data, analysis command, and expected result. Hardware additions include their board/overlay identity; numerical additions carry an evidence label and citation.</p>
-          </div>
-          <div class="callout">
-            <strong>Contribution record</strong>
-            <p>Question → artifact → configuration → validation → result → citation. This sequence lets the next reader reproduce the conclusion and understand why the artifact exists.</p>
-          </div>
-        </div>
-      </section>
     </main>
