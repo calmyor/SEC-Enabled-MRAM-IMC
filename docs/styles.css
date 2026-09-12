@@ -131,6 +131,7 @@ code, .mono { font-family: var(--mono); }
 .section-dark .muted, .section-teal .muted { color: #b9cbcc; }
 
 .research-chain { display: grid; grid-template-columns: repeat(5, 1fr); border: 1px solid var(--line); }
+.research-chain.chain-stages { grid-template-columns: repeat(4, 1fr); }
 .research-chain article { position: relative; min-height: 310px; padding: 28px 24px; border-right: 1px solid var(--line); background: var(--white); }
 .research-chain article:last-child { border: 0; }
 .research-chain article::after { content: "→"; position: absolute; z-index: 2; top: 26px; right: -13px; width: 26px; height: 26px; display: grid; place-items: center; background: var(--copper); color: #fff; font-weight: 700; }
@@ -394,10 +395,11 @@ code, .mono { font-family: var(--mono); }
   .site-nav a { padding-right: 9px; padding-left: 9px; font-size: var(--text-xs); }
   .hero-grid { grid-template-columns: 1fr; }
   .hero-visual { max-width: none; }
-  .research-chain { grid-template-columns: repeat(2, 1fr); }
+  .research-chain, .research-chain.chain-stages { grid-template-columns: repeat(2, 1fr); }
   .research-chain article { border-bottom: 1px solid var(--line); }
   .research-chain article::after { display: none; }
   .research-chain article:last-child { grid-column: 1 / -1; }
+  .research-chain.chain-stages article:last-child { grid-column: auto; }
   .metric-rail { grid-template-columns: repeat(3, 1fr); }
   .metric-rail article { border-bottom: 1px solid rgba(255,255,255,.13); }
   .four-col, .result-grid { grid-template-columns: repeat(2, 1fr); }
@@ -426,7 +428,7 @@ code, .mono { font-family: var(--mono); }
   .hero h1, .page-hero h1 { font-size: var(--text-hero); }
   .metric-rail { grid-template-columns: repeat(2, 1fr); }
   .two-col, .three-col, .artifact-grid { grid-template-columns: 1fr; }
-  .research-chain { grid-template-columns: 1fr; }
+  .research-chain, .research-chain.chain-stages { grid-template-columns: 1fr; }
   .research-chain article:last-child { grid-column: auto; }
   .phase { grid-template-columns: 50px 1fr; gap: 20px; }
   .phase p { grid-column: 2; }

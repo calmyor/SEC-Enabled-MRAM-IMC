@@ -34,15 +34,14 @@
       <section class="section section-white">
         <div class="section-head">
           <p class="kicker">The complete research arc</p>
-          <h2>One idea, carried through five engineering layers.</h2>
-          <p>The project begins with one physical observation: row position changes analog contribution. Everything downstream follows from it. Each layer turns the output of the previous layer into a concrete design decision.</p>
+          <h2>One idea, carried from behavioral model to measured silicon.</h2>
+          <p>The project begins with one physical observation: row position changes analog contribution. Everything downstream follows from it. Each stage turns the output of the previous stage into a concrete design decision.</p>
         </div>
-        <div class="research-chain">
-          <article><span class="step">01 · Observe</span><h3>Row position changes the signal</h3><p>MTJ variation, BL/SL parasitics, read noise, and ADC conversion reveal where ideal arithmetic diverges from analog behavior.</p></article>
-          <article><span class="step">02 · Model</span><h3>Describe that change with <span class="math-inline alpha" data-math="inline">\alpha</span></h3><p><span class="math-inline alpha" data-math="inline">\alpha_{ij}</span> captures the contribution of row <span class="math-inline" data-math="inline">i</span> as observed by column <span class="math-inline" data-math="inline">j</span>, making the spatial error structure explicit.</p></article>
-          <article><span class="step">03 · Compensate</span><h3>Learn <span class="math-inline gamma" data-math="inline">\gamma</span> and <span class="math-inline theta" data-math="inline">\theta</span></h3><p><span class="math-inline gamma" data-math="inline">\gamma_i</span> pre-scales each row and <span class="math-inline theta" data-math="inline">\theta_j</span> normalizes each output column so that <span class="math-inline" data-math="inline">\theta_j\gamma_i\alpha_{ij}\approx 1</span> statistically.</p></article>
-          <article><span class="step">04 · Realize</span><h3>Quantize and integrate</h3><p>Precision studies select the fixed-point SEC path. OCCS, the MRAM array, ADCs, and local control form one macro.</p></article>
-          <article><span class="step">05 · Measure</span><h3>Estimate compute SNDR</h3><p>Python, PYNQ-Z2, a custom PCB, and code-conditioned sampling turn raw ADC captures into calibrated evidence.</p></article>
+        <div class="research-chain chain-stages">
+          <article><span class="step">01 · Modeling</span><h3>Describe the error with <span class="math-inline alpha" data-math="inline">\alpha</span></h3><p>MTJ variation, BL/SL parasitics, read noise, and ADC conversion pull the analog output away from ideal arithmetic. <span class="math-inline alpha" data-math="inline">\alpha_{ij}</span> captures the contribution of row <span class="math-inline" data-math="inline">i</span> as observed by column <span class="math-inline" data-math="inline">j</span>, making the spatial structure explicit.</p></article>
+          <article><span class="step">02 · Design</span><h3>Correct it with <span class="math-inline gamma" data-math="inline">\gamma</span> and <span class="math-inline theta" data-math="inline">\theta</span></h3><p><span class="math-inline gamma" data-math="inline">\gamma_i</span> pre-scales each row and <span class="math-inline theta" data-math="inline">\theta_j</span> normalizes each output column so that <span class="math-inline" data-math="inline">\theta_j\gamma_i\alpha_{ij}\approx 1</span> statistically. Precision studies fix the fixed-point path, and OCCS, the array, ADCs, and control close into one macro.</p></article>
+          <article><span class="step">03 · Tapeout</span><h3>Close the design against one identifier</h3><p>Frozen interfaces and golden vectors carry through mixed-signal verification, physical and package closure, and a release manifest the bench can execute.</p></article>
+          <article><span class="step">04 · Testing</span><h3>Measure compute SNDR on silicon</h3><p>Python, a PYNQ-Z2, and a custom PCB drive the packaged macro. Per-column calibration and code-conditioned sampling turn raw ADC captures into the measured result.</p></article>
         </div>
         <div class="takeaway"><span>Research thesis</span><strong>SEC works because the dominant array error has spatial structure that can be learned with one correction per row and one normalization per column.</strong></div>
       </section>
@@ -75,7 +74,7 @@
       <section class="section">
         <div class="section-head">
           <p class="kicker">Prototype at a glance</p>
-          <h2>Four layers describe the same dot product.</h2>
+          <h2>Four levels describe the same dot product.</h2>
           <p>A physical 1T1R array stores MRAM states, differential 2T2R pairs encode signed weights, OCCS and the SAR ADC convert column current, and SEC scales rows and columns to improve bank-level compute SNDR.</p>
         </div>
         <div class="four-col">
