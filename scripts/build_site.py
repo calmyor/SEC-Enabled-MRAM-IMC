@@ -37,7 +37,7 @@ pages = [
   {"file":"test-platform.html","source":"test-platform.html","label":"Test platform","title":"PCB and PYNQ test platform","description":"The host-to-silicon measurement stack: Python control, PYNQ-Z2, custom PCB, package, power, and bring-up."},
   {"file":"measurements.html","source":"measurements.html","label":"Measurements","title":"Measurement methodology and results","description":"Calibration, code-conditioned sampling, SNDR reconstruction, SEC evaluation, and the measured ResNet-20 output-layer result."},
   {"file":"repository.html","source":"repository.html","label":"Repository","title":"Repository and reproducibility","description":"Explore the architecture, run the measurement method, follow the hardware workflow, and trace the publication record."},
-  {"file":"papers.html","source":"papers.html","label":"Papers","title":"JxCDC, ESSCIRC, and JSSC papers","description":"The JxCDC parallel-bar model, ESSCIRC 2023 silicon result, JSSC journal account, citations, authors, and research relationship."},
+  {"file":"papers.html","source":"papers.html","label":"Papers","title":"ESSCIRC 2023, JxCDC 2024, and JSSC 2025 papers","description":"The JxCDC 2024 parallel-bar model, ESSCIRC 2023 silicon result, JSSC 2025 journal account, citations, authors, and research relationship."},
 ]
 
 authors = ["Saion K. Roy","Han-Mo Ou","Mostafa G. Ahmed","Peter Deaville",
@@ -76,7 +76,7 @@ handoff_notes = {
   "tapeout.html":"Follow the released interfaces into the PCB, FPGA, and bring-up sequence.",
   "test-platform.html":"Turn raw ADC captures into calibrated, code-conditioned compute SNDR.",
   "measurements.html":"Run the method and inspect the engineering artifacts behind the result.",
-  "repository.html":"Connect the JxCDC parallel-bar model, ESSCIRC silicon result, and JSSC complete account.",
+  "repository.html":"Connect the JxCDC 2024 parallel-bar model, ESSCIRC 2023 silicon result, and JSSC 2025 complete account.",
   "papers.html":"Return to the complete model-to-silicon research arc.",
 }
 
@@ -186,9 +186,9 @@ def document_for(page, content):
         <p>Statistical error compensation for a measured 22 nm MRAM in-memory-computing macro.</p>
       </div>
       <div class="footer-links">
-        <a href="https://doi.org/10.1109/JXCDC.2024.3381888">JxCDC model <span aria-hidden="true">↗</span></a>
+        <a href="https://doi.org/10.1109/JXCDC.2024.3381888">JxCDC 2024 <span aria-hidden="true">↗</span></a>
         <a href="https://doi.org/10.1109/ESSCIRC59616.2023.10268688">ESSCIRC 2023 <span aria-hidden="true">↗</span></a>
-        <a href="https://doi.org/10.1109/JSSC.2024.3442013">JSSC extension <span aria-hidden="true">↗</span></a>
+        <a href="https://doi.org/10.1109/JSSC.2024.3442013">JSSC 2025 <span aria-hidden="true">↗</span></a>
         <a href="repository.html">Reproducibility</a>
       </div>
       <p class="footer-note">© <span data-current-year>2026</span> The authors. Paper figures are reproduced for this research artifact.</p>
