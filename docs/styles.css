@@ -163,12 +163,11 @@ code, .mono { font-family: var(--mono); }
 .legend-buttons button, .filter-bar button { padding: 9px 13px; border: 1px solid var(--line); background: var(--white); color: var(--ink); font: 700 var(--text-xs) var(--sans); cursor: pointer; }
 .legend-buttons button[aria-pressed="true"], .filter-bar button[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: #fff; }
 .equation-readout { min-height: 82px; margin-top: 18px; color: var(--muted); }
-/* On a dark section the default chip styling inverts: the pressed state uses
-   var(--ink), which is the section background, so the selected term disappears
-   while the unselected ones read as bright filled buttons. Flip it, so the
-   selected term is the solid chip. */
-.section-dark .legend-buttons button { border-color: rgba(255,255,255,.32); background: transparent; color: #fff; }
-.section-dark .legend-buttons button[aria-pressed="true"] { border-color: var(--white); background: var(--white); color: var(--ink); }
+/* Dark sections use translucent panels and a gold selected state, never a
+   white fill. The pressed chip matches .signal-lane.sec-on, which sits in the
+   same section, and the unselected chips match its other panels. */
+.section-dark .legend-buttons button { border-color: rgba(255,255,255,.2); background: rgba(255,255,255,.055); color: #fff; }
+.section-dark .legend-buttons button[aria-pressed="true"] { border-color: rgba(232,187,99,.65); background: rgba(232,187,99,.08); color: var(--gold); }
 
 .spec-table { width: 100%; border-collapse: collapse; background: var(--white); font-size: var(--text-sm); }
 .spec-table th, .spec-table td { padding: 15px 18px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
