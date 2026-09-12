@@ -57,17 +57,16 @@ def nav(current):
     return "\n          ".join(items)
 
 def journey(current):
+    # One entry per project stage. "files" lists every page the stage covers,
+    # so Testing stays current across both the test-platform and measurements pages.
     steps = [
-      {"file":"index.html","href":"index.html#signal-challenge","label":"Signal limit"},
-      {"file":"design.html","href":"design.html#behavioral-model","label":"Behavioral model"},
-      {"file":"design.html","href":"design.html#sec-architecture","label":"SEC + OCCS"},
-      {"file":"design.html","href":"design.html#macro","label":"Macro"},
-      {"file":"tapeout.html","href":"tapeout.html#process","label":"Tapeout"},
-      {"file":"test-platform.html","href":"test-platform.html#stack","label":"Test stack"},
-      {"file":"measurements.html","href":"measurements.html#results","label":"Measured result"},
+      {"files":["design.html"],"href":"design.html#behavioral-model","label":"Modeling"},
+      {"files":["design.html"],"href":"design.html#sec-architecture","label":"Design"},
+      {"files":["tapeout.html"],"href":"tapeout.html#process","label":"Tapeout"},
+      {"files":["test-platform.html","measurements.html"],"href":"test-platform.html#stack","label":"Testing"},
     ]
     return "\n        ".join(
-        f'<a href="{s["href"]}"{" class=\"current\"" if s["file"] == current else ""}>{s["label"]}</a>'
+        f'<a href="{s["href"]}"{" class=\"current\"" if current in s["files"] else ""}>{s["label"]}</a>'
         for s in steps)
 
 handoff_notes = {
