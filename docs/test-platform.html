@@ -55,10 +55,10 @@
         <p class="breadcrumb">Overview / Test platform</p>
         <p class="eyebrow">Python host · PYNQ-Z2 · custom PCB · QFN64</p>
         <h1>Build a trustworthy path from a script to silicon.</h1>
-        <p>The test platform translates an experiment into scan, read/write, MVM, ADC, and SEC transactions—and carries every raw code and configuration detail back into an analysis record.</p>
+        <p>The test platform translates an experiment into scan, read/write, MVM, ADC, and SEC transactions, then carries every raw code and configuration detail back into an analysis record.</p>
       </header>
       <div class="thesis-strip" aria-label="Test platform page summary">
-        <article><span>Command path</span><strong>Python declares the experiment; PYNQ sequences typed transactions; the PCB maps them electrically to QFN64.</strong></article>
+        <article><span>Command path</span><strong>Python declares the experiment. PYNQ sequences typed transactions. The PCB maps them electrically to QFN64.</strong></article>
         <article><span>Silicon action</span><strong>The macro executes memory access, OCCS/ADC conversion, MVM, and SEC operations.</strong></article>
         <article><span>Evidence path</span><strong>Raw codes, status, configuration, and timestamps return to an append-only run record.</strong></article>
       </div>
@@ -67,7 +67,7 @@
         <div class="section-head">
           <p class="kicker">System stack</p>
           <h2>Separate experiment intent from electrical transport.</h2>
-          <p>Each layer owns one transformation, localizing diagnosis to experiment protocol, DMA/FPGA transport, board-level electrical mapping, or chip response.</p>
+          <p>Each layer owns one transformation. A failure therefore localizes to the experiment protocol, DMA and FPGA transport, board-level electrical mapping, or the chip response.</p>
         </div>
         <div class="stack" aria-label="Measurement control stack">
           <article><code>LAYER 01</code><h3>Python host</h3><p>Declares experiment state, seeds, repetitions, metadata, calibration, and analysis.</p></article>
@@ -76,7 +76,7 @@
           <article><code>LAYER 04</code><h3>MRAM IMC</h3><p>Executes memory, conversion, MVM, and SEC operations and returns raw observable state.</p></article>
         </div>
         <div class="stack-return"><span>Evidence return</span><strong>Run record + analysis ← raw words + status ← FPGA capture ← chip electrical response</strong></div>
-        <div class="takeaway"><span>Bidirectional stack</span><strong>Commands move from experiment plan to chip timing; raw ADC codes and metadata move back from the chip to analysis.</strong></div>
+        <div class="takeaway"><span>Bidirectional stack</span><strong>Commands move from experiment plan to chip timing. Raw ADC codes and metadata move back from the chip to analysis.</strong></div>
         <div class="section-head" style="margin-top:58px; margin-bottom:30px">
           <p class="kicker">One MVM capture</p>
           <h2>Follow one transaction end to end.</h2>
@@ -99,7 +99,7 @@
           <div class="section-head">
             <p class="kicker">PCB design</p>
             <h2>The board is part of the measurement instrument.</h2>
-            <p>The TO3 board connects the QFN64 macro to the PYNQ-Z2 while distributing supplies and references, placing local decoupling, and exposing checkpoints for power, reset, clocks, and bring-up modes.</p>
+            <p>Board parasitics and reference quality enter every measurement, so the TO3 board is built as instrumentation rather than wiring. It carries the QFN64 macro to the PYNQ-Z2, distributes supplies and references, places local decoupling, and exposes checkpoints for power, reset, clocks, and bring-up modes.</p>
           </div>
           <figure class="figure-frame">
             <img src="assets/figures/pcb-front.png" alt="Front rendering of the purple custom MRAM IMC test printed circuit board" loading="lazy" />
@@ -159,11 +159,11 @@
             <p class="kicker">Bring-up ladder</p>
             <h2>Bring-up proceeds from power integrity to statistical measurement.</h2>
             <ol class="checklist">
-              <li>Apply rails under current limit; verify voltage and quiescent current.</li>
-              <li>Assert/reset controls; confirm no unsafe pin contention.</li>
+              <li>Apply rails under current limit, then verify voltage and quiescent current.</li>
+              <li>Assert/reset controls, then confirm no unsafe pin contention.</li>
               <li>Validate clock and static GPIO at slow speed.</li>
               <li>Shift a known scan pattern and verify loopback/PASS behavior.</li>
-              <li>Read and write one controlled row; repeat after reset.</li>
+              <li>Read and write one controlled row, then repeat after reset.</li>
               <li>Capture raw ADC codes for deterministic low/high states.</li>
               <li>Run a small MVM vector with an analytically known ideal code.</li>
               <li>Only then automate calibration, SEC, and statistical sweeps.</li>
@@ -176,7 +176,7 @@
         <div class="section-head">
           <p class="kicker">PYNQ control plane</p>
           <h2>Version the overlay as experimental equipment.</h2>
-          <p>The measured setup uses a PYNQ-Z2 with an XC7Z020 FPGA, a 100 MHz Vivado 2022.2 overlay, AXI DMA, and custom all-pin test logic. The control notebooks sequence scan, read/write, MVM capture, SEC calibration, and network experiments.</p>
+          <p>A result is only reproducible if the bitstream that produced it can be named. The measured setup uses a PYNQ-Z2 with an XC7Z020 FPGA, a 100 MHz Vivado 2022.2 overlay, AXI DMA, and custom all-pin test logic. The control notebooks sequence scan, read/write, MVM capture, SEC calibration, and network experiments.</p>
         </div>
         <div class="three-col">
           <article class="card"><span class="number">DISCOVER</span><h3>Overlay self-check</h3><p>Confirm board, bitstream/HWH pairing, clock rate, DMA topology, register signature, and a known loopback before chip access.</p></article>
@@ -196,7 +196,7 @@
         <div class="section-head">
           <p class="kicker">Software construction</p>
           <h2>Turn notebooks into an auditable measurement framework.</h2>
-          <p>The framework separates five concerns—configuration, transport, protocol, acquisition, and analysis—so each notebook operation becomes a versioned and testable interface.</p>
+          <p>The framework separates five concerns: configuration, transport, protocol, acquisition, and analysis. Each notebook operation then becomes a versioned and testable interface.</p>
         </div>
         <div class="research-chain">
           <article><span class="step">CONFIG</span><h3>Describe hardware</h3><p>Board/chip IDs, endpoints, rail limits, clock, overlay checksum, and instrument resources live in validated configuration.</p></article>

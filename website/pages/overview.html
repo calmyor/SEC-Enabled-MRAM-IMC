@@ -4,7 +4,7 @@
           <div class="hero-copy">
             <p class="eyebrow">ESSCIRC silicon · JxCDC parallel-bar model · JSSC synthesis</p>
             <h1>Making MRAM compute <em>measurably</em> more reliable.</h1>
-            <p class="hero-summary">This project traces one 22 nm MRAM in-memory-computing macro from a parasitic-aware behavioral model to statistical error compensation, mixed-signal circuit design, tapeout, PCB and PYNQ bring-up, and measured silicon.</p>
+            <p class="hero-summary">This project follows one 22 nm MRAM in-memory-computing macro from a parasitic-aware behavioral model to measured silicon. Statistical error compensation, mixed-signal design, tapeout, and PYNQ bring-up are the stages in between.</p>
             <p class="authors">Saion K. Roy · Han-Mo Ou · Mostafa G. Ahmed · Peter Deaville · Bonan Zhang · Naveen Verma · Pavan K. Hanumolu · Naresh R. Shanbhag</p>
             <div class="actions">
               <a class="button button-primary" href="design.html">Follow the design reasoning</a>
@@ -35,13 +35,13 @@
         <div class="section-head">
           <p class="kicker">The complete research arc</p>
           <h2>One idea, carried through five engineering layers.</h2>
-          <p>The project begins with a physical observation—row position changes analog contribution—and follows it all the way to a measured result. Each layer turns the output of the previous layer into a concrete design decision.</p>
+          <p>The project begins with one physical observation: row position changes analog contribution. Everything downstream follows from it. Each layer turns the output of the previous layer into a concrete design decision.</p>
         </div>
         <div class="research-chain">
           <article><span class="step">01 · Observe</span><h3>Row position changes the signal</h3><p>MTJ variation, BL/SL parasitics, read noise, and ADC conversion reveal where ideal arithmetic diverges from analog behavior.</p></article>
           <article><span class="step">02 · Model</span><h3>Describe that change with <span class="math-inline alpha" data-math="inline">\alpha</span></h3><p><span class="math-inline alpha" data-math="inline">\alpha_{ij}</span> captures the contribution of row <span class="math-inline" data-math="inline">i</span> as observed by column <span class="math-inline" data-math="inline">j</span>, making the spatial error structure explicit.</p></article>
           <article><span class="step">03 · Compensate</span><h3>Learn <span class="math-inline gamma" data-math="inline">\gamma</span> and <span class="math-inline theta" data-math="inline">\theta</span></h3><p><span class="math-inline gamma" data-math="inline">\gamma_i</span> pre-scales each row and <span class="math-inline theta" data-math="inline">\theta_j</span> normalizes each output column so that <span class="math-inline" data-math="inline">\theta_j\gamma_i\alpha_{ij}\approx 1</span> statistically.</p></article>
-          <article><span class="step">04 · Realize</span><h3>Quantize and integrate</h3><p>Precision studies select the fixed-point SEC path; OCCS, the MRAM array, ADCs, and local control form one macro.</p></article>
+          <article><span class="step">04 · Realize</span><h3>Quantize and integrate</h3><p>Precision studies select the fixed-point SEC path. OCCS, the MRAM array, ADCs, and local control form one macro.</p></article>
           <article><span class="step">05 · Measure</span><h3>Estimate compute SNDR</h3><p>Python, PYNQ-Z2, a custom PCB, and code-conditioned sampling turn raw ADC captures into calibrated evidence.</p></article>
         </div>
         <div class="takeaway"><span>Research thesis</span><strong>SEC works because the dominant array error has spatial structure that can be learned with one correction per row and one normalization per column.</strong></div>

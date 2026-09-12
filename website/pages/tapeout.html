@@ -3,7 +3,7 @@
         <p class="breadcrumb">Overview / Tapeout</p>
         <p class="eyebrow">Mixed-signal implementation discipline</p>
         <h1>Turning the model into a testable mixed-signal chip.</h1>
-        <p>Bit-accurate SEC logic, OCCS timing, MRAM interfaces, power delivery, padframe, QFN64 mapping, and test observability close against the same design identifier. Each stage produces the artifact consumed by the next.</p>
+        <p>Every stage closes against one design identifier: bit-accurate SEC logic, OCCS timing, MRAM interfaces, power delivery, padframe, QFN64 mapping, and test observability. Each stage produces the artifact consumed by the next.</p>
       </header>
       <div class="thesis-strip" aria-label="Tapeout page summary">
         <article><span>Freeze</span><strong>Align the behavioral, circuit, fixed-point, interface, and test definitions.</strong></article>
@@ -18,10 +18,10 @@
           <p>Every gate names its design input, review question, exit artifact, and downstream consumer. An ECO updates the same chain rather than creating a parallel version of the truth.</p>
         </div>
         <div class="phase-list">
-          <article class="phase"><h3>Intent and model freeze</h3><p><strong>Input:</strong> compute modes, array/ADC organization, OCCS sequence, SEC update/inference semantics, voltage/clock domains, register map, and test access. Ideal, parasitic-aware, circuit, and fixed-point models run shared golden vectors with explicit rounding, clipping, reset, and update order.<br /><span class="gate">Exit · signed interfaces + golden-vector agreement</span></p></article>
-          <article class="phase"><h3>Mixed-signal and digital integration</h3><p><strong>Review:</strong> MRAM access, OCCS auto-zero/evaluate timing, ADC decisions, startup, calibration hooks, CDC/RDC, synthesis equivalence, timing constraints, scan access, and SEC-state controllability across corners and mismatch.<br /><span class="gate">Exit · correlated block views + constrained testable netlist</span></p></article>
-          <article class="phase"><h3>Physical and package closure</h3><p><strong>Implementation:</strong> floorplan, analog quiet regions, power/return paths, reference shielding, decoupling, padframe/ESD, extracted correlation, DRC/LVS/ERC, antenna, density, timing, EM/IR, QFN64 bond map, and package parasitics.<br /><span class="gate">Exit · reviewed signoff ledger + package traceability</span></p></article>
-          <article class="phase"><h3>Release and test readiness</h3><p><strong>Handoff:</strong> final database checksum, tool/run identifiers, layer map, exception dispositions, package map, register map, board revision, overlay fingerprint, current limits, smoke vectors, data schema, and measurement plan.<br /><span class="gate">Exit · immutable release manifest + executable bring-up plan</span></p></article>
+          <article class="phase"><h3>Intent and model freeze</h3><p><strong>Input:</strong> A definition that still moves cannot be verified. This gate freezes the compute modes, array and ADC organization, OCCS sequence, SEC update and inference semantics, voltage and clock domains, register map, and test access. Four model levels then run shared golden vectors against that frozen definition: ideal, parasitic-aware, circuit, and fixed-point, with rounding, clipping, reset, and update order stated explicitly.<br /><span class="gate">Exit · signed interfaces + golden-vector agreement</span></p></article>
+          <article class="phase"><h3>Mixed-signal and digital integration</h3><p><strong>Review:</strong> Analog timing and digital control fail at their boundary, not inside either domain. The mixed-signal review covers MRAM access, OCCS auto-zero and evaluate timing, ADC decisions, and startup. The digital review covers CDC/RDC, synthesis equivalence, and timing constraints. Calibration hooks, scan access, and SEC-state controllability are checked last. All of it holds across corners and mismatch.<br /><span class="gate">Exit · correlated block views + constrained testable netlist</span></p></article>
+          <article class="phase"><h3>Physical and package closure</h3><p><strong>Implementation:</strong> Layout decides whether the modeled signal survives. Design work covers the floorplan, analog quiet regions, power and return paths, reference shielding, and decoupling. The die boundary adds padframe and ESD, the QFN64 bond map, and package parasitics. Signoff then closes DRC/LVS/ERC, antenna, density, timing, EM/IR, and extracted correlation.<br /><span class="gate">Exit · reviewed signoff ledger + package traceability</span></p></article>
+          <article class="phase"><h3>Release and test readiness</h3><p><strong>Handoff:</strong> The lab inherits whatever this gate writes down. Release identity covers the final database checksum, tool and run identifiers, layer map, and exception dispositions. Bring-up identity covers the package map, register map, board revision, and overlay fingerprint. The bench then needs current limits, smoke vectors, a data schema, and a measurement plan.<br /><span class="gate">Exit · immutable release manifest + executable bring-up plan</span></p></article>
         </div>
       </section>
 
@@ -112,7 +112,7 @@
           <div class="section-head">
             <p class="kicker">Design for observability</p>
             <h2>The bench begins at tapeout.</h2>
-            <p>Scan chains, bypasses, raw ADC visibility, independent write/read/MVM modes, controllable clocks, deterministic reset, SEC state access, and current-isolation options make post-silicon bring-up an extension of design verification.</p>
+            <p>Post-silicon bring-up becomes an extension of design verification, but only if the design provides the hooks: scan chains, bypasses, raw ADC visibility, independent write/read/MVM modes, controllable clocks, deterministic reset, SEC state access, and current isolation.</p>
           </div>
           <div class="callout">
             <strong>Minimum bring-up ladder</strong>

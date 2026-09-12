@@ -56,7 +56,7 @@
         <p class="breadcrumb">Overview / Repository</p>
         <p class="eyebrow">Design reasoning · runnable methods · engineering record</p>
         <h1>Explore the design-to-measurement repository.</h1>
-        <p>The repository connects the published architecture to tested code for protocol generation, affine calibration, and code-conditioned SNDR. Design, tapeout, PCB/PYNQ, measurement, and publication notes are organized by the question they answer.</p>
+        <p>The repository connects the published architecture to tested code for protocol generation, affine calibration, and code-conditioned SNDR. Design, tapeout, PCB and PYNQ, measurement, and publication notes are each organized by the question they answer.</p>
       </header>
       <div class="thesis-strip" aria-label="Repository page summary">
         <article><span>Understand</span><strong>Trace row-dependent attenuation through correction factors <span class="math-inline alpha" data-math-rendered="inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span></span>, <span class="math-inline gamma" data-math-rendered="inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi></mrow><annotation encoding="application/x-tex">\gamma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0556em;">γ</span></span></span></span></span>, and <span class="math-inline theta" data-math-rendered="inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi></mrow><annotation encoding="application/x-tex">\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">θ</span></span></span></span></span> into the fixed-point SEC/OCCS macro.</strong></article>
@@ -70,8 +70,8 @@
           <h2>Start from the question you want to answer.</h2>
         </div>
         <div class="path-grid">
-          <article class="path-card"><span>Architecture</span><h3>How does SEC correct the array?</h3><p>Follow the behavioral model, factorization with <span class="math-inline alpha" data-math-rendered="inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span></span>, <span class="math-inline gamma" data-math-rendered="inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi></mrow><annotation encoding="application/x-tex">\gamma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0556em;">γ</span></span></span></span></span>, and <span class="math-inline theta" data-math-rendered="inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi></mrow><annotation encoding="application/x-tex">\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">θ</span></span></span></span></span>, fixed-point widths, OCCS, and the integrated macro.</p><a href="design.html">Open the design story →</a></article>
-          <article class="path-card"><span>Implementation</span><h3>How did the idea become a chip?</h3><p>Walk through model freeze, mixed-signal integration, physical/package closure, and post-silicon readiness.</p><a href="tapeout.html">Open the tapeout story →</a></article>
+          <article class="path-card"><span>Architecture</span><h3>How does SEC correct the array?</h3><p>The path runs from the behavioral model to the integrated macro: the <span class="math-inline alpha" data-math-rendered="inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">\alpha</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.4306em;"></span><span class="mord mathnormal" style="margin-right:0.0037em;">α</span></span></span></span></span>, <span class="math-inline gamma" data-math-rendered="inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi></mrow><annotation encoding="application/x-tex">\gamma</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.625em;vertical-align:-0.1944em;"></span><span class="mord mathnormal" style="margin-right:0.0556em;">γ</span></span></span></span></span>, and <span class="math-inline theta" data-math-rendered="inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi></mrow><annotation encoding="application/x-tex">\theta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.6944em;"></span><span class="mord mathnormal" style="margin-right:0.0278em;">θ</span></span></span></span></span> factorization, then fixed-point widths and OCCS.</p><a href="design.html">Open the design story →</a></article>
+          <article class="path-card"><span>Implementation</span><h3>How did the idea become a chip?</h3><p>Walk through model freeze, mixed-signal integration, physical and package closure, and post-silicon readiness.</p><a href="tapeout.html">Open the tapeout story →</a></article>
           <article class="path-card"><span>Measurement</span><h3>How is compute SNDR estimated?</h3><p>Inspect calibration, <span class="math-inline" data-math-rendered="inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>30</mn><mo>×</mo><mn>10</mn></mrow><annotation encoding="application/x-tex">30\times10</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.7278em;vertical-align:-0.0833em;"></span><span class="mord">30</span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.6444em;"></span><span class="mord">10</span></span></span></span></span> code-conditioned sampling, probability weighting, and measured results.</p><a href="measurements.html">Open the measurement story →</a></article>
           <article class="path-card"><span>Reproduction</span><h3>What can I run immediately?</h3><p>Generate the protocol, fit independent ADC-column calibration, and compute weighted SNDR on deterministic data.</p><a href="#quick-start">Jump to quick start ↓</a></article>
         </div>
@@ -81,7 +81,7 @@
         <div class="section-head">
           <p class="kicker">Quick start</p>
           <h2>Run the public measurement method.</h2>
-          <p>The deterministic example generates code-conditioned requests, synthetic column responses, per-column calibration, and final weighted SNDR using the Python standard library.</p>
+          <p>Using only the Python standard library, the deterministic example generates code-conditioned requests, synthetic column responses, per-column calibration, and final weighted SNDR.</p>
         </div>
         <div class="two-col">
           <div>
@@ -99,12 +99,16 @@ python3 examples/protocol_demo.py</code></pre>
             <pre class="tree"><code>corepack enable
 pnpm install --frozen-lockfile
 pnpm run build
-pnpm run validate</code></pre>
+pnpm run validate
+
+# without node
+python3 scripts/build_site.py
+python3 scripts/validate_site.py</code></pre>
           </div>
         </div>
         <div class="evidence-note" style="margin-top:38px">
           <span class="evidence-type">Output labels</span>
-          <p>Example output is labeled <strong>Synthetic</strong>; prototype values on the site are labeled <strong>Silicon</strong>, <strong>Circuit simulation</strong>, <strong>Behavioral model</strong>, or <strong>Projection</strong>.</p>
+          <p>Example output is labeled <strong>Synthetic</strong>. Prototype values on the site are labeled <strong>Silicon</strong>, <strong>Circuit simulation</strong>, <strong>Behavioral model</strong>, or <strong>Projection</strong>.</p>
         </div>
       </section>
 
@@ -112,7 +116,7 @@ pnpm run validate</code></pre>
         <div class="section-head">
           <p class="kicker">Repository map</p>
           <h2>Each directory owns one part of the story.</h2>
-          <p>The editable website builds into <span class="mono">docs/</span>; the Python package implements deterministic sampling, calibration, correction illustration, and weighted compute-SNDR.</p>
+          <p>The editable website builds into <span class="mono">docs/</span>. The Python package implements deterministic sampling, calibration, correction illustration, and weighted compute-SNDR.</p>
         </div>
         <div class="two-col">
           <pre class="tree" aria-label="Repository directory tree"><span class="folder">SEC-Enabled-MRAM-IMC/</span>

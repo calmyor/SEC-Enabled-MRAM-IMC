@@ -141,12 +141,12 @@
         <div class="section-head">
           <p class="kicker">03 · Precision selection</p>
           <h2>Use convergence studies to freeze the fixed-point path.</h2>
-          <p>Floating-point SEC establishes the algorithmic target. Quantized sweeps then choose widths that preserve convergence while bounding area and switching energy. The implemented inference scale is 7 bit, backed by a 14-bit update accumulator; a power-of-two learning rate enables shift-based updates.</p>
+          <p>Floating-point SEC establishes the algorithmic target. Quantized sweeps then choose widths that preserve convergence while bounding area and switching energy. The implemented inference scale is 7 bit, backed by a 14-bit update accumulator. A power-of-two learning rate enables shift-based updates.</p>
         </div>
         <div class="two-col">
           <figure class="figure-frame">
             <img src="assets/figures/sec-datapath.png" alt="Fixed-point statistical error compensation training and inference datapath" loading="lazy" />
-            <figcaption><strong>SEC datapath.</strong> Training updates correction state; inference reuses the learned row scale in the input path.</figcaption>
+            <figcaption><strong>SEC datapath.</strong> Training updates correction state. Inference reuses the learned row scale in the input path.</figcaption>
           </figure>
           <div>
             <table class="spec-table" aria-label="SEC fixed point choices">
@@ -187,7 +187,7 @@
         <div class="section-head">
           <p class="kicker">05 · Integrated macro</p>
           <h2>Preserve the signal definition across memory, conversion, and correction.</h2>
-          <p>Each ADC column combines four binary-weighted physical columns. Differential MRAM storage and wordline selection implement signed <span class="math-inline" data-math-rendered="inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mtext>-bit input</mtext><mo>×</mo><mn>4</mn><mtext>-bit weight</mtext></mrow><annotation encoding="application/x-tex">1\text{-bit input}\times4\text{-bit weight}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord">1</span><span class="mord text"><span class="mord">-bit input</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord">4</span><span class="mord text"><span class="mord">-bit weight</span></span></span></span></span></span> operations; multibit activations are evaluated bit-serially.</p>
+          <p>Each ADC column combines four binary-weighted physical columns. Differential MRAM storage and wordline selection implement signed <span class="math-inline" data-math-rendered="inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mtext>-bit input</mtext><mo>×</mo><mn>4</mn><mtext>-bit weight</mtext></mrow><annotation encoding="application/x-tex">1\text{-bit input}\times4\text{-bit weight}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord">1</span><span class="mord text"><span class="mord">-bit input</span></span><span class="mspace" style="margin-right:0.2222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right:0.2222em;"></span></span><span class="katex-base"><span class="katex-strut" style="height:0.8889em;vertical-align:-0.1944em;"></span><span class="mord">4</span><span class="mord text"><span class="mord">-bit weight</span></span></span></span></span></span> operations. Multibit activations are evaluated bit-serially.</p>
         </div>
         <figure class="figure-frame">
           <img src="assets/figures/macro-architecture.png" alt="Full MRAM IMC macro with memory array, OCCS, SAR ADC, SEC, and control blocks" loading="lazy" />
@@ -199,7 +199,7 @@
           <article><span class="claim-badge">Fabricated</span><strong>12.2%</strong><span>SEC area overhead in this implementation.</span></article>
           <article><span class="claim-badge">Projected</span><strong>3.7%</strong><span>Possible SEC overhead with register storage replaced by SRAM.</span></article>
         </div>
-        <div class="takeaway"><span>Architecture result</span><strong>Behavioral modeling determines the compensation structure and precision; OCCS preserves the analog margin that SEC then uses at bank scale.</strong></div>
+        <div class="takeaway"><span>Architecture result</span><strong>Behavioral modeling determines the compensation structure and precision. OCCS preserves the analog margin that SEC then uses at bank scale.</strong></div>
       </section>
 
       <section class="section">
