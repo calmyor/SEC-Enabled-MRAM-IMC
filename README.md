@@ -68,6 +68,16 @@ pnpm run build
 pnpm run validate
 ```
 
+On a machine without node, `scripts/build_site.py` and `scripts/validate_site.py`
+reproduce the same output. They render math from `scripts/math-cache.json` rather
+than by running KaTeX, so editing prose works but adding or changing a math
+expression needs the node build to refresh that cache.
+
+```bash
+python3 scripts/build_site.py
+python3 scripts/validate_site.py
+```
+
 ## Repository structure
 
 ```text

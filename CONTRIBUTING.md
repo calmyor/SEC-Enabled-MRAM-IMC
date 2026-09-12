@@ -21,6 +21,10 @@ pnpm run build
 pnpm run validate
 ```
 
+Without node, `python3 scripts/build_site.py` and `python3 scripts/validate_site.py`
+produce the same `docs/`. Math comes from `scripts/math-cache.json` in that path, so
+a new or edited expression requires the node build to regenerate the cache.
+
 ## Evidence language
 
 - **Measured:** obtained from the fabricated macro under a stated protocol.
